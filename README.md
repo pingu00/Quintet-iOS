@@ -16,6 +16,8 @@
 	- 작업 사항, 스크린샷, To Reviewers 등 활용
 	- Default: `[작업태그] 작업 사항 축약`
 	- ex) `[Feat] 회원가입 뷰 추가`
+  - merge into dev 하기 위해 1명 이상의 approve
+
 - 작업태그 일괄
 	- `Feat` : 새로운 기능 추가 / 일부 코드 추가 / 일부 코드 수정
 	- `Fix` : 버그 수정
