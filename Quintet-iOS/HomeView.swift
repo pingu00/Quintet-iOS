@@ -294,7 +294,7 @@ struct HappinessView: View{
     
     var body: some View{
         HStack{
-            HappinessCell(type: "ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ일", value: happinessData[0])
+            HappinessCell(type: "일", value: happinessData[0])
             Spacer()
             HappinessCell(type: "건강", value: happinessData[1])
             Spacer()
