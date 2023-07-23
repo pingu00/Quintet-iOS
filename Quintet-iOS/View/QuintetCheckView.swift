@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct QuintetCheckView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var hasAddNote = false
     @State private var isComplete = false
     
@@ -76,6 +77,7 @@ struct QuintetCheckView: View {
                     }
                 }
             }
+            
             else { // 완료임
                 VStack {
                     Spacer()
@@ -118,6 +120,20 @@ struct QuintetCheckView: View {
                                         .font(.system(size: 20))
                                 )
                         }
+                    }
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            if !isComplete {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button (action:
+                                {dismiss()}){
+                        Image(systemName: "chevron.backward")
+                            .bold()
+                            .foregroundColor(Color(.black))
+                        
                     }
                 }
             }

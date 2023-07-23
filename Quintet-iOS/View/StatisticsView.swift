@@ -48,6 +48,7 @@ class DateViewModel: ObservableObject {
 }
 
 struct StatisticsView: View {
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = DateViewModel()
 
     @State private var workPoint = 2
@@ -87,25 +88,10 @@ struct StatisticsView: View {
     }
     
     var body: some View {
-        NavigationView {
             ZStack{
                 Color("Background").ignoresSafeArea(.all)
                 ScrollView {
                     Spacer()
-                    VStack {
-                        HStack {
-                            Button(action: {
-                                // MARK: - 뒤로가기 버튼 동작 처리
-                                
-                            }) {
-                                Image(systemName: "arrow.left")
-                                    .foregroundColor(.black)
-                            }
-                            .padding(.leading, 20)
-                            .frame(height: 44)
-                            Spacer()
-                        }
-                    }
                     VStack {
                         Text("통계 분석").font(.system(size: 28)).bold()
                             .padding(15)
@@ -271,14 +257,24 @@ struct StatisticsView: View {
                     }
                 }
             }
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button (action:
+                                {dismiss()}){
+                        Image(systemName: "chevron.backward")
+                            .bold()
+                            .foregroundColor(Color(.black))
+                        
+                    }
+                }
+            }
             .sheet(isPresented: $isShowPopup) {
                 YearMonthPickerPopup(viewModel: viewModel, isShowPopup: $isShowPopup, selectedOption: $selectedOption)
                     .frame(width: 300, height: 400)
                     .background(BackgroundClearView())
                     .ignoresSafeArea()
             }
-            
-        }
     }
 }
 
