@@ -20,12 +20,6 @@ struct HomeView: View {
         VStack{
             NavigationView {
                 VStack{
-                    NavigationLink(destination: QuintetCheckView()) { //임시로 연결해준 뷰
-                        Spacer()
-                        Image(systemName: "line.3.horizontal").padding()
-                            .tint(.black)
-                    }
-                    
                     ScrollView {
                         VStack{
                             HStack{
@@ -93,9 +87,7 @@ struct HomeView: View {
                             
                             // MARK: - 오늘의 퀸텟 체크 Section
                             ZStack{
-                                Button {
-                                    print("오늘의 퀸텟 체크 tapped")
-                                } label: {
+                                NavigationLink(destination: QuintetCheckView()){
                                     RoundedRectangle(cornerRadius: 10)
                                         .foregroundColor(.white)
                                 }
@@ -124,9 +116,7 @@ struct HomeView: View {
                                     .foregroundColor(.white)
                                 VStack{
                                     ZStack{
-                                        Button {
-                                            print("지난주 분석 확인하기 tapped")
-                                        } label: {
+                                        NavigationLink(destination: {StatisticsView()}){
                                             RoundedRectangle(cornerRadius: 10)
                                                 .foregroundColor(.white)
                                         }
@@ -151,9 +141,7 @@ struct HomeView: View {
                                         .background(Color("LightGray"))
                                         .padding(.horizontal)
                                     ZStack{
-                                        Button {
-                                            print("기록 확인하기 tapped")
-                                        } label: {
+                                        NavigationLink(destination: RecordView()){
                                             RoundedRectangle(cornerRadius: 10)
                                                 .foregroundColor(.white)
                                         }
@@ -201,6 +189,14 @@ struct HomeView: View {
                     }
                 }
                 .background(Color("Background"))
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink(destination: MenuView()) {
+                            Image(systemName: "line.3.horizontal").padding()
+                                .tint(.black)
+                        }
+                    }
+                }
             }
         }
     }
