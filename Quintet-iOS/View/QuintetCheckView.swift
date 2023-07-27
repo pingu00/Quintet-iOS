@@ -95,7 +95,9 @@ struct QuintetCheckView: View {
                     .padding()
                     
                     Spacer()
-                    Button(action: { print("HomeView로 이동 + point 정보와 note 정보가 오늘의 퀸텟 모델 형태로 서버로 전공")}){
+                    Button(action: { print("HomeView로 이동 + point 정보와 note 정보가 오늘의 퀸텟 모델 형태로 서버로 전공")
+                        dismiss()
+                    }){
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color("DarkQ"))
                             .frame(width: 345, height: 66)
