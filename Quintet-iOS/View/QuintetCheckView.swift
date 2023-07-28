@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct QuintetCheckView: View {
+    @StateObject private var coreDataViewModel = CoreDataViewModel()
+    
     @Environment(\.dismiss) private var dismiss
     @State private var hasAddNote = false
     @State private var isComplete = false
@@ -95,7 +97,14 @@ struct QuintetCheckView: View {
                     .padding()
                     
                     Spacer()
-                    Button(action: { print("HomeView로 이동 + point 정보와 note 정보가 오늘의 퀸텟 모델 형태로 서버로 전공")
+                    Button(action: {
+                        if hasAddNote {
+                            coreDataViewModel.addPointWithNote(workPoint,healthPoint,familyPoint,relationshipPoint, assetPoint, workNote,  healthNote, familyNote, relationshipNote,assetNote)
+                        }
+                        else {
+                            coreDataViewModel.addOnlyPoint( workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint)
+                        }
+                        print(coreDataViewModel.savedEntity)
                         dismiss()
                     }){
                         RoundedRectangle(cornerRadius: 20)
