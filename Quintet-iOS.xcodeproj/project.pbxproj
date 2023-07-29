@@ -15,6 +15,8 @@
 		28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C364602A5FD63600847A88 /* StatisticsView.swift */; };
 		28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C364612A5FD63600847A88 /* QuintetCheckView.swift */; };
 		28C364662A5FD63600847A88 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C364622A5FD63600847A88 /* MenuView.swift */; };
+		AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E372A727B020025F8A7 /* DateViewModel.swift */; };
+		AA086E3C2A72E1C20025F8A7 /* StatisticsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,8 @@
 		28C364602A5FD63600847A88 /* StatisticsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		28C364612A5FD63600847A88 /* QuintetCheckView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuintetCheckView.swift; sourceTree = "<group>"; };
 		28C364622A5FD63600847A88 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		AA086E372A727B020025F8A7 /* DateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewModel.swift; sourceTree = "<group>"; };
+		AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,8 @@
 				28C364602A5FD63600847A88 /* StatisticsView.swift */,
 				28C364612A5FD63600847A88 /* QuintetCheckView.swift */,
 				28C364622A5FD63600847A88 /* MenuView.swift */,
+				AA086E372A727B020025F8A7 /* DateViewModel.swift */,
+				AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -161,8 +167,10 @@
 				28C364662A5FD63600847A88 /* MenuView.swift in Sources */,
 				28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */,
 				28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */,
+				AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */,
 				28C364632A5FD63600847A88 /* RecordView.swift in Sources */,
 				28C3644D2A5FD58E00847A88 /* Quintet_iOSApp.swift in Sources */,
+				AA086E3C2A72E1C20025F8A7 /* StatisticsCellViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
