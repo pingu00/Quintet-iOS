@@ -48,7 +48,7 @@ struct StatisticsView: View {
                         case 1:
                             ArrowButton(action: {
                                 dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: dateViewModel.startOfWeek)!
-                            }, imageName: "arrow.left", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: DateComponents(weekOfYear: 1, yearForWeekOfYear: 2017)))
+                            }, imageName: "chevron.backward", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: DateComponents(weekOfYear: 1, yearForWeekOfYear: 2017)))
                             
                             Spacer()
                                 .frame(maxWidth: 40)
@@ -61,7 +61,7 @@ struct StatisticsView: View {
                             
                             ArrowButton(action: {
                                 dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: dateViewModel.startOfWeek)!
-                            }, imageName: "arrow.right", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!)
+                            }, imageName: "chevron.forward", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!)
                             
                         case 2:
                             ArrowButton(action: {
@@ -70,7 +70,7 @@ struct StatisticsView: View {
                                     dateViewModel.selectedMonth = 12
                                     dateViewModel.selectedYear -= 1
                                 }
-                            }, imageName: "arrow.left", isDisabled: dateViewModel.selectedYear == 2017 && dateViewModel.selectedMonth == 1)
+                            }, imageName: "chevron.backward", isDisabled: dateViewModel.selectedYear == 2017 && dateViewModel.selectedMonth == 1)
                             
                             
                             Spacer()
@@ -91,12 +91,12 @@ struct StatisticsView: View {
                                     dateViewModel.selectedMonth = 1
                                     dateViewModel.selectedYear += 1
                                 }
-                            }, imageName: "arrow.right", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()) && dateViewModel.selectedMonth == Calendar.current.component(.month, from: Date()))
+                            }, imageName: "chevron.forward", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()) && dateViewModel.selectedMonth == Calendar.current.component(.month, from: Date()))
                             
                         case 3:
                             ArrowButton(action: {
                                 dateViewModel.selectedYear -= 1
-                            }, imageName: "arrow.left", isDisabled: dateViewModel.selectedYear == 2017)
+                            }, imageName: "chevron.backward", isDisabled: dateViewModel.selectedYear == 2017)
                             
                             Spacer()
                                 .frame(maxWidth: 40)
@@ -113,7 +113,7 @@ struct StatisticsView: View {
                             
                             ArrowButton(action: {
                                 dateViewModel.selectedYear += 1
-                            }, imageName: "arrow.right", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()))
+                            }, imageName: "chevron.forward", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()))
                         default:
                             Text("")
                         }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct QuintetCheckView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var hasAddNote = false
     @State private var isComplete = false
     
@@ -76,6 +77,7 @@ struct QuintetCheckView: View {
                     }
                 }
             }
+            
             else { // 완료임
                 VStack {
                     Spacer()
@@ -93,7 +95,9 @@ struct QuintetCheckView: View {
                     .padding()
                     
                     Spacer()
-                    Button(action: { print("HomeView로 이동 + point 정보와 note 정보가 오늘의 퀸텟 모델 형태로 서버로 전공")}){
+                    Button(action: { print("HomeView로 이동 + point 정보와 note 정보가 오늘의 퀸텟 모델 형태로 서버로 전공")
+                        dismiss()
+                    }){
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color("DarkQ"))
                             .frame(width: 345, height: 66)
@@ -118,6 +122,20 @@ struct QuintetCheckView: View {
                                         .font(.system(size: 20))
                                 )
                         }
+                    }
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            if !isComplete {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button (action:
+                                {dismiss()}){
+                        Image(systemName: "chevron.backward")
+                            .bold()
+                            .foregroundColor(Color(.black))
+                        
                     }
                 }
             }
