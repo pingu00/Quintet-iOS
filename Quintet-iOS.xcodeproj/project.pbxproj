@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286E48A82A76DD6B00D109E9 /* CheckCellView.swift */; };
+		286E48AB2A76DE1600D109E9 /* AddNoteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286E48AA2A76DE1600D109E9 /* AddNoteCellView.swift */; };
 		28997E7B2A73F00300ED676C /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 28997E792A73F00300ED676C /* CoreDataModel.xcdatamodeld */; };
 		28997E822A73F76A00ED676C /* CoreDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28997E812A73F76A00ED676C /* CoreDataViewModel.swift */; };
 		28C3644D2A5FD58E00847A88 /* Quintet_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C3644C2A5FD58E00847A88 /* Quintet_iOSApp.swift */; };
@@ -20,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		286E48A82A76DD6B00D109E9 /* CheckCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCellView.swift; sourceTree = "<group>"; };
+		286E48AA2A76DE1600D109E9 /* AddNoteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteCellView.swift; sourceTree = "<group>"; };
 		28997E7A2A73F00300ED676C /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		28997E812A73F76A00ED676C /* CoreDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataViewModel.swift; sourceTree = "<group>"; };
 		28C364492A5FD58E00847A88 /* Quintet-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quintet-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +48,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		286E48A72A76DD1100D109E9 /* QuintetCheck */ = {
+			isa = PBXGroup;
+			children = (
+				28C364612A5FD63600847A88 /* QuintetCheckView.swift */,
+				286E48A82A76DD6B00D109E9 /* CheckCellView.swift */,
+				286E48AA2A76DE1600D109E9 /* AddNoteCellView.swift */,
+			);
+			path = QuintetCheck;
+			sourceTree = "<group>";
+		};
 		28997E832A73FA4600ED676C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -95,7 +109,7 @@
 			children = (
 				28C3645F2A5FD63600847A88 /* RecordView.swift */,
 				28C364602A5FD63600847A88 /* StatisticsView.swift */,
-				28C364612A5FD63600847A88 /* QuintetCheckView.swift */,
+				286E48A72A76DD1100D109E9 /* QuintetCheck */,
 				28C364622A5FD63600847A88 /* MenuView.swift */,
 			);
 			path = View;
@@ -176,8 +190,10 @@
 				28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */,
 				28997E7B2A73F00300ED676C /* CoreDataModel.xcdatamodeld in Sources */,
 				28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */,
+				286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */,
 				28997E822A73F76A00ED676C /* CoreDataViewModel.swift in Sources */,
 				28C364632A5FD63600847A88 /* RecordView.swift in Sources */,
+				286E48AB2A76DE1600D109E9 /* AddNoteCellView.swift in Sources */,
 				28C3644D2A5FD58E00847A88 /* Quintet_iOSApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
