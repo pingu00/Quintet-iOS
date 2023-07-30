@@ -7,278 +7,221 @@
 
 import SwiftUI
 
-class DateViewModel: ObservableObject {
-    @Published var selectedYear = Calendar.current.component(.year, from: Date()){
-        didSet {
-            updateStartOfWeek()
-        }
-    }
-    @Published var selectedMonth = Calendar.current.component(.month, from: Date()){
-        didSet {
-            updateStartOfWeek()
-        }
-    }
-    
-    @Published var startOfWeek = Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
-    
-    var selectedDate: Date {
-        Calendar.current.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 1))!
-    }
-
-    var weekButtonText: Text {
-        let formattedStartDate = Utilities.formatYearMonthDay(startOfWeek)
-        let formattedEndDate = Utilities.formatYearMonthDay(Calendar.current.date(byAdding: .day, value: 6, to: startOfWeek)!)
-        
-        return Text("\(formattedStartDate) - \(formattedEndDate)")
-    }
-
-    private func updateStartOfWeek() {
-        let calendar = Calendar.current
-        startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: selectedDate))!
-    }
-        
-    
-    var yearMonthButtonText: Text {
-        Text("\(Utilities.formatNum(selectedYear))년 \(selectedMonth)월")
-    }
-    
-    var yearButtonText: Text {
-        Text("\(Utilities.formatNum(selectedYear))년")
-    }
-}
-
 struct StatisticsView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = DateViewModel()
+    
+    @StateObject private var dateViewModel = DateViewModel()
+    @StateObject private var statisticsCellViewModel = StatisticsCellViewModel()
 
-    @State private var workPoint = 2
-    @State private var healthPoint = 3
-    @State private var familyPoint = 4
-    @State private var relationshipPoint = 4
-    @State private var assetPoint = 1
-    
-    @State private var workNote = "일"
-    @State private var healthNote = "건강"
-    @State private var familyNote = "가족"
-    @State private var relationshipNote = "관계"
-    @State private var assetNote = "자산"
-    
     @State private var barWidth = 60
     @State private var barHeight = 200
     
     @State private var selectedOption = 1
     @State private var isShowPopup = false
     
-    var totalPoint: Int {
-        workPoint + healthPoint + familyPoint + relationshipPoint + assetPoint
-    }
-
-    var maxPoint: Int {
-        max(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint)
-    }
-    
-    var noteArray: [(Int, String)] {
-        [
-            (workPoint, workNote),
-            (healthPoint, healthNote),
-            (familyPoint, familyNote),
-            (relationshipPoint, relationshipNote),
-            (assetPoint, assetNote)
-        ]
-    }
     
     var body: some View {
-            ZStack{
-                Color("Background").ignoresSafeArea(.all)
-                ScrollView {
-                    Spacer()
-                    VStack {
-                        Text("통계 분석").font(.system(size: 28)).bold()
-                            .padding(15)
-                    }
-                    VStack {
-                        
-                        RoundedRectangle(cornerRadius: 30)
-                            .fill(Color("LightGray2"))
-                            .frame(width: 300, height: 50)
-                            .overlay(
-                                HStack{
-                                    DateOptionView(text: "주간", num: 1, selectedOption: $selectedOption)
-                                    DateOptionView(text: "월간", num: 2, selectedOption: $selectedOption)
-                                    DateOptionView(text: "연간", num: 3, selectedOption: $selectedOption)
+        ZStack{
+            Color("Background").ignoresSafeArea(.all)
+            ScrollView {
+                Spacer()
+                VStack {
+                    Text("통계 분석").font(.system(size: 28)).bold()
+                        .padding(15)
+                }
+                VStack {
+                    RoundedRectangle(cornerRadius: 30)
+                        .fill(Color("LightGray2"))
+                        .frame(width: 300, height: 50)
+                        .overlay(
+                            HStack{
+                                DateOptionView(text: "주간", num: 1, selectedOption: $selectedOption)
+                                DateOptionView(text: "월간", num: 2, selectedOption: $selectedOption)
+                                DateOptionView(text: "연간", num: 3, selectedOption: $selectedOption)
+                            }
+                        )
+                        .padding(.bottom, 20)
+                }
+                VStack{
+                    HStack{
+                        switch selectedOption {
+                        case 1:
+                            ArrowButton(action: {
+                                dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: dateViewModel.startOfWeek)!
+                            }, imageName: "chevron.backward", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: DateComponents(weekOfYear: 1, yearForWeekOfYear: 2017)))
+                            
+                            Spacer()
+                                .frame(maxWidth: 40)
+                            
+                            dateViewModel.weekButtonText
+                                .foregroundColor(.black)
+                            
+                            Spacer()
+                                .frame(maxWidth: 40)
+                            
+                            ArrowButton(action: {
+                                dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: dateViewModel.startOfWeek)!
+                            }, imageName: "chevron.forward", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!)
+                            
+                        case 2:
+                            ArrowButton(action: {
+                                dateViewModel.selectedMonth -= 1
+                                if dateViewModel.selectedMonth < 1 {
+                                    dateViewModel.selectedMonth = 12
+                                    dateViewModel.selectedYear -= 1
                                 }
-                            )
-                            .padding(.bottom, 20)
+                            }, imageName: "chevron.backward", isDisabled: dateViewModel.selectedYear == 2017 && dateViewModel.selectedMonth == 1)
+                            
+                            
+                            Spacer()
+                                .frame(maxWidth: 40)
+                            
+                            Button(action: {
+                                isShowPopup = true
+                            }) {
+                                dateViewModel.yearMonthButtonText
+                                    .foregroundColor(.black)
+                            }
+                            Spacer()
+                                .frame(maxWidth: 40)
+                            
+                            ArrowButton(action: {
+                                dateViewModel.selectedMonth += 1
+                                if dateViewModel.selectedMonth > 12 {
+                                    dateViewModel.selectedMonth = 1
+                                    dateViewModel.selectedYear += 1
+                                }
+                            }, imageName: "chevron.forward", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()) && dateViewModel.selectedMonth == Calendar.current.component(.month, from: Date()))
+                            
+                        case 3:
+                            ArrowButton(action: {
+                                dateViewModel.selectedYear -= 1
+                            }, imageName: "chevron.backward", isDisabled: dateViewModel.selectedYear == 2017)
+                            
+                            Spacer()
+                                .frame(maxWidth: 40)
+                            
+                            Button(action: {
+                                isShowPopup = true
+                            }) {
+                                dateViewModel.yearButtonText
+                                    .foregroundColor(.black)
+                            }
+                            
+                            Spacer()
+                                .frame(maxWidth: 40)
+                            
+                            ArrowButton(action: {
+                                dateViewModel.selectedYear += 1
+                            }, imageName: "chevron.forward", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()))
+                        default:
+                            Text("")
+                        }
+                        
+                        
                     }
-                    VStack{
-                        HStack{
+                }
+                
+                VStack {
+                    HStack(spacing: 0) {
+                        ForEach(statisticsCellViewModel.noteArray, id: \.1) { (point, note) in
+                            StatisticsCellView(viewModel: statisticsCellViewModel, barWidth: CGFloat(barWidth), barHeight: CGFloat(barHeight), note: note, point: point, maxPoint: statisticsCellViewModel.maxPoint, totalPoint: statisticsCellViewModel.totalPoint)
+                        }
+                    }
+                    Divider()
+                        .background(Color.gray)
+                        .frame(width: 330)
+                        .padding(.top, 40)
+                }
+                .padding(20)
+                VStack {
+                    HStack(spacing: 0) {
+                        Group {
                             switch selectedOption {
                             case 1:
-                                Button(action: {
-                                    viewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: viewModel.startOfWeek)!
-                                }) {
-                                    Image(systemName: "arrow.left")
-                                        .foregroundColor(.gray)
-                                }
-                                Spacer()
-                                    .frame(maxWidth: 40)
-                                viewModel.weekButtonText
-                                    .foregroundColor(.black)
-                                Spacer()
-                                    .frame(maxWidth: 40)
-                                Button(action: {
-                                    viewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: viewModel.startOfWeek)!
-                                }) {
-                                    Image(systemName: "arrow.right")
-                                        .foregroundColor(.gray)
-                                }
-                                .disabled(viewModel.startOfWeek == Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!)
+                                Text("이번 주는 ")
+                                    .font(.system(size: 26))
+                                    .multilineTextAlignment(.center)
                             case 2:
-                                Button(action: {
-                                    viewModel.selectedMonth -= 1
-                                        if viewModel.selectedMonth < 1 {
-                                            viewModel.selectedMonth = 12
-                                            viewModel.selectedYear -= 1
-                                        }
-                                }) {
-                                    Image(systemName: "arrow.left")
-                                        .foregroundColor(.gray)
-                                }
-                                Spacer()
-                                    .frame(maxWidth: 40)
-                                Button(action: {
-                                    isShowPopup = true
-                                }) {
-                                    viewModel.yearMonthButtonText
-                                        .foregroundColor(.black)
-                                }
-                                Spacer()
-                                    .frame(maxWidth: 40)
-                                Button(action: {
-                                    viewModel.selectedMonth += 1
-                                        if viewModel.selectedMonth > 12 {
-                                            viewModel.selectedMonth = 1
-                                            viewModel.selectedYear += 1
-                                        }
-                                }) {
-                                    Image(systemName: "arrow.right")
-                                        .foregroundColor(.gray)
-                                }
-                                .disabled(viewModel.selectedYear == Calendar.current.component(.year, from: Date()) && viewModel.selectedMonth == Calendar.current.component(.month, from: Date()))
+                                Text("이번 달은 ")
+                                    .font(.system(size: 26))
+                                    .multilineTextAlignment(.center)
                             case 3:
-                                Button(action: {
-                                    viewModel.selectedYear -= 1
-                                }) {
-                                    Image(systemName: "arrow.left")
-                                        .foregroundColor(.gray)
-                                }
-                                Spacer()
-                                    .frame(maxWidth: 40)
-                                Button(action: {
-                                    isShowPopup = true
-                                }) {
-                                    viewModel.yearButtonText
-                                        .foregroundColor(.black)
-                                }
-                                Spacer()
-                                    .frame(maxWidth: 40)
-                                Button(action: {
-                                    viewModel.selectedYear += 1
-                                }) {
-                                    Image(systemName: "arrow.right")
-                                        .foregroundColor(.gray)
-                                }
-                                .disabled(viewModel.selectedYear == Calendar.current.component(.year, from: Date()))
+                                Text("올해는 ")
+                                    .font(.system(size: 26))
+                                    .multilineTextAlignment(.center)
                             default:
                                 Text("")
                             }
-                            
-                            
                         }
-                    }
-                    
-                    VStack {
-                        HStack(spacing: 0) {
-                            StatisticsCellView(barWidth: CGFloat(barWidth), barHeight: CGFloat(barHeight), note: workNote, point: workPoint, maxPoint: maxPoint, totalPoint: totalPoint)
-                            StatisticsCellView(barWidth: CGFloat(barWidth), barHeight: CGFloat(barHeight), note: healthNote, point: healthPoint, maxPoint: maxPoint, totalPoint: totalPoint)
-                            StatisticsCellView(barWidth: CGFloat(barWidth), barHeight: CGFloat(barHeight), note: familyNote, point: familyPoint, maxPoint: maxPoint, totalPoint: totalPoint)
-                            StatisticsCellView(barWidth: CGFloat(barWidth), barHeight: CGFloat(barHeight), note: relationshipNote, point: relationshipPoint, maxPoint: maxPoint, totalPoint: totalPoint)
-                            StatisticsCellView(barWidth: CGFloat(barWidth), barHeight: CGFloat(barHeight), note: assetNote, point: assetPoint, maxPoint: maxPoint, totalPoint: totalPoint)
-                        }
-                        Divider()
-                            .background(Color.gray)
-                            .frame(width: 330)
-                            .padding(.top, 40)
-                    }
-                    .padding(20)
-                    VStack {
-                        let maxNote = noteArray.first { $0.0 == maxPoint }?.1 ?? "error"
-                        
-                        HStack(spacing: 0) {
-                            Group {
-                                switch selectedOption {
-                                case 1:
-                                    Text("이번 주는 ")
-                                        .font(.system(size: 26))
-                                        .multilineTextAlignment(.center)
-                                case 2:
-                                    Text("이번 달은 ")
-                                        .font(.system(size: 26))
-                                        .multilineTextAlignment(.center)
-                                case 3:
-                                    Text("올해는 ")
-                                        .font(.system(size: 26))
-                                        .multilineTextAlignment(.center)
-                                default:
-                                    Text("")
-                                }
-                            }
-                            Text(maxNote)
-                                .bold()
-                                .font(.system(size: 26))
-                                .multilineTextAlignment(.center)
-                            Text("에")
-                                .font(.system(size: 26))
-                                .multilineTextAlignment(.center)
-                        }
-                        VStack{
-                            Text("주로 집중하셨군요!")
-                                .font(.system(size: 26))
-                                .multilineTextAlignment(.center)
-                        }
+                        Text(statisticsCellViewModel.maxNoteArray.joined(separator: ", "))
+                            .bold()
+                            .font(.system(size: 26))
+                            .multilineTextAlignment(.center)
+                        Text("에")
+                            .font(.system(size: 26))
+                            .multilineTextAlignment(.center)
                     }
                     VStack{
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.white)
-                            .frame(width: 330, height: 200)
-                            .overlay(
-                                Text(".")
-                            )
+                        Text("주로 집중하셨군요!")
+                            .font(.system(size: 26))
+                            .multilineTextAlignment(.center)
                     }
                 }
-            }
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button (action:
-                                {dismiss()}){
-                        Image(systemName: "chevron.backward")
-                            .bold()
-                            .foregroundColor(Color(.black))
-                        
-                    }
+                VStack{
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.white)
+                        .frame(width: 330, height: 200)
+                        .overlay(
+                            Text(".")
+                        )
                 }
             }
-            .sheet(isPresented: $isShowPopup) {
-                YearMonthPickerPopup(viewModel: viewModel, isShowPopup: $isShowPopup, selectedOption: $selectedOption)
-                    .frame(width: 300, height: 400)
-                    .background(BackgroundClearView())
-                    .ignoresSafeArea()
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button (action:
+                            {dismiss()}){
+                    Image(systemName: "chevron.backward")
+                        .bold()
+                        .foregroundColor(Color(.black))
+                    
+                }
             }
+        }
+        .sheet(isPresented: $isShowPopup) {
+            YearMonthPickerPopup(viewModel: dateViewModel, isShowPopup: $isShowPopup, selectedOption: $selectedOption)
+                .frame(width: 300, height: 400)
+                .background(BackgroundClearView())
+                .ignoresSafeArea()
+        }
+    }
+}
+
+// MARK: - ArrowButton
+struct ArrowButton: View {
+    var action: () -> Void
+    var imageName: String
+    var isDisabled: Bool
+    
+    var body: some View {
+        Button(action: {
+            withAnimation{
+                action()
+            }
+        }) {
+            
+            Image(systemName: imageName)
+                .foregroundColor(.gray)
+        }
+        .disabled(isDisabled)
+        .opacity(isDisabled ? 0 : 1)
     }
 }
 
 // MARK: - DateOptionView
+// 애니메이션 재은님이 구현한거랑 겹쳐서 pr 올라오면 그거 참고해서 구현 예정
 struct DateOptionView: View {
     var text: String
     var num: Int
@@ -295,6 +238,8 @@ struct DateOptionView: View {
             .onTapGesture {
                 selectedOption = num
             }
+            
+                
     }
 }
 
@@ -430,7 +375,9 @@ struct MonthPicker: View {
 }
 
 // MARK: - StatisticsCellView
+// 정리하려고 했으나 매주, 매달마다 백에서 전달하는 point값이 달라지고, 이를 어떻게 처리할지 생각중이라 보류
 struct StatisticsCellView: View {
+    @ObservedObject var viewModel: StatisticsCellViewModel
     let barWidth: CGFloat
     let barHeight: CGFloat
     
@@ -460,7 +407,7 @@ struct StatisticsCellView: View {
             }
             VStack {
                 Text(note).font(.system(size: 15))
-                Text("\(Int(heightRatio * 100))%").font(.system(size: 13)) //소수점 버려지는거 어떻게 할지?
+                Text(String(format: "%.1f", heightRatio * 100) + "%").font(.system(size: 13))
             }
         }
     }
@@ -486,7 +433,6 @@ struct Utilities {
         formatter.dateFormat = "MM.dd"
         return formatter.string(from: date)
     }
-    
 }
 
 struct StatisticsView_Previews: PreviewProvider {
