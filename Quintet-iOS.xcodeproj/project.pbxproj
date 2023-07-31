@@ -23,6 +23,7 @@
 		AA086E3C2A72E1C20025F8A7 /* StatisticsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */; };
 		311198D72A74F8C900D92E91 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D62A74F8C900D92E91 /* DateManager.swift */; };
 		311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D82A74FAFE00D92E91 /* DummyDataManager.swift */; };
+		4ED547B62A76845B002A5351 /* RecordViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED547B52A76845B002A5351 /* RecordViewData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCellViewModel.swift; sourceTree = "<group>"; };
 		311198D62A74F8C900D92E91 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		311198D82A74FAFE00D92E91 /* DummyDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDataManager.swift; sourceTree = "<group>"; };
+		4ED547B52A76845B002A5351 /* RecordViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				28C3645F2A5FD63600847A88 /* RecordView.swift */,
+				4ED547B52A76845B002A5351 /* RecordViewData.swift */,
 				28C364602A5FD63600847A88 /* StatisticsView.swift */,
 				286E48A72A76DD1100D109E9 /* QuintetCheck */,
 				28C364622A5FD63600847A88 /* MenuView.swift */,
@@ -143,6 +146,8 @@
 			dependencies = (
 			);
 			name = "Quintet-iOS";
+			packageProductDependencies = (
+			);
 			productName = "Quintet-iOS";
 			productReference = 28C364492A5FD58E00847A88 /* Quintet-iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -171,6 +176,8 @@
 				Base,
 			);
 			mainGroup = 28C364402A5FD58E00847A88;
+			packageReferences = (
+			);
 			productRefGroup = 28C3644A2A5FD58E00847A88 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -203,6 +210,7 @@
 				28C364662A5FD63600847A88 /* MenuView.swift in Sources */,
 				28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */,
 				28997E7B2A73F00300ED676C /* CoreDataModel.xcdatamodeld in Sources */,
+				4ED547B62A76845B002A5351 /* RecordViewData.swift in Sources */,
 				28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */,
 				286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */,
 				28997E822A73F76A00ED676C /* CoreDataViewModel.swift in Sources */,
