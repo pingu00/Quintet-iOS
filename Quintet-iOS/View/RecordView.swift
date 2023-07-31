@@ -44,7 +44,7 @@ struct RecordView: View {
                                     Rectangle()
                                         .frame(width: 300, height: 40)
                                         .cornerRadius(25)
-                                        .foregroundColor(Color("LightGray")) //LightGray2 ?
+                                        .foregroundColor(Color("LightGray2")) //LightGray2 ?
 
                                     Rectangle()
                                         .frame(width: 155, height: 30)
@@ -54,9 +54,7 @@ struct RecordView: View {
 
                                     HStack(spacing: 80) {
                                         Button(action: {
-                                            withAnimation {
                                                 isShowingBtn = false
-                                            }
                                         }) {
                                             Text("날짜별")
                                                 .fontWeight(.semibold)
@@ -64,9 +62,7 @@ struct RecordView: View {
                                         }
 
                                         Button(action: {
-                                            withAnimation {
                                                 isShowingBtn = true
-                                            }
                                         }) {
                                             Text("요소별")
                                                 .fontWeight(.semibold)
@@ -650,8 +646,7 @@ struct CalendarView: View {
                     }
             }
             .onChange(of: currentMonth) { newValue in
-
-                    //updating Month...
+                    //updating Month
                     currentDate = getCurrentMonth()
                 }
         }
@@ -673,7 +668,7 @@ struct CalendarView: View {
 
 
                     Circle()
-                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("LightGray") ) //LightGray2
+                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("LightGray2") ) //LightGray2
                         .frame(width: 32, height: 32)
                         .opacity(isSameDay(date1: task.taskDate, date2: currentDate) ? 0 : 1)
                         .padding(.vertical, -5)
