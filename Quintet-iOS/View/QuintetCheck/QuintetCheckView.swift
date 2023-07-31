@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct QuintetCheckView: View {
+    @StateObject private var vm = CoreDataViewModel()
+    
     @Environment(\.dismiss) private var dismiss
     @State private var hasAddNote = false
     @State private var isComplete = false
     
-    @State private var workPoint = 0
-    @State private var healthPoint = 0
-    @State private var familyPoint = 0
-    @State private var relationshipPoint = 0
-    @State private var assetPoint = 0
+    @State private var workPoint = -1
+    @State private var healthPoint = -1
+    @State private var familyPoint = -1
+    @State private var relationshipPoint = -1
+    @State private var assetPoint = -1
     
     @State private var workNote = ""
     @State private var healthNote = ""
@@ -62,17 +64,20 @@ struct QuintetCheckView: View {
                         }
                         Spacer(minLength: 102)
                         
-                        Button(action: { isComplete = true }){
+                        Button(action: {
+                            isComplete = true
+                        }) {
                             RoundedRectangle(cornerRadius: 20)
-                                .fill(Color("DarkQ"))
+                                .fill(workPoint == -1 || familyPoint == -1 || relationshipPoint == -1 || assetPoint == -1 || healthPoint == -1 ? Color("DarkGray") : Color("DarkQ"))
                                 .frame(width: 345, height: 66)
                                 .overlay(
                                     hasAddNote ? Text("기록완료") : Text("체크완료")
-                                    
                                 )
                                 .foregroundColor(.white)
                                 .font(.system(size: 20))
                         }
+                        .disabled(workPoint == -1 || familyPoint == -1 || relationshipPoint == -1 || assetPoint == -1 || healthPoint == -1)
+                        
                         .padding(.vertical)
                     }
                 }
@@ -95,7 +100,14 @@ struct QuintetCheckView: View {
                     .padding()
                     
                     Spacer()
-                    Button(action: { print("HomeView로 이동 + point 정보와 note 정보가 오늘의 퀸텟 모델 형태로 서버로 전공")
+                    Button(action: {
+                        if (vm.currentQuintetData != nil) {
+                            vm.updateQuintetData(Date(),workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint, workNote, healthNote, familyNote, relationshipNote, assetNote)
+                        } else {
+                            // Add initial data for the current date
+                            vm.addQuintetData(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint, workNote, healthNote, familyNote, relationshipNote, assetNote)
+                        }
+                        
                         dismiss()
                     }){
                         RoundedRectangle(cornerRadius: 20)
@@ -127,6 +139,10 @@ struct QuintetCheckView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear{
+            loadCurrentData()
+            vm.checkAllCoreData()
+        }
         .toolbar {
             if !isComplete {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -141,88 +157,24 @@ struct QuintetCheckView: View {
             }
         }
     }
-}
-
-struct CheckCellView : View {
-    @State private var isCircleOn = false
-    @State private var isTriangleOn = false
-    @State private var isXOn = false
-    
-    let part : String
-    @Binding var point : Int
-    
-    var body : some View {
-        ZStack{
-            RoundedRectangle(cornerRadius: 24)
-                .fill(Color(.white))
-                .frame(width: 345, height: 200)
-            VStack{
-                HStack(spacing: 0){
-                    Text("오늘 하루 ")
-                    Text(part)
-                        .bold()
-                    Text("에 얼마나 집중하셨나요?")
-                }
-                .font(.system(size: 18))
-                .padding(.bottom)
-                HStack{
-                    Image(isXOn ? "XOn" : "XOff")
-                        .onTapGesture {
-                            isCircleOn = false
-                            isTriangleOn = false
-                            isXOn = true
-                            point = 0
-                        }
-                    
-                    Image(isTriangleOn ? "TriangleOn" : "TriangleOff")
-                        .onTapGesture {
-                            isCircleOn = false
-                            isTriangleOn = true
-                            isXOn = false
-                            point = 1
-                        }
-                        .padding(.horizontal)
-                    
-                    Image(isCircleOn ? "CircleOn" : "CircleOff")
-                        .onTapGesture {
-                            isCircleOn = true
-                            isTriangleOn = false
-                            isXOn = false
-                            point = 2
-                        }
-                }
-                .frame(width: 70, height: 70)
+    private func loadCurrentData() {
+        print("Current Time? : \(Date())")
+        print("Today Has Data? :  \(vm.hasDataForCurrentDate())")
+        if vm.hasDataForCurrentDate() {
+            guard let currentQuintetData = vm.currentQuintetData else {
+                return
             }
-        }
-    }
-}
-
-struct AddNoteCellView : View{
-    let part : String
-    let symbol : String
-    @Binding var note : String
-    var body: some View {
-        ZStack{
-            RoundedRectangle(cornerRadius: 24)
-                .fill(Color(.white))
-                .frame(width: 345, height: 200)
-            VStack(alignment: .leading){
-                HStack{
-                    Image(systemName: symbol)
-                    Text (part)
-                        .font(.system(size:20))
-                }.padding(.horizontal)
-                TextField("오늘의 \(part) 기록을 작성해보세요", text: $note)
-                    .font(.system(size: 16))
-                    .foregroundColor(.gray)
-                    .padding(.bottom)
-                    .padding(.bottom)
-                    .padding(.bottom)
-                    .padding(.horizontal)
-                    .frame(width: 310, height: 110)
-                    .background(Color("Background"))
-                    .cornerRadius(20)
-            }
+            workPoint = Int(currentQuintetData.workPoint)
+            healthPoint = Int(currentQuintetData.healthPoint)
+            familyPoint = Int(currentQuintetData.familyPoint)
+            relationshipPoint = Int(currentQuintetData.relationshipPoint)
+            assetPoint = Int(currentQuintetData.assetPoint)
+            
+            workNote = currentQuintetData.workNote ?? ""
+            healthNote = currentQuintetData.healthNote ?? ""
+            familyNote = currentQuintetData.familyNote ?? ""
+            relationshipNote = currentQuintetData.relationshipNote ?? ""
+            assetNote = currentQuintetData.assetNote ?? ""
         }
     }
 }
