@@ -37,7 +37,7 @@ class CoreDataViewModel: ObservableObject {
 
 
     //"일(day)" 로 필터링 된 QuintetData 하나를 반환 한다.
-    private func fetchQuintetData(for date: Date) -> QuintetData? {
+    private func getQuintetData(for date: Date) -> QuintetData? {
         let request: NSFetchRequest<QuintetData> = QuintetData.fetchRequest()
         request.predicate = createPredicate(for: date)
 
@@ -52,7 +52,7 @@ class CoreDataViewModel: ObservableObject {
 
     // 영구저장소 내의 오늘의 날짜를 가진 데이터가 있는지 확인하는 함수.
     func hasDataForCurrentDate() -> Bool {
-        if let todaysData = fetchQuintetData(for: today) {
+        if let todaysData = getQuintetData(for: today) {
             currentQuintetData = todaysData
             return true
         }
@@ -78,7 +78,7 @@ class CoreDataViewModel: ObservableObject {
     }
     // 입력한 날의 퀸텟 데이터를 업데이트해주는 함수.
     func updateQuintetData(_ date: Date, _ workPoint: Int, _ healthPoint: Int, _ familyPoint: Int, _ assetPoint: Int, _ relationshipPoint: Int, _ workNote: String, _ healthNote: String, _ familyNote: String, _ assetNote: String, _ relationshipNote: String) {
-        if let savedQuintetData = fetchQuintetData(for: date) {
+        if let savedQuintetData = getQuintetData(for: date) {
             savedQuintetData.workPoint = Int64(workPoint)
             savedQuintetData.healthPoint = Int64(healthPoint)
             savedQuintetData.familyPoint = Int64(familyPoint)
