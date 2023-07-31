@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoreData
 
 struct QuintetCheckView: View {
     @StateObject private var vm = CoreDataViewModel()
@@ -20,7 +19,7 @@ struct QuintetCheckView: View {
     @State private var familyPoint = -1
     @State private var relationshipPoint = -1
     @State private var assetPoint = -1
-
+    
     @State private var workNote = ""
     @State private var healthNote = ""
     @State private var familyNote = ""
@@ -78,7 +77,7 @@ struct QuintetCheckView: View {
                                 .font(.system(size: 20))
                         }
                         .disabled(workPoint == -1 || familyPoint == -1 || relationshipPoint == -1 || assetPoint == -1 || healthPoint == -1)
-
+                        
                         .padding(.vertical)
                     }
                 }
@@ -104,12 +103,10 @@ struct QuintetCheckView: View {
                     Button(action: {
                         if (vm.currentQuintetData != nil) {
                             vm.updateQuintetData(Date(),workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint, workNote, healthNote, familyNote, relationshipNote, assetNote)
-                                print("update data")
-                               } else {
-                                   // Add initial data for the current date
-                                   vm.addQuintetData(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint, workNote, healthNote, familyNote, relationshipNote, assetNote)
-                                   print("add new data")
-                               }
+                        } else {
+                            // Add initial data for the current date
+                            vm.addQuintetData(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint, workNote, healthNote, familyNote, relationshipNote, assetNote)
+                        }
                         
                         dismiss()
                     }){
@@ -143,23 +140,7 @@ struct QuintetCheckView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear{
-            print("todayHasData? :  \(vm.hasDataForCurrentDate())")
-            if vm.hasDataForCurrentDate() {
-                guard let currentQuintetData = vm.currentQuintetData else {
-                    return
-                }
-                workPoint = Int(currentQuintetData.workPoint)
-                healthPoint = Int(currentQuintetData.healthPoint)
-                familyPoint = Int(currentQuintetData.familyPoint)
-                relationshipPoint = Int(currentQuintetData.relationshipPoint)
-                assetPoint = Int(currentQuintetData.assetPoint)
-
-                workNote = currentQuintetData.workNote ?? ""
-                healthNote = currentQuintetData.healthNote ?? ""
-                familyNote = currentQuintetData.familyNote ?? ""
-                relationshipNote = currentQuintetData.relationshipNote ?? ""
-                assetNote = currentQuintetData.assetNote ?? ""
-            }
+            loadCurrentData()
             vm.checkAllCoreData()
         }
         .toolbar {
@@ -174,6 +155,26 @@ struct QuintetCheckView: View {
                     }
                 }
             }
+        }
+    }
+    private func loadCurrentData() {
+        print("Current Time? : \(Date())")
+        print("Today Has Data? :  \(vm.hasDataForCurrentDate())")
+        if vm.hasDataForCurrentDate() {
+            guard let currentQuintetData = vm.currentQuintetData else {
+                return
+            }
+            workPoint = Int(currentQuintetData.workPoint)
+            healthPoint = Int(currentQuintetData.healthPoint)
+            familyPoint = Int(currentQuintetData.familyPoint)
+            relationshipPoint = Int(currentQuintetData.relationshipPoint)
+            assetPoint = Int(currentQuintetData.assetPoint)
+            
+            workNote = currentQuintetData.workNote ?? ""
+            healthNote = currentQuintetData.healthNote ?? ""
+            familyNote = currentQuintetData.familyNote ?? ""
+            relationshipNote = currentQuintetData.relationshipNote ?? ""
+            assetNote = currentQuintetData.assetNote ?? ""
         }
     }
 }

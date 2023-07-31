@@ -12,7 +12,8 @@ class CoreDataViewModel: ObservableObject {
 
     @Published var currentQuintetData: QuintetData? // 오늘의 퀸텐 데이터가 있다면 담고 없으면 default 값
     let container: NSPersistentContainer
-
+    let today : Date
+    
     init() {
         // CoreData 사용을 위한 초기 설정
         container = NSPersistentContainer(name: "CoreDataModel") // 영구저장소의 객체를 생성한다.
@@ -21,7 +22,7 @@ class CoreDataViewModel: ObservableObject {
                 print("Failed to load the core data \(error.localizedDescription)")
             }
         }
-        
+        today = Date()
     }
    
     
@@ -29,10 +30,11 @@ class CoreDataViewModel: ObservableObject {
     private func createPredicate(for date: Date) -> NSPredicate {
         let calendar = Calendar.current
         let currentDate = calendar.startOfDay(for: date)
-        return NSPredicate(format: "date >= %@ AND date < %@",
-                           currentDate as NSDate,
-                           calendar.date(byAdding: .day, value: 1, to: currentDate)! as NSDate)
+        let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        return NSPredicate(format: "date >= %@ AND date < %@", currentDate as NSDate, nextDate as NSDate)
     }
+
+
 
     //"일(day)" 로 필터링 된 QuintetData 하나를 반환 한다.
     private func fetchQuintetData(for date: Date) -> QuintetData? {
@@ -50,7 +52,7 @@ class CoreDataViewModel: ObservableObject {
 
     // 영구저장소 내의 오늘의 날짜를 가진 데이터가 있는지 확인하는 함수.
     func hasDataForCurrentDate() -> Bool {
-        if let todaysData = fetchQuintetData(for: Date()) {
+        if let todaysData = fetchQuintetData(for: today) {
             currentQuintetData = todaysData
             return true
         }
@@ -60,7 +62,7 @@ class CoreDataViewModel: ObservableObject {
     //오늘 날짜의 새로운 퀸텟 데이터를 추가하는 함수
     func addQuintetData(_ workPoint: Int, _ healthPoint: Int, _ familyPoint: Int, _ assetPoint: Int, _ relationshipPoint: Int, _ workNote: String, _ healthNote: String, _ familyNote: String, _ assetNote: String, _ relationshipNote: String) {
         let quintetData = QuintetData(context: container.viewContext)
-        quintetData.date = Date()
+        quintetData.date = today
         quintetData.workPoint = Int64(workPoint)
         quintetData.healthPoint = Int64(healthPoint)
         quintetData.familyPoint = Int64(familyPoint)
@@ -120,7 +122,10 @@ class CoreDataViewModel: ObservableObject {
         }
     func checkAllCoreData() {
         if let allQuintetData = fetchAllQuintetData()  {
+            print("------------------------")
+            print("All Data in CoreData store")
             for quintetData in allQuintetData {
+                print("------------------------")
                 print("Date: \(quintetData.date ?? Date())")
                 print("Work Point: \(quintetData.workPoint)")
                 print("Health Point: \(quintetData.healthPoint)")
@@ -132,7 +137,6 @@ class CoreDataViewModel: ObservableObject {
                 print("Family Note: \(quintetData.familyNote ?? "")")
                 print("Relationship Note: \(quintetData.relationshipNote ?? "")")
                 print("Asset Note: \(quintetData.assetNote ?? "")")
-                print("------------")
             }
         } else {
             print("No data found.")
