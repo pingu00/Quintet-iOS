@@ -7,14 +7,20 @@
 
 import SwiftUI
 
+class HomeViewModel: ObservableObject {
+    @Published var selectDayIndex = 6
+    @Published var selectDateData: HappinessInfo?
+    var dateManager = DateManager()
+    let dummyData = DummyDataManager.getDummyData()
+    
+    func selectDay(index: Int) {
+        selectDayIndex = index
+        selectDateData = dummyData[index]
+    }
+}
+
 struct HomeView: View {
-    @State private var month = 6
-    @State private var date = 15
-    @State private var week = "목"
-    @State private var selectDayIndex = 4
-    private var dummyData = DummyDataManager.getDummyData()
-    private var dateManager = DateManager()
-    @State private var selectDateData : HappinessInfo? //선택한 날의 날짜 정보, 퀸텟 체크 기록이 담겨 있음.
+    @StateObject private var viewModel = HomeViewModel()
     
     var body: some View {
         VStack{
@@ -23,7 +29,7 @@ struct HomeView: View {
                     ScrollView {
                         VStack{
                             HStack{
-                                Text(dateManager.getTodayText())
+                                Text(viewModel.dateManager.getTodayText())
                                     .font(.system(size: 18))
                                     .fontWeight(.medium)
                                     .padding(.leading, 5)
@@ -35,46 +41,18 @@ struct HomeView: View {
                                 .padding(.vertical)
                             // MARK: - 요일 Section
                             HStack{
-                                WeekCellView(happinessInfo: dummyData[0], is_selected: selectDayIndex == 0)
-                                    .onTapGesture {
-                                        selectDayIndex = 0
-                                        selectDateData = dummyData[0]
-                                    }
-                                WeekCellView(happinessInfo: dummyData[1], is_selected: selectDayIndex == 1)
-                                    .onTapGesture {
-                                        selectDayIndex = 1
-                                        selectDateData = dummyData[1]
-                                    }
-                                WeekCellView(happinessInfo: dummyData[2], is_selected: selectDayIndex == 2)
-                                    .onTapGesture {
-                                        selectDayIndex = 2
-                                        selectDateData = dummyData[2]
-                                    }
-                                WeekCellView(happinessInfo: dummyData[3], is_selected: selectDayIndex == 3)
-                                    .onTapGesture {
-                                        selectDayIndex = 3
-                                        selectDateData = dummyData[3]
-                                    }
-                                WeekCellView(happinessInfo: dummyData[4], is_selected: selectDayIndex == 4)
-                                    .onTapGesture {
-                                        selectDayIndex = 4
-                                        selectDateData = dummyData[4]
-                                    }
-                                WeekCellView(happinessInfo: dummyData[5], is_selected: selectDayIndex == 5)
-                                    .onTapGesture {
-                                        selectDayIndex = 5
-                                        selectDateData = dummyData[5]
-                                    }
-                                WeekCellView(happinessInfo: dummyData[6], is_selected: selectDayIndex == 6)
-                                    .onTapGesture {
-                                        selectDayIndex = 6
-                                        selectDateData = dummyData[6]
-                                    }
+                                
+                                ForEach(0..<7, id: \.self) { index in
+                                    WeekCellView(happinessInfo: viewModel.dummyData[index], is_selected: viewModel.selectDayIndex == index)
+                                        .onTapGesture {
+                                            viewModel.selectDay(index: index)
+                                        }
+                                }
                             }
                             .padding()
                             
                             // MARK: - 선택한 날짜에 퀸텟 기록이 있으면 보여주고, 없으면 없다는 메세지를 보여줌
-                            if let happinessData = selectDateData?.happiness{
+                            if let happinessData = viewModel.selectDateData?.happiness{
                                 HappinessView(happinessData: happinessData)
                             }
                             else{
@@ -339,78 +317,5 @@ struct VideoCellView: View{
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
-    }
-}
-
-// MARK: - 날짜에 관련된 다양한 기능을 수행하는 구조체 **날짜 data를 어떻게 받느냐에 따라 수정 필요**
-struct DateManager{
-    let today = Date()
-    
-    //"M월 d일 E요일" 형식으로 오늘의 날짜를 반환해줌
-    func getTodayText() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        dateFormatter.dateFormat = "M월 d일 EEEE"
-        return dateFormatter.string(from: today)
-    }
-    
-    //날짜 string을 기반으로 해당 날짜가 오늘인지 판단하는 함수
-    func is_today(dateStr: String) -> Bool{
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        dateFormatter.dateFormat = "yyyy-MM-dd-EEE"
-        let todayStr = dateFormatter.string(from: today)
-        
-        return dateStr == todayStr
-    }
-    
-    //날짜 string을 기반으로 그날의 일자를 string으로 반환해주는 함수
-    func get_day(dateStr: String) -> String{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd-EEE"
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        
-        if let date = dateFormatter.date(from: dateStr) {
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "dd"
-            return dayFormatter.string(from: date)
-        } else {return "Invalid Date"}
-    }
-    
-    //날짜 string을 기반으로 그날의 요일을 string으로 반환해주는 함수
-    func get_week(dateStr: String) -> String{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd-EEE"
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        
-        if let date = dateFormatter.date(from: dateStr) {
-            let weekFormatter = DateFormatter()
-            weekFormatter.locale = Locale(identifier: "ko_KR")
-            weekFormatter.dateFormat = "EEE"
-            return weekFormatter.string(from: date)
-        } else {return "Invalid Date"}
-    }
-}
-
-// MARK: - 임시로 만든 더미 데이터 type
-struct HappinessInfo{
-    var date: String
-    var happiness : [Int]?
-}
-
-// MARK: - 임시 data를 관리하는 class
-class DummyDataManager{
-   static var data: [HappinessInfo] = [
-        HappinessInfo(date: "2023-07-16-일", happiness: [1, 2, 2, 0, 1]),
-        HappinessInfo(date: "2023-07-17-월"),
-        HappinessInfo(date: "2023-07-18-화", happiness: [1, 2, 1, 0, 0]),
-        HappinessInfo(date: "2023-07-19-수"),
-        HappinessInfo(date: "2023-07-20-목"),
-        HappinessInfo(date: "2023-07-21-금", happiness: [1, 1, 2, 0, 1]),
-        HappinessInfo(date: "2023-07-22-토", happiness: [0, 2, 2, 0, 1])
-    ]
-    
-    static func getDummyData() -> [HappinessInfo]{
-        return self.data
     }
 }
