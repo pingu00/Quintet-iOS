@@ -22,6 +22,13 @@ struct TaskMetaData: Identifiable {
     var taskDate: Date
 }
 
+struct Record: Identifiable {
+    var id = UUID().uuidString
+    var icon: String
+    var title: String
+    var subtitle: String
+}
+
 func getSampleDate(offset: Int) -> Date {
     let calendar = Calendar.current
     
@@ -59,4 +66,15 @@ var tasks: [TaskMetaData] = [
     ], taskDate:   getSampleDate(offset: -25))
     
 ]
+
+//요소별 기록 -> 건강
+var records: [Record] = [
+    
+        Record(icon: "CircleOn", title: "2023.07.05", subtitle: "유림이랑 북한산 등산"),
+        Record(icon: "CircleOn", title: "2023.07.07", subtitle: "호수공원 산책 1시간"),
+        Record(icon: "CircleOn", title: "2023.07.11", subtitle: "홈트레이닝 30분"),
+        Record(icon: "CircleOn", title: "2023.07.14", subtitle: ""),
+        Record(icon: "CircleOn", title: "2023.07.15", subtitle: "웨이트 1시간")
+        
+    ]
 

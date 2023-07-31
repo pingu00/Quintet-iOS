@@ -52,7 +52,7 @@ struct RecordView: View {
                                         .foregroundColor(Color("DarkGray"))
                                         .offset(x: isShowingBtn ? 68 : -68, y: 0)
 
-                                    HStack(spacing: 80) {
+                                    HStack(spacing: 95) {
                                         Button(action: {
                                                 isShowingBtn = false
                                         }) {
@@ -123,7 +123,7 @@ struct YearPicker_: View {
     var body: some View {
         Picker("년도 선택", selection: $selectedYear){
             ForEach(2017...currentYear, id: \.self) { year in
-                Text("\(Utilities.formatNum(year))년")
+                Text("\(Utilities_.formatNum(year))년")
             }
         }
         .pickerStyle(WheelPickerStyle())
@@ -241,7 +241,7 @@ struct recordCard: View {
                     .font(.system(size: 20))
                     .foregroundColor(.black)
 
-                if !subtitle.isEmpty { // subtitle이 비어있지 않은 경우에만 텍스트를 추가
+                if !subtitle.isEmpty { 
                     ScrollView(.vertical, showsIndicators: true) {
                         Text(subtitle)
                             .fontWeight(.medium)
@@ -383,18 +383,15 @@ struct RecordElementView : View {
                 }.sheet(isPresented: $isShowPopup) {
                     YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
                         .frame(width: 300, height: 400)
-                        .background(BackgroundClearView())
+                        .background(BackgroundClearView_())
                         .ignoresSafeArea()
                 }
 
-                VStack {
-                    recordCard(icon: "CircleOn", title: "2023.06.05", subtitle: "유림이랑 북한산 등산")
-                    recordCard(icon: "CircleOn", title: "2023.06.07", subtitle: "호수공원 산책 1시간")
-                    recordCard(icon: "CircleOn", title: "2023.06.11", subtitle: "홈트레이닝 30분")
-                    recordCard(icon: "CircleOn", title: "2023.06.14", subtitle: "")
-                    recordCard(icon: "CircleOn", title: "2023.06.15", subtitle: "웨이트 1시간")
-
-            }
+                ForEach(records) { record in
+            
+                recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                    
+                }
                 .padding(.horizontal, 20)
             }
             }
@@ -459,8 +456,8 @@ class DateViewModel_: ObservableObject {
     }
 
     var weekButtonText: Text {
-        let formattedStartDate = Utilities.formatYearMonthDay(startOfWeek)
-        let formattedEndDate = Utilities.formatYearMonthDay(Calendar.current.date(byAdding: .day, value: 6, to: startOfWeek)!)
+        let formattedStartDate = Utilities_.formatYearMonthDay(startOfWeek)
+        let formattedEndDate = Utilities_.formatYearMonthDay(Calendar.current.date(byAdding: .day, value: 6, to: startOfWeek)!)
 
         return Text("\(formattedStartDate) - \(formattedEndDate)")
     }
@@ -472,13 +469,13 @@ class DateViewModel_: ObservableObject {
 
 
     var yearMonthButtonText: Text {
-        Text("\(Utilities.formatNum(selectedYear))년 \(selectedMonth)월")
+        Text("\(Utilities_.formatNum(selectedYear))년 \(selectedMonth)월")
             .font(.system(size: 23))
             .fontWeight(.semibold)
     }
 
     var yearButtonText: Text {
-        Text("\(Utilities.formatNum(selectedYear))년")
+        Text("\(Utilities_.formatNum(selectedYear))년")
     }
 
     func updateCalendar() {
@@ -514,7 +511,7 @@ class DateViewModel_: ObservableObject {
        }
    }
 
-struct BackgroundClearView: UIViewRepresentable {
+struct BackgroundClearView_: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
         DispatchQueue.main.async {
@@ -525,7 +522,7 @@ struct BackgroundClearView: UIViewRepresentable {
     func updateUIView(_ uiView: UIView, context: Context) {}
 }
 
-struct Utilities {
+struct Utilities_ {
     static func formatNum(_ num: Int) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .none
@@ -561,7 +558,7 @@ struct CalendarView: View {
 
     var body: some View {
 
-        VStack(spacing: 20) {
+        VStack(spacing: 13) {
 
             HStack(spacing: -7){
 
@@ -577,7 +574,7 @@ struct CalendarView: View {
                 }.sheet(isPresented: $isShowPopup) {
                     YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
                         .frame(width: 300, height: 400)
-                        .background(BackgroundClearView())
+                        .background(BackgroundClearView_())
                         .ignoresSafeArea()
                 }
                 
