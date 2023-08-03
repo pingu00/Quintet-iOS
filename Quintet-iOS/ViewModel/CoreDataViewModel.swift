@@ -35,9 +35,8 @@ class CoreDataViewModel: ObservableObject {
     }
 
 
-
     //"일(day)" 로 필터링 된 QuintetData 하나를 반환 한다.
-    private func getQuintetData(for date: Date) -> QuintetData? {
+    func getQuintetData(for date: Date) -> QuintetData? {
         let request: NSFetchRequest<QuintetData> = QuintetData.fetchRequest()
         request.predicate = createPredicate(for: date)
 

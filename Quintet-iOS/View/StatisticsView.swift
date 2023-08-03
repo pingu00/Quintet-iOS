@@ -11,10 +11,9 @@ struct StatisticsView: View {
     @Environment(\.dismiss) private var dismiss
     
     @StateObject private var dateViewModel = DateViewModel()
-    @StateObject private var statisticsCellViewModel = StatisticsCellViewModel()
-
-    @State private var barWidth = 60
-    @State private var barHeight = 200
+    
+    //강한결합
+    @StateObject private var statisticsCellViewModel = StatisticsCellViewModel(coreDataViewModel: CoreDataViewModel())
     
     @State private var selectedOption = 1
     @State private var isShowPopup = false
@@ -45,6 +44,7 @@ struct StatisticsView: View {
                 VStack{
                     HStack{
                         switch selectedOption {
+                            // MARK: - 주간
                         case 1:
                             ArrowButton(action: {
                                 dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: dateViewModel.startOfWeek)!
@@ -63,6 +63,7 @@ struct StatisticsView: View {
                                 dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: dateViewModel.startOfWeek)!
                             }, imageName: "chevron.forward", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!)
                             
+                            // MARK: - 월간
                         case 2:
                             ArrowButton(action: {
                                 dateViewModel.selectedMonth -= 1
@@ -93,6 +94,7 @@ struct StatisticsView: View {
                                 }
                             }, imageName: "chevron.forward", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()) && dateViewModel.selectedMonth == Calendar.current.component(.month, from: Date()))
                             
+                            // MARK: - 연간
                         case 3:
                             ArrowButton(action: {
                                 dateViewModel.selectedYear -= 1
@@ -117,15 +119,24 @@ struct StatisticsView: View {
                         default:
                             Text("")
                         }
-                        
-                        
+                    }
+                }
+                .onChange(of: selectedOption) { newValue in
+                    if newValue == 1 {
+                        statisticsCellViewModel.updateWeekValuesFromCoreData()
+                    }
+                    else if newValue == 2{
+                        statisticsCellViewModel.updateMonthValuesFromCoreData()
+                    }
+                    else {
+                        statisticsCellViewModel.updateYearValuesFromCoreData()
                     }
                 }
                 
                 VStack {
                     HStack(spacing: 0) {
                         ForEach(statisticsCellViewModel.noteArray, id: \.1) { (point, note) in
-                            StatisticsCellView(viewModel: statisticsCellViewModel, barWidth: CGFloat(barWidth), barHeight: CGFloat(barHeight), note: note, point: point, maxPoint: statisticsCellViewModel.maxPoint, totalPoint: statisticsCellViewModel.totalPoint)
+                            StatisticsCellView(selectedOption: $selectedOption, note: note, point: point, maxPoint: statisticsCellViewModel.maxPoint, totalPoint: statisticsCellViewModel.totalPoint)
                         }
                     }
                     Divider()
@@ -354,7 +365,6 @@ struct MonthPicker: View {
             ForEach(1...getMaxMonth(), id: \.self) { month in
                 Text("\(month)월")
             }
-            
         }
         .pickerStyle(WheelPickerStyle())
     }
@@ -377,14 +387,17 @@ struct MonthPicker: View {
 // MARK: - StatisticsCellView
 // 정리하려고 했으나 매주, 매달마다 백에서 전달하는 point값이 달라지고, 이를 어떻게 처리할지 생각중이라 보류
 struct StatisticsCellView: View {
-    @ObservedObject var viewModel: StatisticsCellViewModel
-    let barWidth: CGFloat
-    let barHeight: CGFloat
+    @Binding var selectedOption: Int
     
     let note: String
     let point: Int
     let maxPoint: Int
     let totalPoint: Int
+    
+    let barWidth: CGFloat = 60
+    let barHeight: CGFloat = 200
+    
+    
     
     var body: some View {
         let heightRatio: CGFloat = CGFloat(point) / CGFloat(totalPoint)
