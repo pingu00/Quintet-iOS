@@ -101,12 +101,7 @@ struct QuintetCheckView: View {
                     
                     Spacer()
                     Button(action: {
-                        if (vm.currentQuintetData != nil) {
-                            vm.updateQuintetData(Date(),workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint, workNote, healthNote, familyNote, relationshipNote, assetNote)
-                        } else {
-                            // Add initial data for the current date
-                            vm.addQuintetData(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint, workNote, healthNote, familyNote, relationshipNote, assetNote)
-                        }
+                        vm.updateQuintetData(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint, workNote, healthNote, familyNote, relationshipNote, assetNote)
                         
                         dismiss()
                     }){
@@ -142,6 +137,7 @@ struct QuintetCheckView: View {
         .onAppear{
             loadCurrentData()
             vm.checkAllCoreData()
+            print(vm.getPercentOfData(from: Date(), to: Date()))
         }
         .toolbar {
             if !isComplete {
@@ -159,11 +155,9 @@ struct QuintetCheckView: View {
     }
     private func loadCurrentData() {
         print("Current Time? : \(Date())")
-        print("Today Has Data? :  \(vm.hasDataForCurrentDate())")
-        if vm.hasDataForCurrentDate() {
-            guard let currentQuintetData = vm.currentQuintetData else {
-                return
-            }
+        vm.fetchCurrentQuintetData()
+        if let currentQuintetData = vm.currentQuintetData {
+            print("Today Has Data")
             workPoint = Int(currentQuintetData.workPoint)
             healthPoint = Int(currentQuintetData.healthPoint)
             familyPoint = Int(currentQuintetData.familyPoint)
@@ -175,6 +169,9 @@ struct QuintetCheckView: View {
             familyNote = currentQuintetData.familyNote ?? ""
             relationshipNote = currentQuintetData.relationshipNote ?? ""
             assetNote = currentQuintetData.assetNote ?? ""
+        }
+        else {
+            print("No Data Today")
         }
     }
 }
