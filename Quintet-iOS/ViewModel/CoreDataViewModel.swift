@@ -11,8 +11,10 @@ import CoreData
 class CoreDataViewModel: ObservableObject {
 
     @Published var currentQuintetData: QuintetData? // 오늘의 퀸텐 데이터가 있다면 담고 없으면 default 값
+    @Published var userName = "로니"
     let container: NSPersistentContainer
     let today : Date
+    
     
     init() {
         // CoreData 사용을 위한 초기 설정
@@ -139,6 +141,15 @@ class CoreDataViewModel: ObservableObject {
             }
         } else {
             print("No data found.")
+        }
+    }
+    func saveUserName() {
+        UserDefaults.standard.set(userName, forKey: "userName")
+    }
+    
+    func loadUserName() {
+        if let savedUserName = UserDefaults.standard.string(forKey: "userName") {
+            userName = savedUserName
         }
     }
 }
