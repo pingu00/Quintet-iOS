@@ -19,6 +19,7 @@
 		28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C364602A5FD63600847A88 /* StatisticsView.swift */; };
 		28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C364612A5FD63600847A88 /* QuintetCheckView.swift */; };
 		28C364662A5FD63600847A88 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C364622A5FD63600847A88 /* MenuView.swift */; };
+		28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */; };
 		311198D72A74F8C900D92E91 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D62A74F8C900D92E91 /* DateManager.swift */; };
 		311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D82A74FAFE00D92E91 /* DummyDataManager.swift */; };
 		31BF652E2A7B7ECD0014EC90 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BF652D2A7B7ECD0014EC90 /* LoginView.swift */; };
@@ -41,6 +42,7 @@
 		28C364602A5FD63600847A88 /* StatisticsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		28C364612A5FD63600847A88 /* QuintetCheckView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuintetCheckView.swift; sourceTree = "<group>"; };
 		28C364622A5FD63600847A88 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetPointPer.swift; sourceTree = "<group>"; };
 		311198D62A74F8C900D92E91 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		311198D82A74FAFE00D92E91 /* DummyDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDataManager.swift; sourceTree = "<group>"; };
 		31BF652D2A7B7ECD0014EC90 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				28997E812A73F76A00ED676C /* CoreDataViewModel.swift */,
+				28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				28C364662A5FD63600847A88 /* MenuView.swift in Sources */,
 				28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */,
 				28997E7B2A73F00300ED676C /* CoreDataModel.xcdatamodeld in Sources */,
+				28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */,
 				4ED547B62A76845B002A5351 /* RecordViewData.swift in Sources */,
 				28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */,
 				286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */,
