@@ -14,8 +14,24 @@ class CoreDataViewModel: ObservableObject {
     @Published var userName = "로니"
 
     let container: NSPersistentContainer
-    let today : Date
+    let today = Date()
     
+    //MARK: - QuintetCheckView에 보여지는 값
+    @Published var workPoint = -1
+    @Published var healthPoint = -1
+    @Published var familyPoint = -1
+    @Published var relationshipPoint = -1
+    @Published var assetPoint = -1
+    
+    @Published var workNote = ""
+    @Published var healthNote = ""
+    @Published var familyNote = ""
+    @Published var relationshipNote = ""
+    @Published var assetNote = ""
+    
+    var isAllSelected : Bool {
+        workPoint != -1 && familyPoint != -1 && relationshipPoint != -1 && assetPoint != -1 && healthPoint != -1
+    }
     
     init() {
         // CoreData 사용을 위한 초기 설정
@@ -25,7 +41,6 @@ class CoreDataViewModel: ObservableObject {
                 print("Failed to load the core data \(error.localizedDescription)")
             }
         }
-        today = Date()
     }
    
     
@@ -79,7 +94,6 @@ class CoreDataViewModel: ObservableObject {
         }
         
         let totalSum = sumPoint.reduce(0, +)
-        
         let workPointPer = Double(sumPoint[0]) / Double(totalSum) * 100.0
         let healthPointPer = Double(sumPoint[1]) / Double(totalSum) * 100.0
         let familyPointPer = Double(sumPoint[2]) / Double(totalSum) * 100.0
@@ -112,7 +126,7 @@ class CoreDataViewModel: ObservableObject {
     }
 
     //오늘 날짜의 새로운 퀸텟 데이터를 추가하는 함수
-    private func addNewData(_ workPoint: Int, _ healthPoint: Int, _ familyPoint: Int, _ assetPoint: Int, _ relationshipPoint: Int, _ workNote: String, _ healthNote: String, _ familyNote: String, _ assetNote: String, _ relationshipNote: String) {
+    private func addNewData() {
         let quintetData = QuintetData(context: container.viewContext)
         quintetData.date = today
         quintetData.workPoint = Int64(workPoint)
@@ -129,7 +143,7 @@ class CoreDataViewModel: ObservableObject {
         saveContext()
     }
     // 입력한 날의 퀸텟 데이터를 업데이트해주는 함수.
-    func updateQuintetData(_ workPoint: Int, _ healthPoint: Int, _ familyPoint: Int, _ assetPoint: Int, _ relationshipPoint: Int, _ workNote: String, _ healthNote: String, _ familyNote: String, _ assetNote: String, _ relationshipNote: String) {
+    func updateQuintetData() {
         if let savedQuintetData = currentQuintetData {
             savedQuintetData.workPoint = Int64(workPoint)
             savedQuintetData.healthPoint = Int64(healthPoint)
@@ -144,7 +158,7 @@ class CoreDataViewModel: ObservableObject {
 
             saveContext()
         } else {
-            addNewData(workPoint, healthPoint, familyPoint, assetPoint, relationshipPoint, workNote, healthNote, familyNote, assetNote, relationshipNote)
+            addNewData()
         }
     }
 
@@ -158,7 +172,27 @@ class CoreDataViewModel: ObservableObject {
             }
         }
     }
-    
+    func loadCurrentData() {
+        print("Current Time? : \(today)")
+        fetchCurrentQuintetData()
+        if let currentQuintetData = currentQuintetData {
+            print("Today Has Data")
+            workPoint = Int(currentQuintetData.workPoint)
+            healthPoint = Int(currentQuintetData.healthPoint)
+            familyPoint = Int(currentQuintetData.familyPoint)
+            relationshipPoint = Int(currentQuintetData.relationshipPoint)
+            assetPoint = Int(currentQuintetData.assetPoint)
+            
+            workNote = currentQuintetData.workNote ?? ""
+            healthNote = currentQuintetData.healthNote ?? ""
+            familyNote = currentQuintetData.familyNote ?? ""
+            relationshipNote = currentQuintetData.relationshipNote ?? ""
+            assetNote = currentQuintetData.assetNote ?? ""
+        }
+        else {
+            print("No Data Today")
+        }
+    }
     
     
     // coreData 안의 모든 데이터를 확인하기 위한 테스팅 함수
