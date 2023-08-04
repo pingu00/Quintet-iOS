@@ -10,7 +10,7 @@ import CoreData
 
 class CoreDataViewModel: ObservableObject {
 
-    @Published var currentQuintetData: QuintetData? // 오늘의 퀸텐 데이터가 있다면 담고 없으면 default 값
+    @Published var currentQuintetData: QuintetData?  // 오늘의 퀸텐 데이터가 있다면 담고 없으면 default 값
     @Published var userName = "로니"
 
     let container: NSPersistentContainer
@@ -38,8 +38,9 @@ class CoreDataViewModel: ObservableObject {
     }
 
 
-    //"일(day)" 로 필터링 된 QuintetData 하나를 반환 한다.
-    func getQuintetData(for date: Date) -> QuintetData? {
+    
+    // 현재 클래스의 프로퍼티인 currentQuintetData를 패치
+    func fetchCurrentQuintetData() {
         let request: NSFetchRequest<QuintetData> = QuintetData.fetchRequest()
         request.predicate = createPredicate(from: today, to: today)
 
