@@ -294,22 +294,26 @@ class CoreDataViewModel: ObservableObject {
             
             let healthRecords = quintetData.filter { $0.healthPoint >= 0 }
             
+            //기록이 5개 이하일 때
             if healthRecords.count <= 5 {
                 return healthRecords.map { data in
                     let healthIcon = data.healthPoint == 0 ? "XOn" : (data.healthPoint == 1 ? "TriangleOn" : "CircleOn")
                     let date = data.date ?? Date()
+                    let title = formatDate(date: date)
                     return RecordMetaData(records: [
-                        Record(icon: healthIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.healthNote ?? "")
+                        Record(icon: healthIcon, title: title, subtitle: data.healthNote ?? "")
                     ])
                 }
+                //기록이 5개 초과일 때 -> 최근 5개의 기록을 가져옴
             } else {
                 let sortedRecords = healthRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
                 
                 return sortedRecords.map { data in
                     let healthIcon = data.healthPoint == 0 ? "XOn" : (data.healthPoint == 1 ? "TriangleOn" : "CircleOn")
                     let date = data.date ?? Date()
+                    let title = formatDate(date: date)
                     return RecordMetaData(records: [
-                        Record(icon: healthIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.healthNote ?? "")
+                        Record(icon: healthIcon, title: title, subtitle: data.healthNote ?? "")
                     ])
                 }
             }
@@ -334,8 +338,9 @@ class CoreDataViewModel: ObservableObject {
                 return assetRecords.map { data in
                     let assetIcon = data.assetPoint == 0 ? "XOn" : (data.assetPoint == 1 ? "TriangleOn" : "CircleOn")
                     let date = data.date ?? Date()
+                    let title = formatDate(date: date)
                     return RecordMetaData(records: [
-                        Record(icon: assetIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.assetNote ?? "")
+                        Record(icon: assetIcon, title: title, subtitle: data.assetNote ?? "")
                     ])
                 }
             } else {
@@ -344,8 +349,9 @@ class CoreDataViewModel: ObservableObject {
                 return sortedRecords.map { data in
                     let assetIcon = data.assetPoint == 0 ? "XOn" : (data.assetPoint == 1 ? "TriangleOn" : "CircleOn")
                     let date = data.date ?? Date()
+                    let title = formatDate(date: date)
                     return RecordMetaData(records: [
-                        Record(icon: assetIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.assetNote ?? "")
+                        Record(icon: assetIcon, title: title, subtitle: data.assetNote ?? "")
                     ])
                 }
             }
@@ -370,8 +376,9 @@ class CoreDataViewModel: ObservableObject {
                 return familyRecords.map { data in
                     let familyIcon = data.familyPoint == 0 ? "XOn" : (data.familyPoint == 1 ? "TriangleOn" : "CircleOn")
                     let date = data.date ?? Date()
+                    let title = formatDate(date: date)
                     return RecordMetaData(records: [
-                        Record(icon: familyIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.familyNote ?? "")
+                        Record(icon: familyIcon, title: title, subtitle: data.familyNote ?? "")
                     ])
                 }
             } else {
@@ -380,8 +387,9 @@ class CoreDataViewModel: ObservableObject {
                 return sortedRecords.map { data in
                     let familyIcon = data.familyPoint == 0 ? "XOn" : (data.familyPoint == 1 ? "TriangleOn" : "CircleOn")
                     let date = data.date ?? Date()
+                    let title = formatDate(date: date)
                     return RecordMetaData(records: [
-                        Record(icon: familyIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.familyNote ?? "")
+                        Record(icon: familyIcon, title: title, subtitle: data.familyNote ?? "")
                     ])
                 }
             }
@@ -406,8 +414,9 @@ class CoreDataViewModel: ObservableObject {
                 return relationshipRecords.map { data in
                     let relationshipIcon = data.relationshipPoint == 0 ? "XOn" : (data.relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
                     let date = data.date ?? Date()
+                    let title = formatDate(date: date)
                     return RecordMetaData(records: [
-                        Record(icon: relationshipIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.relationshipNote ?? "")
+                        Record(icon: relationshipIcon, title: title, subtitle: data.relationshipNote ?? "")
                     ])
                 }
             } else {
@@ -416,8 +425,9 @@ class CoreDataViewModel: ObservableObject {
                 return sortedRecords.map { data in
                     let relationshipIcon = data.relationshipPoint == 0 ? "XOn" : (data.relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
                     let date = data.date ?? Date()
+                    let title = formatDate(date: date)
                     return RecordMetaData(records: [
-                        Record(icon: relationshipIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.relationshipNote ?? "")
+                        Record(icon: relationshipIcon, title: title, subtitle: data.relationshipNote ?? "")
                     ])
                 }
             }
@@ -425,6 +435,7 @@ class CoreDataViewModel: ObservableObject {
         
         return []
     }
+
 
     func getWorkRecords(for year: Int, month: Int) -> [RecordMetaData] {
         let calendar = Calendar.current
@@ -442,8 +453,9 @@ class CoreDataViewModel: ObservableObject {
                 return workRecords.map { data in
                     let workIcon = data.workPoint == 0 ? "XOn" : (data.workPoint == 1 ? "TriangleOn" : "CircleOn")
                     let date = data.date ?? Date()
+                    let title = formatDate(date: date)
                     return RecordMetaData(records: [
-                        Record(icon: workIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.workNote ?? "")
+                        Record(icon: workIcon, title: title, subtitle: data.workNote ?? "")
                     ])
                 }
             } else {
@@ -452,14 +464,24 @@ class CoreDataViewModel: ObservableObject {
                 return sortedRecords.map { data in
                     let workIcon = data.workPoint == 0 ? "XOn" : (data.workPoint == 1 ? "TriangleOn" : "CircleOn")
                     let date = data.date ?? Date()
+                    let title = formatDate(date: date)
                     return RecordMetaData(records: [
-                        Record(icon: workIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.workNote ?? "")
+                        Record(icon: workIcon, title: title, subtitle: data.workNote ?? "")
                     ])
                 }
             }
         }
         
         return []
+    }
+    
+    func formatDate(date: Date) -> String {
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
+        
+        return String(format: "%04d.%02d.%02d", year, month, day)
     }
 }
 

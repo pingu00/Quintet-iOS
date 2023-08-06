@@ -242,13 +242,16 @@ struct recordCard: View {
                     .fontWeight(.semibold)
                     .font(.system(size: 20))
                     .foregroundColor(.black)
-                    .lineLimit(4)
 
                 if !subtitle.isEmpty {
+                    ScrollView {
                         Text(subtitle)
                             .fontWeight(.medium)
                             .font(.system(size: 15))
                             .foregroundColor(.black)
+                            .lineLimit(nil)
+                    }
+                       
                 }
             }
             .frame(minHeight: 55)
