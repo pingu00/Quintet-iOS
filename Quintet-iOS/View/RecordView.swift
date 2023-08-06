@@ -19,7 +19,7 @@ struct RecordView: View {
 
     @State var currentDate: Date = Date()
     @State private var selectedDate = Date()
-    @StateObject private var viewModel = DateViewModel_()
+    @StateObject private var viewModel = DateViewModel()
     @State private var isShowingBtn = false
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
     @State private var selectedMonth = Calendar.current.component(.month, from: Date())
@@ -115,7 +115,7 @@ struct RecordView: View {
 
 struct YearPicker_: View {
 
-    @ObservedObject var viewModel: DateViewModel_
+    @StateObject var viewModel: DateViewModel
     @Binding var selectedYear: Int
 
     let currentYear: Int = Calendar.current.component(.year, from: Date())
@@ -133,7 +133,7 @@ struct YearPicker_: View {
 struct MonthPicker_: View {
 
     @Binding var selectedMonth: Int
-    @StateObject var viewModel: DateViewModel_
+    @ObservedObject var viewModel: DateViewModel
 
     var body: some View {
         Picker("월 선택", selection: $selectedMonth) {
@@ -161,66 +161,68 @@ struct MonthPicker_: View {
 }
 
 struct YearMonthPickerPopup_: View {
-    @ObservedObject var viewModel: DateViewModel_
+    @ObservedObject var viewModel: DateViewModel
     @Binding var isShowPopup: Bool
-
-    init(viewModel: DateViewModel_, isShowPopup: Binding<Bool>) {
+    
+    init(viewModel: DateViewModel, isShowPopup: Binding<Bool>) {
         self.viewModel = viewModel
         _isShowPopup = isShowPopup
     }
-
+    
     var body: some View {
         GeometryReader{ geometry in
             VStack{
                 HStack {
                     YearPicker_(viewModel: viewModel, selectedYear: $viewModel.selectedYear)
                     MonthPicker_(selectedMonth: $viewModel.selectedMonth, viewModel: viewModel)
-                    }
                 }
-            .padding(.top, 60)
-                HStack(spacing: 25){
-                    Button(action: {
-                        isShowPopup = false
-                        viewModel.updateCalendar()
-                    }) {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color("Background"))
-                            .frame(width: 100, height: 40)
-                            .overlay(
-                                Text("취소")
-                                    .foregroundColor(.black)
-                                    .font(.system(size: 15))
-
-                            )
-
-                    }
-                    Button(action: {
-                        isShowPopup = false
-                        viewModel.updateCalendar()
-                    }) {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color("DarkQ"))
-                            .frame(width: 100, height: 40)
-                            .overlay(
-                                Text("확인")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 15))
-                            )
-
-                    }
-                }
-                .padding(.top, 300)
-                .padding(.horizontal, 23)
-
             }
-            .padding()
-            .frame(width: 300, height: 400)
-            .background(Color.white)
-            .cornerRadius(30)
-
+            .padding(.top, 60)
+            HStack(spacing: 25){
+                Button(action: {
+                    isShowPopup = false
+                    viewModel.updateCalendar()
+                }) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color("Background"))
+                        .frame(width: 100, height: 40)
+                        .overlay(
+                            Text("취소")
+                                .foregroundColor(.black)
+                                .font(.system(size: 15))
+                            
+                        )
+                    
+                }
+                Button(action: {
+                    isShowPopup = false
+                    viewModel.selectedYear = viewModel.selectedYear
+                    viewModel.selectedMonth = viewModel.selectedMonth
+                    viewModel.updateCalendar()
+                }) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color("DarkQ"))
+                        .frame(width: 100, height: 40)
+                        .overlay(
+                            Text("확인")
+                                .foregroundColor(.white)
+                                .font(.system(size: 15))
+                        )
+                    
+                }
+            }
+            .padding(.top, 300)
+            .padding(.horizontal, 23)
+            
         }
+        .padding()
+        .frame(width: 300, height: 400)
+        .background(Color.white)
+        .cornerRadius(30)
+        
+    }
+ }
 
-}
 
 struct recordCard: View {
     var icon: String
@@ -240,14 +242,13 @@ struct recordCard: View {
                     .fontWeight(.semibold)
                     .font(.system(size: 20))
                     .foregroundColor(.black)
+                    .lineLimit(4)
 
-                if !subtitle.isEmpty { 
-                    ScrollView(.vertical, showsIndicators: true) {
+                if !subtitle.isEmpty {
                         Text(subtitle)
                             .fontWeight(.medium)
                             .font(.system(size: 15))
                             .foregroundColor(.black)
-                    }
                 }
             }
             .frame(minHeight: 55)
@@ -262,77 +263,69 @@ struct recordCard: View {
 }
 
 struct RecordElementView : View {
-
+    
     @State var recordIndex : recordElement
     @State private var isShowPopup = false
-    @StateObject private var viewModel = DateViewModel_()
-
+    @StateObject private var viewModel = DateViewModel()
+    @ObservedObject private var coreDataViewModel = CoreDataViewModel()
+    var healthRecords: [RecordMetaData] {
+        return coreDataViewModel.getHealthRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+    }
+    var workRecords: [RecordMetaData] {
+        return coreDataViewModel.getWorkRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+    }
+    var relationshipRecords: [RecordMetaData] {
+        return coreDataViewModel.getRelationshipRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+    }
+    var assetRecords: [RecordMetaData] {
+        return coreDataViewModel.getAssetRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+    }
+    var familyRecords: [RecordMetaData] {
+        return coreDataViewModel.getFamilyRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+    }
+    
+    
     var body: some View {
-
+        
         VStack {
-
+            
             HStack{
                 Button(action: {
                     self.recordIndex = .work
-
-                    withAnimation {
-                        self.recordIndex = .work
-                    }
-
                 }){
                     ElementCard(icon: "pencil", title: "일", size: 34, space: 55, fC: recordIndex == .work ? Color.white : Color("DarkGray"), bC: recordIndex == .work ? Color("DarkQ") : Color.white)
                 }
-
+                
                 Button(action: {
                     self.recordIndex = .health
-
-                    withAnimation {
-                        self.recordIndex = .health
-                    }
-
                 }){
                     ElementCard(icon: "cross.circle.fill", title: "건강", size: 30, space: 30, fC: recordIndex == .health ? Color.white : Color("DarkGray"), bC: recordIndex == .health ? Color("DarkQ") : Color.white)
-
+                    
                 }
-
+                
             }
             HStack {
-
+                
                 Button(action: {
                     self.recordIndex = .relation
-
-                    withAnimation {
-                        self.recordIndex = .relation
-                    }
-
                 }){
                     ElementCard(icon: "person.3.fill", title: "관계", size: 25, space: 25, fC: recordIndex == .relation ? Color.white : Color("DarkGray"), bC: recordIndex == .relation ? Color("DarkQ") : Color.white)
                 }
-
+                
                 Button(action: {
                     self.recordIndex = .family
-
-                    withAnimation {
-                        self.recordIndex = .family
-                    }
-
+                    
                 }){
                     ElementCard(icon: "heart.fill", title: "가족", size: 30, space: 30, fC: recordIndex == .family ? Color.white : Color("DarkGray"), bC: recordIndex == .family ? Color("DarkQ") : Color.white)
                 }
-
-
+                
+                
             }
             HStack(spacing: 230) {
-
                 Button(action: {
                     self.recordIndex = .money
-
-                    withAnimation {
-                        self.recordIndex = .money
-                    }
-
                 }){
-
+                    
                     Text("자산")
                         .fontWeight(.bold)
                         .font(.system(size: 23))
@@ -343,81 +336,271 @@ struct RecordElementView : View {
                         .foregroundColor(recordIndex == .money ? Color.white : Color("DarkGray"))
                         .offset(x: 106)
                 }
-
+                
             }
             .frame(width: 330, height: 50)
             .padding(20)
             .background(recordIndex == .money ? Color("DarkQ") : Color.white)
             .cornerRadius(20)
-
+            
         }
-
+        
         if self.recordIndex == .health {
-
+            
             VStack{
-
-                Rectangle().frame(width: .infinity, height: 0.5)
-                    .background(Color.gray)
-                    .padding(.horizontal, 18)
-
+                Divider()
+                    .padding(.horizontal)
+                
                 Button(action: {
-
+                    
                     isShowPopup = true
-
+                    
                 }) {
                     HStack {
-
+                        
                         viewModel.yearMonthButtonText
                             .foregroundColor(Color.black)
-
+                        
                         Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
                             .foregroundColor(.black)
                             .font(.system(size: 15))
-
-
+                        
+                        
                     }
                     .padding(.top, 10)
                     .padding(.trailing, 180)
-
-
+                    
+                    
                 }.sheet(isPresented: $isShowPopup) {
                     YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
                         .frame(width: 300, height: 400)
                         .background(BackgroundClearView_())
                         .ignoresSafeArea()
                 }
-
-                ForEach(records) { record in
-            
-                recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                
+                ForEach(healthRecords) { metaData in
+                    ForEach(metaData.records) { record in
+                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                            .padding(.bottom, 10)
+                    }
                     
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
             }
-            }
-
-
-
-
-
+            
+            
+            
         }
-
+        
+        if self.recordIndex == .work {
+            
+            VStack{
+                
+                Divider()
+                    .padding(.horizontal)
+                
+                Button(action: {
+                    
+                    isShowPopup = true
+                    
+                }) {
+                    HStack {
+                        
+                        viewModel.yearMonthButtonText
+                            .foregroundColor(Color.black)
+                        
+                        Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                            .foregroundColor(.black)
+                            .font(.system(size: 15))
+                        
+                        
+                    }
+                    .padding(.top, 10)
+                    .padding(.trailing, 180)
+                    
+                    
+                }.sheet(isPresented: $isShowPopup) {
+                    YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
+                        .frame(width: 300, height: 400)
+                        .background(BackgroundClearView_())
+                        .ignoresSafeArea()
+                }
+                
+                ForEach(workRecords) { metaData in
+                    ForEach(metaData.records) { record in
+                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                            .padding(.bottom, 10)
+                    }
+                    
+                    .padding(.horizontal, 20)
+                }
+            }
+            
+            
+            
+        }
+        
+        if self.recordIndex == .money {
+            
+            VStack{
+                
+                Divider()
+                    .padding(.horizontal)
+                
+                Button(action: {
+                    
+                    isShowPopup = true
+                    
+                }) {
+                    HStack {
+                        
+                        viewModel.yearMonthButtonText
+                            .foregroundColor(Color.black)
+                        
+                        Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                            .foregroundColor(.black)
+                            .font(.system(size: 15))
+                        
+                        
+                    }
+                    .padding(.top, 10)
+                    .padding(.trailing, 180)
+                    
+                    
+                }.sheet(isPresented: $isShowPopup) {
+                    YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
+                        .frame(width: 300, height: 400)
+                        .background(BackgroundClearView_())
+                        .ignoresSafeArea()
+                }
+                
+                ForEach(assetRecords) { metaData in
+                    ForEach(metaData.records) { record in
+                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                            .padding(.bottom, 10)
+                    }
+                    
+                    .padding(.horizontal, 20)
+                }
+            }
+            
+            
+            
+        }
+        
+        if self.recordIndex == .relation {
+            
+            VStack{
+                
+                Divider()
+                    .padding(.horizontal)
+                
+                Button(action: {
+                    
+                    isShowPopup = true
+                    
+                }) {
+                    HStack {
+                        
+                        viewModel.yearMonthButtonText
+                            .foregroundColor(Color.black)
+                        
+                        Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                            .foregroundColor(.black)
+                            .font(.system(size: 15))
+                        
+                        
+                    }
+                    .padding(.top, 10)
+                    .padding(.trailing, 180)
+                    
+                    
+                }.sheet(isPresented: $isShowPopup) {
+                    YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
+                        .frame(width: 300, height: 400)
+                        .background(BackgroundClearView_())
+                        .ignoresSafeArea()
+                }
+                
+                ForEach(relationshipRecords) { metaData in
+                    ForEach(metaData.records) { record in
+                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                            .padding(.bottom, 10)
+                    }
+                    
+                    .padding(.horizontal, 20)
+                }
+            }
+            
+            
+            
+        }
+        
+        if self.recordIndex == .family {
+            
+            VStack{
+                
+                Divider()
+                    .padding(.horizontal)
+                
+                Button(action: {
+                    
+                    isShowPopup = true
+                    
+                }) {
+                    HStack {
+                        
+                        viewModel.yearMonthButtonText
+                            .foregroundColor(Color.black)
+                        
+                        Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                            .foregroundColor(.black)
+                            .font(.system(size: 15))
+                        
+                        
+                    }
+                    .padding(.top, 10)
+                    .padding(.trailing, 180)
+                    
+                    
+                }.sheet(isPresented: $isShowPopup) {
+                    YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
+                        .frame(width: 300, height: 400)
+                        .background(BackgroundClearView_())
+                        .ignoresSafeArea()
+                }
+                
+                ForEach(familyRecords) { metaData in
+                    ForEach(metaData.records) { record in
+                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                            .padding(.bottom, 10)
+                    }
+                    
+                    .padding(.horizontal, 20)
+                }
+            }
+            
+            
+            
+        }
+            
     }
-
-struct ElementCard : View {
-
+        
+}
+    
+    struct ElementCard : View {
         var icon : String
         var title : String
         var size : Int
         var space : Int
         var fC : Color
         var bC : Color
-
-
+        
+        
         var body: some View {
-
+            
             HStack(spacing: CGFloat(space)) {
-
+                
                 Text(title)
                     .fontWeight(.bold)
                     .font(.system(size: 23))
@@ -426,151 +609,79 @@ struct ElementCard : View {
                     .font(.system(size: CGFloat(size)))
                     .foregroundColor(fC)
                     .fontWeight(.bold)
-
+                
             }
             .frame(width: 140, height: 50)
             .padding(20)
             .background(bC)
             .cornerRadius(20)
-
+            
         }
     }
-
-class DateViewModel_: ObservableObject {
-
-    @Published var selectedYear = Calendar.current.component(.year, from: Date()){
-        didSet {
-            updateStartOfWeek()
+    
+    
+    struct BackgroundClearView_: UIViewRepresentable {
+        func makeUIView(context: Context) -> UIView {
+            let view = UIView()
+            DispatchQueue.main.async {
+                view.superview?.superview?.backgroundColor = .clear
+            }
+            return view
         }
+        func updateUIView(_ uiView: UIView, context: Context) {}
     }
-    @Published var selectedMonth = Calendar.current.component(.month, from: Date()){
-        didSet {
-            updateStartOfWeek()
+    
+    struct Utilities_{
+        
+        static func formatNum(_ num: Int) -> String {
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .none
+            
+            return numberFormatter.string(from: NSNumber(value: num)) ?? ""
         }
-    }
-
-    @Published var startOfWeek = Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
-
-    var selectedDate: Date {
-        Calendar.current.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 1))!
-    }
-
-    var weekButtonText: Text {
-        let formattedStartDate = Utilities_.formatYearMonthDay(startOfWeek)
-        let formattedEndDate = Utilities_.formatYearMonthDay(Calendar.current.date(byAdding: .day, value: 6, to: startOfWeek)!)
-
-        return Text("\(formattedStartDate) - \(formattedEndDate)")
-    }
-
-    private func updateStartOfWeek() {
-        let calendar = Calendar.current
-        startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: selectedDate))!
-    }
-
-
-    var yearMonthButtonText: Text {
-        Text("\(Utilities_.formatNum(selectedYear))년 \(selectedMonth)월")
-            .font(.system(size: 23))
-            .fontWeight(.semibold)
-    }
-
-    var yearButtonText: Text {
-        Text("\(Utilities_.formatNum(selectedYear))년")
-    }
-
-    func updateCalendar() {
-        let calendar = Calendar.current
-        // 선택한 연도와 월을 기반으로 날짜를 계산
-        guard calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 1)) != nil else {
-            return
+        
+        static func formatYearMonthDay(_ date: Date) -> String {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy.MM.dd"
+            return formatter.string(from: date)
         }
-    }
-
-    func getDatesForSelectedMonth() -> [DateValue] {
-           let calendar = Calendar.current
-
-           // 선택한 연도와 월을 기반으로 날짜를 계산
-           guard let startDate = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 1)) else {
-               return []
-           }
-
-           let range = calendar.range(of: .day, in: .month, for: startDate)!
-           var days = range.compactMap { day -> DateValue in
-               let date = calendar.date(byAdding: .day, value: day - 1, to: startDate)!
-               let day = calendar.component(.day, from: date)
-
-               return DateValue(day: day, date: date)
-           }
-
-           let firstWeekday = calendar.component(.weekday, from: days.first?.date ?? Date())
-           for _ in 0..<firstWeekday-1 {
-               days.insert(DateValue(day: -1, date: Date()), at: 0)
-           }
-
-           return days
-       }
-   }
-
-struct BackgroundClearView_: UIViewRepresentable {
-    func makeUIView(context: Context) -> UIView {
-        let view = UIView()
-        DispatchQueue.main.async {
-            view.superview?.superview?.backgroundColor = .clear
+        static func formatMonthDay(_ date: Date) -> String {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM.dd"
+            return formatter.string(from: date)
         }
-        return view
+        
     }
-    func updateUIView(_ uiView: UIView, context: Context) {}
-}
-
-struct Utilities_ {
-    static func formatNum(_ num: Int) -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .none
-
-        return numberFormatter.string(from: NSNumber(value: num)) ?? ""
-    }
-
-    static func formatYearMonthDay(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd"
-        return formatter.string(from: date)
-    }
-    static func formatMonthDay(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM.dd"
-        return formatter.string(from: date)
-    }
-
-}
-
+    
 struct CalendarView: View {
     
     @Binding var selectedYear: Int
     @Binding var selectedMonth: Int
     @Binding var currentDate: Date
-    @StateObject private var viewModel = DateViewModel_()
+    @StateObject private var viewModel = DateViewModel()
+    @StateObject private var coreDataViewModel = CoreDataViewModel()
     @State private var selectedDate = Date()
     @State private var isShowPopup = false
     @State var currentMonth: Int = 0
-
+    
     
     let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
-
+    
     var body: some View {
-
+        
         VStack(spacing: 13) {
-
+            
             HStack(spacing: -7){
-
+                
                 Button(action: {
-
+                    
                     isShowPopup = true
-
+                    
                 }) {
                     viewModel.yearMonthButtonText
                         .padding(.horizontal)
                         .foregroundColor(Color.black)
-
+                    
                 }.sheet(isPresented: $isShowPopup) {
                     YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
                         .frame(width: 300, height: 400)
@@ -583,32 +694,30 @@ struct CalendarView: View {
                     .font(.system(size: 15))
             }
             .padding(.bottom, 17)
-
+            
             HStack(spacing: 4) {
-
+                
                 ForEach(days, id: \.self) { day in
-
+                    
                     Text(day)
                         .fontWeight(.medium)
                         .padding(.horizontal)
-
+                    
                 }
             }
-
-            Rectangle()
-                .frame(width: .infinity, height: 0.5)
-                .background(Color.gray)
+            
+            Divider()
                 .padding(.horizontal)
-
+            
             let columns = Array(repeating: GridItem(.fixed(43)), count: 7)
-
+            
             LazyVGrid(columns: columns, spacing: 8) {
                 
                 ForEach(extractDate()) { value in
-
+                    
                     CardView(value: value)
                         .background (
-
+                            
                             Capsule()
                                 .fill(Color("DarkQ"))
                                 .padding(.horizontal, 4)
@@ -621,118 +730,115 @@ struct CalendarView: View {
             }
             .fontWeight(.light)
         }
-            
-            if let task = tasks.first(where: { task in
-                return isSameDay(date1: task.taskDate, date2: currentDate)
-            }) {
-                VStack {
-                    
-                    Text("오늘의 5요소")
-                        .font(.system(size: 23))
-                        .fontWeight(.semibold)
-                        .padding(.trailing, 190)
-                        .padding(.bottom, 20)
-                        .padding(.top, 10)
-                        .foregroundColor(Color.black)
-                    
-                    
-                    ForEach(task.task) { task in
+        
+            let task = coreDataViewModel.getTodayRecordMetaData()
+            VStack {
                 
+                Text("오늘의 5요소")
+                    .font(.system(size: 23))
+                    .fontWeight(.semibold)
+                    .padding(.trailing, 190)
+                    .padding(.bottom, 20)
+                    .padding(.top, 10)
+                    .foregroundColor(Color.black)
+                
+                
+                ForEach(task.records) { task in
+                    
                     recordCard(icon: task.icon, title: task.title, subtitle: task.subtitle)
-                        
-                    }
+                    
+                }
             }
             .onChange(of: currentMonth) { newValue in
-                    //updating Month
-                    currentDate = getCurrentMonth()
-                }
+                //updating Month
+                currentDate = getCurrentMonth()
+            }
         }
-
-    }
+        
     
     
-
+    
     @ViewBuilder
     func CardView(value: DateValue) -> some View {
-
+        
         ZStack {
             if value.day != -1
             {
                 
-                if let task = tasks.first(where: { task in
-                    return isSameDay(date1: task.taskDate, date2: value.date)
+                if let task = coreDataViewModel.calendarMetaDataArray.first(where: { task in
+                    return isSameDay(date1: task.date, date2: value.date)
                 }) {
-
-
+                    
+                    
                     Circle()
-                        .fill(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : Color("LightGray2") ) //LightGray2
+                        .fill(isSameDay(date1: task.date, date2: currentDate) ? .white : Color("LightGray2") ) //LightGray2
                         .frame(width: 32, height: 32)
-                        .opacity(isSameDay(date1: task.taskDate, date2: currentDate) ? 0 : 1)
+                        .opacity(isSameDay(date1: task.date, date2: currentDate) ? 0 : 1)
                         .padding(.vertical, -5)
                         .onTapGesture {
-                                        currentDate = value.date
-                                        }
+                            currentDate = value.date
+                        }
                     
                     Text("\(value.day)")
                         .font(.title3.bold())
-                        .foregroundColor(isSameDay(date1: task.taskDate, date2: currentDate) ? .white : .primary)
+                        .foregroundColor(isSameDay(date1: task.date, date2: currentDate) ? .white : .primary)
                         .frame(maxWidth: .infinity)
-
+                    
                 }else {
-        
+                    
                     Text("\(value.day)")
                         .font(.title3.bold())
                         .foregroundColor(isSameDay(date1: value.date , date2: currentDate) ? .white : .primary)
                         .frame(maxWidth: .infinity)
-
+                    
                     Spacer()
                 }
-
+                
                 
             }
-
+            
         }
         .padding(.vertical, 4)
-
-
+        
+        
     }
-
+    
     func isSameDay(date1: Date, date2: Date) -> Bool {
         let calendar = Calendar.current
-
+        
         return calendar.isDate(date1, inSameDayAs: date2)
     }
-
+    
     //현재 날짜를 self.currentMonth만큼의 월(month)을 더한 날짜를 반환하는 함수
     func getCurrentMonth() -> Date {
-
+        
         let calendar = Calendar.current
-
+        
         //Getting Current Month Date...
         guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else {
             return Date()
         }
         return currentMonth
     }
-
+    
     func extractDate() -> [DateValue] {
-            viewModel.getDatesForSelectedMonth()
-        }
+        viewModel.getDatesForSelectedMonth()
+    }
+
 }
 
-
 extension Date {
-
+    
     func getAllDates() -> [Date] {
-
+        
         let calendar = Calendar.current
-
+        
         let startDate = calendar.date(from: Calendar.current.dateComponents([.year, .month], from: self))!
-
+        
         let range = calendar.range(of: .day, in: .month, for: startDate)!
-
+        
         return range.compactMap { day -> Date in
-
+            
             return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
         }
     }
@@ -747,10 +853,7 @@ struct DateValue: Identifiable {
 
 struct RecordView_Previews: PreviewProvider {
     static var previews: some View {
-            RecordView()
+        RecordView()
     }
 }
-
-
-
 

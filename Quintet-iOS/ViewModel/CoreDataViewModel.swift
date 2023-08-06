@@ -12,7 +12,8 @@ class CoreDataViewModel: ObservableObject {
 
     @Published var currentQuintetData: QuintetData?  // 오늘의 퀸텐 데이터가 있다면 담고 없으면 default 값
     @Published var userName = "로니"
-
+    @Published var calendarMetaDataArray: [CalendarMetaData] = []
+    
     let container: NSPersistentContainer
     let today : Date
     
@@ -205,4 +206,278 @@ class CoreDataViewModel: ObservableObject {
             userName = savedUserName
         }
     }
+    
+    // 캘린더뷰
+    func getRecordMetaDataForDate(_ date: Date){
+        let startDate = Calendar.current.startOfDay(for: date)
+        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) ?? startDate
+        
+        let quintetData = getQuintetData(from: startDate, to: endDate)
+        
+        var recordsForDate: [Record] = []
+        
+        for data in quintetData {
+            let workIcon = data.workPoint == 0 ? "XOn" : (data.workPoint == 1 ? "TriangleOn" : "CircleOn")
+            let healthIcon = data.healthPoint == 0 ? "XOn" : (data.healthPoint == 1 ? "TriangleOn" : "CircleOn")
+            let familyIcon = data.familyPoint == 0 ? "XOn" : (data.familyPoint == 1 ? "TriangleOn" : "CircleOn")
+            let assetIcon = data.assetPoint == 0 ? "XOn" : (data.assetPoint == 1 ? "TriangleOn" : "CircleOn")
+            let relationshipIcon = data.relationshipPoint == 0 ? "XOn" : (data.relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
+            
+            let tasks = [
+                Record(icon: workIcon, title: "일", subtitle: data.workNote ?? ""),
+                Record(icon: healthIcon, title: "건강", subtitle: data.healthNote ?? ""),
+                Record(icon: familyIcon, title: "가족", subtitle: data.familyNote ?? ""),
+                Record(icon: relationshipIcon, title: "관계", subtitle: data.relationshipNote ?? ""),
+                Record(icon: assetIcon, title: "자산", subtitle: data.assetNote ?? "")
+            ]
+            
+            recordsForDate.append(contentsOf: tasks)
+        }
+        
+        let daysFromToday = Calendar.current.dateComponents([.day], from: today, to: date).day ?? 0
+        
+        func getDate(offset: Int) -> Date {
+            let calendar = Calendar.current
+            
+            let date = calendar.date(byAdding: .day, value: offset, to: Date())
+            
+            return date ?? Date()
+        }
+        
+        let metaData = CalendarMetaData(records: recordsForDate, date: getDate(offset: daysFromToday), offset: daysFromToday)
+        calendarMetaDataArray.append(metaData)
+    }
+    
+    func getTodayRecordMetaData() -> CalendarMetaData {
+        let today = Date()
+        let startDate = Calendar.current.startOfDay(for: today)
+        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) ?? startDate
+        
+        let quintetData = getQuintetData(from: startDate, to: endDate)
+        
+        var recordsForDate: [Record] = []
+        
+        for data in quintetData {
+            let workIcon = data.workPoint == 0 ? "XOn" : (data.workPoint == 1 ? "TriangleOn" : "CircleOn")
+            let healthIcon = data.healthPoint == 0 ? "XOn" : (data.healthPoint == 1 ? "TriangleOn" : "CircleOn")
+            let familyIcon = data.familyPoint == 0 ? "XOn" : (data.familyPoint == 1 ? "TriangleOn" : "CircleOn")
+            let assetIcon = data.assetPoint == 0 ? "XOn" : (data.assetPoint == 1 ? "TriangleOn" : "CircleOn")
+            let relationshipIcon = data.relationshipPoint == 0 ? "XOn" : (data.relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
+            
+            let tasks = [
+                Record(icon: workIcon, title: "일", subtitle: data.workNote ?? ""),
+                Record(icon: healthIcon, title: "건강", subtitle: data.healthNote ?? ""),
+                Record(icon: relationshipIcon, title: "관계", subtitle: data.relationshipNote ?? ""),
+                Record(icon: familyIcon, title: "가족", subtitle: data.familyNote ?? ""),
+                Record(icon: assetIcon, title: "자산", subtitle: data.assetNote ?? "")
+            ]
+            
+            recordsForDate.append(contentsOf: tasks)
+        }
+        
+        let daysFromToday = Calendar.current.dateComponents([.day], from: today, to: startDate).day ?? 0
+        
+        return CalendarMetaData(records: recordsForDate, date: today, offset: daysFromToday)
+    }
+
+    
+    //요소별 뷰 - Refactoring 해야함
+    func getHealthRecords(for year: Int, month: Int) -> [RecordMetaData] {
+        let calendar = Calendar.current
+        let startDateComponents = DateComponents(year: year, month: month, day: 1)
+        let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+        
+        if let startDate = calendar.date(from: startDateComponents),
+           let endDate = calendar.date(from: endDateComponents) {
+            
+            let quintetData = getQuintetData(from: startDate, to: endDate)
+            
+            let healthRecords = quintetData.filter { $0.healthPoint >= 0 }
+            
+            if healthRecords.count <= 5 {
+                return healthRecords.map { data in
+                    let healthIcon = data.healthPoint == 0 ? "XOn" : (data.healthPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let date = data.date ?? Date()
+                    return RecordMetaData(records: [
+                        Record(icon: healthIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.healthNote ?? "")
+                    ])
+                }
+            } else {
+                let sortedRecords = healthRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
+                
+                return sortedRecords.map { data in
+                    let healthIcon = data.healthPoint == 0 ? "XOn" : (data.healthPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let date = data.date ?? Date()
+                    return RecordMetaData(records: [
+                        Record(icon: healthIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.healthNote ?? "")
+                    ])
+                }
+            }
+        }
+        
+        return []
+    }
+    
+    func getAssetRecords(for year: Int, month: Int) -> [RecordMetaData] {
+        let calendar = Calendar.current
+        let startDateComponents = DateComponents(year: year, month: month, day: 1)
+        let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+        
+        if let startDate = calendar.date(from: startDateComponents),
+           let endDate = calendar.date(from: endDateComponents) {
+            
+            let quintetData = getQuintetData(from: startDate, to: endDate)
+            
+            let assetRecords = quintetData.filter { $0.assetPoint >= 0 }
+            
+            if assetRecords.count <= 5 {
+                return assetRecords.map { data in
+                    let assetIcon = data.assetPoint == 0 ? "XOn" : (data.assetPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let date = data.date ?? Date()
+                    return RecordMetaData(records: [
+                        Record(icon: assetIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.assetNote ?? "")
+                    ])
+                }
+            } else {
+                let sortedRecords = assetRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
+                
+                return sortedRecords.map { data in
+                    let assetIcon = data.assetPoint == 0 ? "XOn" : (data.assetPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let date = data.date ?? Date()
+                    return RecordMetaData(records: [
+                        Record(icon: assetIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.assetNote ?? "")
+                    ])
+                }
+            }
+        }
+        
+        return []
+    }
+
+    func getFamilyRecords(for year: Int, month: Int) -> [RecordMetaData] {
+        let calendar = Calendar.current
+        let startDateComponents = DateComponents(year: year, month: month, day: 1)
+        let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+        
+        if let startDate = calendar.date(from: startDateComponents),
+           let endDate = calendar.date(from: endDateComponents) {
+            
+            let quintetData = getQuintetData(from: startDate, to: endDate)
+            
+            let familyRecords = quintetData.filter { $0.familyPoint >= 0 }
+            
+            if familyRecords.count <= 5 {
+                return familyRecords.map { data in
+                    let familyIcon = data.familyPoint == 0 ? "XOn" : (data.familyPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let date = data.date ?? Date()
+                    return RecordMetaData(records: [
+                        Record(icon: familyIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.familyNote ?? "")
+                    ])
+                }
+            } else {
+                let sortedRecords = familyRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
+                
+                return sortedRecords.map { data in
+                    let familyIcon = data.familyPoint == 0 ? "XOn" : (data.familyPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let date = data.date ?? Date()
+                    return RecordMetaData(records: [
+                        Record(icon: familyIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.familyNote ?? "")
+                    ])
+                }
+            }
+        }
+        
+        return []
+    }
+
+    func getRelationshipRecords(for year: Int, month: Int) -> [RecordMetaData] {
+        let calendar = Calendar.current
+        let startDateComponents = DateComponents(year: year, month: month, day: 1)
+        let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+        
+        if let startDate = calendar.date(from: startDateComponents),
+           let endDate = calendar.date(from: endDateComponents) {
+            
+            let quintetData = getQuintetData(from: startDate, to: endDate)
+            
+            let relationshipRecords = quintetData.filter { $0.relationshipPoint >= 0 }
+            
+            if relationshipRecords.count <= 5 {
+                return relationshipRecords.map { data in
+                    let relationshipIcon = data.relationshipPoint == 0 ? "XOn" : (data.relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let date = data.date ?? Date()
+                    return RecordMetaData(records: [
+                        Record(icon: relationshipIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.relationshipNote ?? "")
+                    ])
+                }
+            } else {
+                let sortedRecords = relationshipRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
+                
+                return sortedRecords.map { data in
+                    let relationshipIcon = data.relationshipPoint == 0 ? "XOn" : (data.relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let date = data.date ?? Date()
+                    return RecordMetaData(records: [
+                        Record(icon: relationshipIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.relationshipNote ?? "")
+                    ])
+                }
+            }
+        }
+        
+        return []
+    }
+
+    func getWorkRecords(for year: Int, month: Int) -> [RecordMetaData] {
+        let calendar = Calendar.current
+        let startDateComponents = DateComponents(year: year, month: month, day: 1)
+        let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+        
+        if let startDate = calendar.date(from: startDateComponents),
+           let endDate = calendar.date(from: endDateComponents) {
+            
+            let quintetData = getQuintetData(from: startDate, to: endDate)
+            
+            let workRecords = quintetData.filter { $0.workPoint >= 0 }
+            
+            if workRecords.count <= 5 {
+                return workRecords.map { data in
+                    let workIcon = data.workPoint == 0 ? "XOn" : (data.workPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let date = data.date ?? Date()
+                    return RecordMetaData(records: [
+                        Record(icon: workIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.workNote ?? "")
+                    ])
+                }
+            } else {
+                let sortedRecords = workRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
+                
+                return sortedRecords.map { data in
+                    let workIcon = data.workPoint == 0 ? "XOn" : (data.workPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let date = data.date ?? Date()
+                    return RecordMetaData(records: [
+                        Record(icon: workIcon, title: "\(calendar.component(.year, from: date)).\(calendar.component(.month, from: date)).\(calendar.component(.day, from: date))", subtitle: data.workNote ?? "")
+                    ])
+                }
+            }
+        }
+        
+        return []
+    }
+}
+
+struct Record: Identifiable {
+    var id = UUID().uuidString
+    var icon: String
+    var title: String
+    var subtitle: String
+}
+
+struct CalendarMetaData: Identifiable {
+    var id = UUID().uuidString
+    var records: [Record]
+    var date: Date
+    var offset: Int
+}
+
+struct RecordMetaData: Identifiable {
+    var id = UUID().uuidString
+    var records : [Record]
 }

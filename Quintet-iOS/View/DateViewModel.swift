@@ -44,4 +44,37 @@ class DateViewModel: ObservableObject {
     var yearButtonText: Text {
         Text("\(Utilities.formatNum(selectedYear))년")
     }
+    
+    func updateCalendar() {
+        let calendar = Calendar.current
+        // 선택한 연도와 월을 기반으로 날짜를 계산
+        guard calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 1)) != nil else {
+            return
+        }
+    }
+
+    func getDatesForSelectedMonth() -> [DateValue] {
+        let calendar = Calendar.current
+
+        // 선택한 연도와 월을 기반으로 날짜를 계산
+        guard let startDate = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 1)) else {
+            return []
+        }
+
+        let range = calendar.range(of: .day, in: .month, for: startDate)!
+        var days = range.compactMap { day -> DateValue in
+            let date = calendar.date(byAdding: .day, value: day - 1, to: startDate)!
+            let day = calendar.component(.day, from: date)
+
+            return DateValue(day: day, date: date)
+        }
+
+        let firstWeekday = calendar.component(.weekday, from: days.first?.date ?? Date())
+        for _ in 0..<firstWeekday-1 {
+            days.insert(DateValue(day: -1, date: Date()), at: 0)
+        }
+
+        return days
+    }
 }
+
