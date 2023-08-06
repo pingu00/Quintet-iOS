@@ -731,7 +731,8 @@ struct CalendarView: View {
             .fontWeight(.light)
         }
         
-            let task = coreDataViewModel.getTodayRecordMetaData()
+        let task = coreDataViewModel.getTodayRecordMetaData()
+        if isSameDay(date1: selectedDate, date2: currentDate) {
             VStack {
                 
                 Text("오늘의 5요소")
@@ -754,6 +755,7 @@ struct CalendarView: View {
                 currentDate = getCurrentMonth()
             }
         }
+    }
         
     
     
