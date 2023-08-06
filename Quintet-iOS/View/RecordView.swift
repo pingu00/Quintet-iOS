@@ -172,13 +172,13 @@ struct YearMonthPickerPopup_: View {
     var body: some View {
         GeometryReader{ geometry in
             VStack{
-                HStack {
+                HStack(spacing: -7) {
                     YearPicker_(viewModel: viewModel, selectedYear: $viewModel.selectedYear)
                     MonthPicker_(selectedMonth: $viewModel.selectedMonth, viewModel: viewModel)
                 }
             }
             .padding(.top, 60)
-            HStack(spacing: 25){
+            HStack(spacing: 10){
                 Button(action: {
                     isShowPopup = false
                     viewModel.updateCalendar()
@@ -212,7 +212,7 @@ struct YearMonthPickerPopup_: View {
                 }
             }
             .padding(.top, 300)
-            .padding(.horizontal, 23)
+            .padding(.horizontal, 30)
             
         }
         .padding()
@@ -384,7 +384,6 @@ struct RecordElementView : View {
                 ForEach(healthRecords) { metaData in
                     ForEach(metaData.records) { record in
                         recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                            .padding(.bottom, 10)
                     }
                     
                     .padding(.horizontal, 20)
@@ -432,7 +431,6 @@ struct RecordElementView : View {
                 ForEach(workRecords) { metaData in
                     ForEach(metaData.records) { record in
                         recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                            .padding(.bottom, 10)
                     }
                     
                     .padding(.horizontal, 20)
@@ -480,7 +478,6 @@ struct RecordElementView : View {
                 ForEach(assetRecords) { metaData in
                     ForEach(metaData.records) { record in
                         recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                            .padding(.bottom, 10)
                     }
                     
                     .padding(.horizontal, 20)
@@ -492,7 +489,7 @@ struct RecordElementView : View {
         }
         
         if self.recordIndex == .relation {
-            
+
             VStack{
                 
                 Divider()
@@ -528,7 +525,6 @@ struct RecordElementView : View {
                 ForEach(relationshipRecords) { metaData in
                     ForEach(metaData.records) { record in
                         recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                            .padding(.bottom, 10)
                     }
                     
                     .padding(.horizontal, 20)
@@ -576,7 +572,6 @@ struct RecordElementView : View {
                 ForEach(familyRecords) { metaData in
                     ForEach(metaData.records) { record in
                         recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                            .padding(.bottom, 10)
                     }
                     
                     .padding(.horizontal, 20)
