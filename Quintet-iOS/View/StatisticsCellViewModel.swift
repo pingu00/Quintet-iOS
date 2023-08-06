@@ -8,16 +8,21 @@
 import SwiftUI
 
 class StatisticsCellViewModel: ObservableObject {
-    @Published private var workPoint = 5
-    @Published private var healthPoint = 3
-    @Published private var familyPoint = 1
-    @Published private var relationshipPoint = 4
-    @Published private var assetPoint = 1
+    @Published private var workPoint = 0
+    @Published private var healthPoint = 0
+    @Published private var familyPoint = 0
+    @Published private var relationshipPoint = 0
+    @Published private var assetPoint = 0
     
-    let startDate = Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 1))!
-    let endDate = Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 7))!
+    lazy var startDate: Date = {
+        let startDateComponents = Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
+        return Calendar.current.date(from: startDateComponents)!
+    }()
 
-    
+    lazy var endDate: Date = {
+        return Calendar.current.date(byAdding: .day, value: 6, to: startDate)!
+    }()
+
     private let coreDataViewModel: CoreDataViewModel
     
     init(coreDataViewModel: CoreDataViewModel) {
@@ -26,10 +31,15 @@ class StatisticsCellViewModel: ObservableObject {
     }
     
     func updateValuesFromCoreData(startDate: Date, endDate: Date) {
-        _ = coreDataViewModel.getQuintetData(from: startDate, to: endDate)
+        let quintetDataArray = coreDataViewModel.getQuintetData(from: startDate, to: endDate)
         
+        workPoint = quintetDataArray.reduce(0) { $0 + Int($1.workPoint) }
+        healthPoint = quintetDataArray.reduce(0) { $0 + Int($1.healthPoint) }
+        familyPoint = quintetDataArray.reduce(0) { $0 + Int($1.familyPoint) }
+        relationshipPoint = quintetDataArray.reduce(0) { $0 + Int($1.relationshipPoint) }
+        assetPoint = quintetDataArray.reduce(0) { $0 + Int($1.assetPoint) }
     }
-    
+
     var totalPoint: Int {
         workPoint + healthPoint + familyPoint + relationshipPoint + assetPoint
     }
