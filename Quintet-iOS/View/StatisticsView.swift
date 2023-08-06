@@ -150,12 +150,15 @@ struct StatisticsView: View {
                         }
                     }
                 }
-                // MARK: - 화살표 누를때도 동작하고, 통계 분석 옮길 때도 동작해야함 수정필요
                 .onChange(of: dateViewModel.selectedMonthFirstDay) { newValue in
                     updateStatistics()
                 }
                 .onChange(of: selectedOption) { newValue in
                     updateStatistics()
+                    if(dateViewModel.selectedMonthFirstDay > Date()) {
+                        dateViewModel.selectedYear = Calendar.current.component(.year, from: Date())
+                        dateViewModel.selectedMonth = Calendar.current.component(.month, from: Date())
+                    }
                 }
                 
                 VStack {
@@ -170,86 +173,87 @@ struct StatisticsView: View {
                         .padding(.top, 40)
                 }
                 .padding(20)
-                VStack {
-                    HStack(spacing: 0) {
-                        Group {
-                            switch selectedOption {
-                            case 1:
-                                Text("이번 주는 ")
-                                    .font(.system(size: 26))
-                                    .multilineTextAlignment(.center)
-                            case 2:
-                                Text("이번 달은 ")
-                                    .font(.system(size: 26))
-                                    .multilineTextAlignment(.center)
-                            case 3:
-                                Text("올해는 ")
-                                    .font(.system(size: 26))
-                                    .multilineTextAlignment(.center)
-                            default:
-                                Text("")
+                if statisticsCellViewModel.maxPoint == 0{
+                    Text("기록된 데이터가 없어요...")
+                }
+                else {
+                    VStack {
+                        HStack(spacing: 0) {
+                            Group {
+                                switch selectedOption {
+                                case 1:
+                                    Text("이번 주는 ")
+                                        .font(.system(size: 26))
+                                        .multilineTextAlignment(.center)
+                                case 2:
+                                    Text("이번 달은 ")
+                                        .font(.system(size: 26))
+                                        .multilineTextAlignment(.center)
+                                case 3:
+                                    Text("올해는 ")
+                                        .font(.system(size: 26))
+                                        .multilineTextAlignment(.center)
+                                default:
+                                    Text("")
+                                }
                             }
+                            Text(statisticsCellViewModel.maxNoteArray.joined(separator: ", "))
+                                .bold()
+                                .font(.system(size: 26))
+                                .multilineTextAlignment(.center)
+                            Text("에")
+                                .font(.system(size: 26))
+                                .multilineTextAlignment(.center)
                         }
-                        Text(statisticsCellViewModel.maxNoteArray.joined(separator: ", "))
-                            .bold()
-                            .font(.system(size: 26))
-                            .multilineTextAlignment(.center)
-                        Text("에")
-                            .font(.system(size: 26))
-                            .multilineTextAlignment(.center)
+                        VStack{
+                            Text("주로 집중하셨군요!")
+                                .font(.system(size: 26))
+                                .multilineTextAlignment(.center)
+                        }
                     }
                     VStack{
-                        Text("주로 집중하셨군요!")
-                            .font(.system(size: 26))
-                            .multilineTextAlignment(.center)
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.white)
+                            .frame(width: 330, height: 280)
+                            .overlay(
+                                HStack{
+                                    Spacer()
+                                    if statisticsCellViewModel.maxNoteArray[0] == "일" {
+                                        Text("일은 삶의 필수적인 부분이고 많은 보상을 가져다줄 수 있지만, 삶에서 다른 요소들의 중요성도 인식하는 것이 중요합니다. 건강, 관계, 가족 및 자산을 소홀히 하면 전반적인 웰빙과 행복감에 영향을 미칠 수 있는 중대한 결과를 초래할 수 있습니다. 자신의 일에 열정을 갖는 것은 자연스러운 일이지만, 전반적인 성취감과 행복감에 기여할 수 있는 다른 중요한 요소가 있다는 것을 인식하는 것이 중요합니다.")
+                                            .font(.system(size: 16))
+                                            .multilineTextAlignment(.leading)
+                                            .frame(width: 250, height: 300)
+                                            .lineSpacing(1)
+                                            .padding(35)
+                                    }
+                                    else if statisticsCellViewModel.maxNoteArray[0] == "건강" {
+                                        Text("건강한 삶을 위해 충분한 관심을 보이는 모습이 보입니다. 하지만 건강에 힘쓰는 만큼 일과 가족에도 집중해보는 것이 어떨까요? 가족과 소중한 사람들과의 소통과 시간을 늘리며, 일상의 작은 순간들을 함께 나누는 것이 중요합니다. 자산과 관계에도 균형을 유지하면서 일과 가족을 동시에 행복하게 발전시키는 것을 추구해야합니다. 균형 잡힌 삶을 위해 모든 요소에 균등한 노력을 기울여보세요!")
+                                            .font(.system(size: 16))
+                                            .multilineTextAlignment(.leading)
+                                            .frame(width: 250, height: 300)
+                                            .lineSpacing(1)
+                                            .padding(35)
+                                    }
+                                    else if statisticsCellViewModel.maxNoteArray[0] == "가족" {
+                                        Text(".")
+                                    }
+                                    else if statisticsCellViewModel.maxNoteArray[0] == "관계" {
+                                        Text("관계에 많은 노력을 기울였다는 점이 돋보입니다. 전체적으로 5요소의 균형이 나쁘지 않지만, 자산에도 관심을 가져주세요! 자산을 키우기 위해 더 많은 관심과 노력을 기울이는 것이 도움이 될 것입니다. 투자, 저축, 재정관리에 더 신경을 쓰면서 미래를 위한 준비를 강화해보세요. 모든 영역에 균형을 유지하면서 더욱 행복하고 풍요로운 삶을 즐기시기를 바랍니다.")
+                                            .font(.system(size: 16))
+                                            .multilineTextAlignment(.leading)
+                                            .frame(width: 250, height: 300)
+                                            .lineSpacing(1)
+                                            .padding(35)
+                                    }
+                                    else if statisticsCellViewModel.maxNoteArray[0] == "자산" {
+                                        Text(".")
+                                    }
+                                    
+                                    Spacer()
+                                }
+                            )
                     }
                 }
-                VStack{
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.white)
-                        .frame(width: 330, height: 280)
-                        .overlay(
-                            HStack{
-                                Spacer()
-                                if statisticsCellViewModel.maxNoteArray[0] == "일" {
-                                    Text("일은 삶의 필수적인 부분이고 많은 보상을 가져다줄 수 있지만, 삶에서 다른 요소들의 중요성도 인식하는 것이 중요합니다. 건강, 관계, 가족 및 자산을 소홀히 하면 전반적인 웰빙과 행복감에 영향을 미칠 수 있는 중대한 결과를 초래할 수 있습니다. 자신의 일에 열정을 갖는 것은 자연스러운 일이지만, 전반적인 성취감과 행복감에 기여할 수 있는 다른 중요한 요소가 있다는 것을 인식하는 것이 중요합니다.")
-                                        .font(.system(size: 16))
-                                        .multilineTextAlignment(.leading)
-                                        .frame(width: 250, height: 300)
-                                        .lineSpacing(1)
-                                        .padding(35)
-                                }
-                                else if statisticsCellViewModel.maxNoteArray[0] == "건강" {
-                                    Text("건강한 삶을 위해 충분한 관심을 보이는 모습이 보입니다. 하지만 건강에 힘쓰는 만큼 일과 가족에도 집중해보는 것이 어떨까요? 가족과 소중한 사람들과의 소통과 시간을 늘리며, 일상의 작은 순간들을 함께 나누는 것이 중요합니다. 자산과 관계에도 균형을 유지하면서 일과 가족을 동시에 행복하게 발전시키는 것을 추구해야합니다. 균형 잡힌 삶을 위해 모든 요소에 균등한 노력을 기울여보세요!")
-                                        .font(.system(size: 16))
-                                        .multilineTextAlignment(.leading)
-                                        .frame(width: 250, height: 300)
-                                        .lineSpacing(1)
-                                        .padding(35)
-                                }
-                                else if statisticsCellViewModel.maxNoteArray[0] == "가족" {
-                                    Text(".")
-                                }
-                                else if statisticsCellViewModel.maxNoteArray[0] == "관계" {
-                                    Text("관계에 많은 노력을 기울였다는 점이 돋보입니다. 전체적으로 5요소의 균형이 나쁘지 않지만, 자산에도 관심을 가져주세요! 자산을 키우기 위해 더 많은 관심과 노력을 기울이는 것이 도움이 될 것입니다. 투자, 저축, 재정관리에 더 신경을 쓰면서 미래를 위한 준비를 강화해보세요. 모든 영역에 균형을 유지하면서 더욱 행복하고 풍요로운 삶을 즐기시기를 바랍니다.")
-                                        .font(.system(size: 16))
-                                        .multilineTextAlignment(.leading)
-                                        .frame(width: 250, height: 300)
-                                        .lineSpacing(1)
-                                        .padding(35)
-                                }
-                                else if statisticsCellViewModel.maxNoteArray[0] == "자산" {
-                                    Text(".")
-                                }
-                                else {
-                                    Text("기록된 데이터가 없어요...")
-                                }
-                                
-                                Spacer()
-                            }
-                        )
-                }
-
             }
         }
         .navigationBarBackButtonHidden(true)
