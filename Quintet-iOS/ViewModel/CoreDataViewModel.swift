@@ -14,7 +14,7 @@ class CoreDataViewModel: ObservableObject {
     
     @Published var currentQuintetData: QuintetData?  // 오늘의 퀸텐 데이터가 있다면 담고 없으면 default 값
     @Published var userName = "로니"
-
+    
     //MARK: - QuintetCheckView에 보여지는 값
     @Published var workPoint = -1
     @Published var healthPoint = -1
@@ -28,11 +28,11 @@ class CoreDataViewModel: ObservableObject {
     @Published var relationshipNote = ""
     @Published var assetNote = ""
     
-
+    
     var isAllSelected : Bool {
         workPoint != -1 && familyPoint != -1 && relationshipPoint != -1 && assetPoint != -1 && healthPoint != -1
     }
-  
+    
     init() {
         // CoreData 사용을 위한 초기 설정
         container = NSPersistentContainer(name: "CoreDataModel") // 영구저장소의 객체를 생성한다.
@@ -41,16 +41,15 @@ class CoreDataViewModel: ObservableObject {
                 print("Failed to load the core data \(error.localizedDescription)")
             }
         }
-
+        
         fetchCurrentQuintetData()
-        today = Date()
         //addDummyData()
     }
     
     func addDummyData() {
         let startDate = Calendar.current.date(from: DateComponents(year: 2022, month: 6, day: 26))!
         let endDate = Calendar.current.date(from: DateComponents(year: 2022, month: 8, day: 4))!
-
+        
         var currentDate = startDate
         while currentDate <= endDate {
             let workPoint = Int.random(in: 1...20)
@@ -63,15 +62,15 @@ class CoreDataViewModel: ObservableObject {
             let familyNote = "가족"
             let assetNote = "자산"
             let relationshipNote = "관계"
-
+            
             addNewData2(date: currentDate, workPoint, healthPoint, familyPoint, assetPoint, relationshipPoint, workNote, healthNote, familyNote, assetNote, relationshipNote)
-
+            
             currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
         }
-
+        
     }
     
-   
+    
     // 코어데이터에서의 영구 저장소에서 데이터를 비교하거나 가져올때 "일(day)" 을 필터링 하기위해 범위 설정하는 부분을 함수로 따로 구현
     private func createPredicate(from startDate: Date, to endDate: Date) -> NSPredicate {
         let calendar = Calendar.current
@@ -84,7 +83,7 @@ class CoreDataViewModel: ObservableObject {
     func fetchCurrentQuintetData() {
         let request: NSFetchRequest<QuintetData> = QuintetData.fetchRequest()
         request.predicate = createPredicate(from: today, to: today)
-
+        
         do {
             let results = try container.viewContext.fetch(request)
             currentQuintetData = results.first
@@ -113,12 +112,12 @@ class CoreDataViewModel: ObservableObject {
             print("No Data Today")
         }
     }
-
+    
     // startDate 부터 endDate 까지의 QuintetData 를 [QuintetData] 로 반환 _ 캘린더에서 데이터 보여줄때 이거 쓰시면 됩니다!
     func getQuintetData(from startDate: Date, to endDate: Date) -> [QuintetData] {
         let request: NSFetchRequest<QuintetData> = QuintetData.fetchRequest()
         request.predicate = createPredicate(from: startDate, to: endDate)
-
+        
         do {
             let results = try container.viewContext.fetch(request)
             return results
@@ -147,7 +146,7 @@ class CoreDataViewModel: ObservableObject {
         let assetPointPer = Double(sumPoint[3]) / Double(totalSum) * 100.0
         let relationshipPointPer = Double(sumPoint[4]) / Double(totalSum) * 100.0
         let maxPercentage = max(workPointPer, healthPointPer, familyPointPer, assetPointPer, relationshipPointPer)
-         
+        
         var maxValue: [String] = []
         switch maxPercentage {
         case workPointPer:
@@ -170,11 +169,12 @@ class CoreDataViewModel: ObservableObject {
                                assetPointPer: assetPointPer,
                                relationshipPointPer: relationshipPointPer,
                                maxValue: maxValue)
-    }
-
-
         saveContext()
     }
+    
+    
+    
+    
     
     // MARK: - 임시 더미데이터용 함수
     private func addNewData2(date: Date, _ workPoint: Int, _ healthPoint: Int, _ familyPoint: Int, _ assetPoint: Int, _ relationshipPoint: Int, _ workNote: String, _ healthNote: String, _ familyNote: String, _ assetNote: String, _ relationshipNote: String) {
@@ -190,7 +190,7 @@ class CoreDataViewModel: ObservableObject {
         quintetData.familyNote = familyNote
         quintetData.relationshipNote = relationshipNote
         quintetData.assetNote = assetNote
-
+        
         saveContext()
     }
     
@@ -207,7 +207,7 @@ class CoreDataViewModel: ObservableObject {
             savedQuintetData.familyNote = familyNote
             savedQuintetData.relationshipNote = relationshipNote
             savedQuintetData.assetNote = assetNote
-
+            
             saveContext()
         } else {
             addNewData()
@@ -227,7 +227,7 @@ class CoreDataViewModel: ObservableObject {
         quintetData.familyNote = familyNote
         quintetData.relationshipNote = relationshipNote
         quintetData.assetNote = assetNote
-
+        
         saveContext()
     }
     //context 를 영구저장소에 저장한다. context란 영구저장소에 저장되기 전의 중간자 역할.
@@ -240,21 +240,21 @@ class CoreDataViewModel: ObservableObject {
             }
         }
     }
- 
-
+    
+    
     //MARK: - TEST : coreData 안의 모든 데이터를 확인하기 위한 테스팅 함수
     func fetchAllQuintetData() -> [QuintetData]? {
-            let request: NSFetchRequest<QuintetData> = QuintetData.fetchRequest()
+        let request: NSFetchRequest<QuintetData> = QuintetData.fetchRequest()
+        
+        do {
+            let results = try container.viewContext.fetch(request)
             
-            do {
-                let results = try container.viewContext.fetch(request)
-
-                return results
-            } catch {
-                print("Error fetching data: \(error)")
-                return nil
-            }
+            return results
+        } catch {
+            print("Error fetching data: \(error)")
+            return nil
         }
+    }
     func checkAllCoreData() {
         if let allQuintetData = fetchAllQuintetData()  {
             print("------------------------")
