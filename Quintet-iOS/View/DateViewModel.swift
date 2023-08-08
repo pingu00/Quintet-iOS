@@ -21,8 +21,12 @@ class DateViewModel: ObservableObject {
     
     @Published var startOfWeek = Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
     
-    var selectedDate: Date {
+    var selectedMonthFirstDay: Date {
         Calendar.current.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 1))!
+    }
+    
+    var selectedYearFirstDay: Date {
+        Calendar.current.date(from: DateComponents(year: selectedYear, month: 1, day: 1))!
     }
 
     var weekButtonText: Text {
@@ -34,7 +38,7 @@ class DateViewModel: ObservableObject {
 
     private func updateStartOfWeek() {
         let calendar = Calendar.current
-        startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: selectedDate))!
+        startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: selectedMonthFirstDay))!
     }
         
     var yearMonthButtonText: Text {
