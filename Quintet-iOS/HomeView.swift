@@ -7,21 +7,9 @@
 
 import SwiftUI
 
-class HomeViewModel: ObservableObject {
-    @Published var selectDayIndex = 6
-    @Published var selectDateData: HappinessInfo?
-    var dateManager = DateManager()
-    let dummyData = DummyDataManager.getDummyData()
-    
-    func selectDay(index: Int) {
-        selectDayIndex = index
-        selectDateData = dummyData[index]
-    }
-}
-
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
-    
+    @StateObject private var dateViewModel = DateViewModel()
     var body: some View {
         VStack{
             NavigationView {
@@ -29,7 +17,7 @@ struct HomeView: View {
                     ScrollView {
                         VStack{
                             HStack{
-                                Text(viewModel.dateManager.getTodayText())
+                                Text(viewModel.getTodayString())
                                     .font(.system(size: 18))
                                     .fontWeight(.medium)
                                     .padding(.leading, 5)
@@ -41,19 +29,17 @@ struct HomeView: View {
                                 .padding(.vertical)
                             // MARK: - 요일 Section
                             HStack{
-                                
                                 ForEach(0..<7, id: \.self) { index in
-                                    WeekCellView(happinessInfo: viewModel.dummyData[index], is_selected: viewModel.selectDayIndex == index)
-                                        .onTapGesture {
-                                            viewModel.selectDay(index: index)
-                                        }
+                                    WeekCellView(viewModel: viewModel,date: viewModel.getDate(index: index), quintetData: viewModel.getSelectDayData(date: viewModel.getDate(index: index)), is_selected: viewModel.getDate(index: index) == viewModel.selectDay).onTapGesture {
+                                        viewModel.setSelectDay(index: index)
+                                    }
                                 }
                             }
                             .padding()
                             
                             // MARK: - 선택한 날짜에 퀸텟 기록이 있으면 보여주고, 없으면 없다는 메세지를 보여줌
-                            if let happinessData = viewModel.selectDateData?.happiness{
-                                HappinessView(happinessData: happinessData)
+                            if let quintetData = viewModel.getSelectDayData(date: viewModel.selectDay){
+                                HappinessView(quintetData: quintetData)
                             }
                             else{
                                 Text("퀸텟체크 기록이 없습니다.")
@@ -85,6 +71,9 @@ struct HomeView: View {
                                     .padding(.horizontal, 40)
                                     .padding(.vertical, 30)
                                 }
+                            }.onAppear{
+                                print("update QuintetData")
+                                viewModel.updateValuesFromCoreData(startDate: viewModel.startDate, endDate: viewModel.endDate)
                             }
                             .padding(.bottom)
                             
@@ -104,7 +93,7 @@ struct HomeView: View {
                                                     .fontWeight(.semibold)
                                                     .font(.system(size: 18))
                                                     .padding(.bottom, 0.5)
-                                                Text("2023. 06. 04 - 2023. 06. 10")
+                                                Text("\(viewModel.getDateString(date: viewModel.previousStartDate)) - \(viewModel.getDateString(date: viewModel.previousEndDate))")
                                                     .font(.system(size: 14))
                                             }.padding()
                                             Spacer()
@@ -180,10 +169,12 @@ struct HomeView: View {
     }
 }
 
+
 // MARK: - 요일 cell
 struct WeekCellView: View{
-    let dateManager = DateManager()
-    let happinessInfo : HappinessInfo
+    let viewModel: HomeViewModel
+    let date : Date
+    let quintetData : QuintetData?
     var is_selected: Bool //해당 셀이 선택 되었는지
     
     var body: some View{
@@ -192,11 +183,11 @@ struct WeekCellView: View{
                 .foregroundColor(getForegroundColor())
                 .frame(width: 40, height: 90)
             VStack{
-                Text(dateManager.get_week(dateStr: happinessInfo.date))
+                Text(viewModel.getWeekDayString(date: date))
                     .foregroundColor(getTextColor())
                     .padding(.bottom)
                     .fontWeight(.light)
-                Text(dateManager.get_day(dateStr: happinessInfo.date))
+                Text(viewModel.getDayString(date: date))
                     .foregroundColor(getTextColor())
                     .fontWeight(.semibold)
             }
@@ -208,19 +199,20 @@ struct WeekCellView: View{
         if is_selected{
             return Color("DarkQ")
         } else {
-            if(dateManager.is_today(dateStr: happinessInfo.date)) {
+            if(viewModel.isSameDay(date1: date, date2: Date())) { //오늘 날짜일 경우
                 return Color("DarkGray")
             }
             else {
-                if happinessInfo.happiness != nil{return Color("LightGray2")}
-                else{return .clear}
+                if quintetData != nil{
+                    return Color("LightGray2")
+                }else{return .clear}
             }
         }
     }
     
     //요일 박스의 글자 색을 결정한다. (흰색 또는 검은색)
     private func getTextColor() -> Color {
-        if is_selected || dateManager.is_today(dateStr: happinessInfo.date){
+        if is_selected || viewModel.isSameDay(date1: date, date2: Date()){
             return Color("White")
         } else {
             return Color("Black")
@@ -264,19 +256,19 @@ struct HappinessCell: View{
 
 // MARK: - 5가지 퀸텟 지수 Cell을 모아둔 view. 퀸텟 체크 기록이 있어야 나타난다.
 struct HappinessView: View{
-    let happinessData : [Int]
+    let quintetData : QuintetData
     
     var body: some View{
         HStack{
-            HappinessCell(type: "일", value: happinessData[0])
+            HappinessCell(type: "일", value: Int(quintetData.workPoint))
             Spacer()
-            HappinessCell(type: "건강", value: happinessData[1])
+            HappinessCell(type: "건강", value: Int(quintetData.healthPoint))
             Spacer()
-            HappinessCell(type: "가족", value: happinessData[2])
+            HappinessCell(type: "가족", value: Int(quintetData.familyPoint))
             Spacer()
-            HappinessCell(type: "관계", value: happinessData[3])
+            HappinessCell(type: "관계", value: Int(quintetData.relationshipPoint))
             Spacer()
-            HappinessCell(type: "자산", value: happinessData[4])
+            HappinessCell(type: "자산", value: Int(quintetData.assetPoint))
         }.padding(.horizontal)
     }
 }
