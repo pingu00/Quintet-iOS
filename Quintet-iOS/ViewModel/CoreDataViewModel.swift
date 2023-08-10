@@ -263,57 +263,196 @@ class CoreDataViewModel: ObservableObject {
 
 
 
+    //요소별 뷰 - Refactoring 해야함
+      func getHealthRecords(for year: Int, month: Int) -> [RecordMetaData] {
+          let calendar = Calendar.current
+          let startDateComponents = DateComponents(year: year, month: month, day: 1)
+          let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+          
+          if let startDate = calendar.date(from: startDateComponents),
+             let endDate = calendar.date(from: endDateComponents) {
+              
+              let quintetData = getQuintetData(from: startDate, to: endDate)
+              
+              let healthRecords = quintetData.filter { $0.healthPoint >= 0 }
+              
+              if healthRecords.count <= 5 {
+                  return healthRecords.map { data in
+                      let healthIcon = data.healthPoint == 0 ? "XOn" : (data.healthPoint == 1 ? "TriangleOn" : "CircleOn")
+                      let date = data.date ?? Date()
+                      let formattedDate = formatDate(date: date)
+                      return RecordMetaData(records: [
+                          Record(icon: healthIcon, title: formattedDate, subtitle: data.healthNote ?? "")
+                      ])
+                  }
+              } else {
+                  let sortedRecords = healthRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
+                  
+                  return sortedRecords.map { data in
+                      let healthIcon = data.healthPoint == 0 ? "XOn" : (data.healthPoint == 1 ? "TriangleOn" : "CircleOn")
+                      let date = data.date ?? Date()
+                      let formattedDate = formatDate(date: date)
+                      return RecordMetaData(records: [
+                          Record(icon: healthIcon, title: formattedDate, subtitle: data.healthNote ?? "")
+                      ])
+                  }
+              }
+          }
+          
+          return []
+      }
+      
+      func getAssetRecords(for year: Int, month: Int) -> [RecordMetaData] {
+          let calendar = Calendar.current
+          let startDateComponents = DateComponents(year: year, month: month, day: 1)
+          let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+          
+          if let startDate = calendar.date(from: startDateComponents),
+             let endDate = calendar.date(from: endDateComponents) {
+              
+              let quintetData = getQuintetData(from: startDate, to: endDate)
+              
+              let assetRecords = quintetData.filter { $0.assetPoint >= 0 }
+              
+              if assetRecords.count <= 5 {
+                  return assetRecords.map { data in
+                      let assetIcon = data.assetPoint == 0 ? "XOn" : (data.assetPoint == 1 ? "TriangleOn" : "CircleOn")
+                      let date = data.date ?? Date()
+                      let formattedDate = formatDate(date: date)
+                      return RecordMetaData(records: [
+                          Record(icon: assetIcon, title: formattedDate, subtitle: data.assetNote ?? "")
+                      ])
+                  }
+              } else {
+                  let sortedRecords = assetRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
+                  
+                  return sortedRecords.map { data in
+                      let assetIcon = data.assetPoint == 0 ? "XOn" : (data.assetPoint == 1 ? "TriangleOn" : "CircleOn")
+                      let date = data.date ?? Date()
+                      let formattedDate = formatDate(date: date)
+                      return RecordMetaData(records: [
+                          Record(icon: assetIcon, title: formattedDate, subtitle: data.assetNote ?? "")
+                      ])
+                  }
+              }
+          }
+          
+          return []
+      }
 
-    //요소별
-    
-    func getHealthRecords(for year: Int, month: Int) -> [RecordMetaData] {
-        return getElementData(for: year, month: month, filterKeyPath: \.healthPoint, filterNoteKeyPath: \.healthNote, title: "건강")
-    }
+      func getFamilyRecords(for year: Int, month: Int) -> [RecordMetaData] {
+          let calendar = Calendar.current
+          let startDateComponents = DateComponents(year: year, month: month, day: 1)
+          let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+          
+          if let startDate = calendar.date(from: startDateComponents),
+             let endDate = calendar.date(from: endDateComponents) {
+              
+              let quintetData = getQuintetData(from: startDate, to: endDate)
+              
+              let familyRecords = quintetData.filter { $0.familyPoint >= 0 }
+              
+              if familyRecords.count <= 5 {
+                  return familyRecords.map { data in
+                      let familyIcon = data.familyPoint == 0 ? "XOn" : (data.familyPoint == 1 ? "TriangleOn" : "CircleOn")
+                      let date = data.date ?? Date()
+                      let formattedDate = formatDate(date: date)
+                      return RecordMetaData(records: [
+                          Record(icon: familyIcon, title: formattedDate, subtitle: data.familyNote ?? "")
+                      ])
+                  }
+              } else {
+                  let sortedRecords = familyRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
+                  
+                  return sortedRecords.map { data in
+                      let familyIcon = data.familyPoint == 0 ? "XOn" : (data.familyPoint == 1 ? "TriangleOn" : "CircleOn")
+                      let date = data.date ?? Date()
+                      let formattedDate = formatDate(date: date)
+                      return RecordMetaData(records: [
+                          Record(icon: familyIcon, title: formattedDate, subtitle: data.familyNote ?? "")
+                      ])
+                  }
+              }
+          }
+          
+          return []
+      }
 
-    func getAssetRecords(for year: Int, month: Int) -> [RecordMetaData] {
-        return getElementData(for: year, month: month, filterKeyPath: \.assetPoint, filterNoteKeyPath: \.assetNote, title: "자산")
-    }
+      func getRelationshipRecords(for year: Int, month: Int) -> [RecordMetaData] {
+          let calendar = Calendar.current
+          let startDateComponents = DateComponents(year: year, month: month, day: 1)
+          let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+          
+          if let startDate = calendar.date(from: startDateComponents),
+             let endDate = calendar.date(from: endDateComponents) {
+              
+              let quintetData = getQuintetData(from: startDate, to: endDate)
+              
+              let relationshipRecords = quintetData.filter { $0.relationshipPoint >= 0 }
+              
+              if relationshipRecords.count <= 5 {
+                  return relationshipRecords.map { data in
+                      let relationshipIcon = data.relationshipPoint == 0 ? "XOn" : (data.relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
+                      let date = data.date ?? Date()
+                      let formattedDate = formatDate(date: date)
+                      return RecordMetaData(records: [
+                          Record(icon: relationshipIcon, title: formattedDate, subtitle: data.relationshipNote ?? "")
+                      ])
+                  }
+              } else {
+                  let sortedRecords = relationshipRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
+                  
+                  return sortedRecords.map { data in
+                      let relationshipIcon = data.relationshipPoint == 0 ? "XOn" : (data.relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
+                      let date = data.date ?? Date()
+                      let formattedDate = formatDate(date: date)
+                      return RecordMetaData(records: [
+                          Record(icon: relationshipIcon, title: formattedDate, subtitle: data.relationshipNote ?? "")
+                      ])
+                  }
+              }
+          }
+          
+          return []
+      }
 
-    func getFamilyRecords(for year: Int, month: Int) -> [RecordMetaData] {
-        return getElementData(for: year, month: month, filterKeyPath: \.familyPoint, filterNoteKeyPath: \.familyNote, title: "가족")
-    }
-
-    func getRelationshipRecords(for year: Int, month: Int) -> [RecordMetaData] {
-        return getElementData(for: year, month: month, filterKeyPath: \.relationshipPoint, filterNoteKeyPath: \.relationshipNote, title: "관계")
-    }
-
-    func getWorkRecords(for year: Int, month: Int) -> [RecordMetaData] {
-        return getElementData(for: year, month: month, filterKeyPath: \.workPoint, filterNoteKeyPath: \.workNote, title: "일")
-    }
-
-    
-    func getElementData(for year: Int, month: Int, filterKeyPath: KeyPath<QuintetData, Int64>, filterNoteKeyPath: KeyPath<QuintetData, String?>, title: String) -> [RecordMetaData] {
-        let calendar = Calendar.current
-        let startDateComponents = DateComponents(year: year, month: month, day: 1)
-        let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
-        
-        guard let startDate = calendar.date(from: startDateComponents),
-              let endDate = calendar.date(from: endDateComponents) else {
-            return []
-        }
-        
-        let quintetData = getQuintetData(from: startDate, to: endDate)
-        
-        let filteredRecords = quintetData.filter { $0[keyPath: filterKeyPath] >= 0 }
-        
-        let sortedRecords = filteredRecords.sorted(by: { ($0.date ?? Date()) < ($1.date ?? Date()) }).prefix(5)
-        
-        return sortedRecords.map { data in
-            let icon = data[keyPath: filterKeyPath] == 0 ? "XOn" : (data[keyPath: filterKeyPath] == 1 ? "TriangleOn" : "CircleOn")
-            let date = data.date ?? Date()
-            let subtitle = data[keyPath: filterKeyPath] == 0 ? nil : data[keyPath: filterNoteKeyPath]
-            let title = formatDate(date: date)
-            
-            return RecordMetaData(records: [
-                Record(icon: icon, title: title, subtitle: subtitle ?? "")
-            ])
-        }
-    }
+      func getWorkRecords(for year: Int, month: Int) -> [RecordMetaData] {
+          let calendar = Calendar.current
+          let startDateComponents = DateComponents(year: year, month: month, day: 1)
+          let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+          
+          if let startDate = calendar.date(from: startDateComponents),
+             let endDate = calendar.date(from: endDateComponents) {
+              
+              let quintetData = getQuintetData(from: startDate, to: endDate)
+              
+              let workRecords = quintetData.filter { $0.workPoint >= 0 }
+              
+              if workRecords.count <= 5 {
+                  return workRecords.map { data in
+                      let workIcon = data.workPoint == 0 ? "XOn" : (data.workPoint == 1 ? "TriangleOn" : "CircleOn")
+                      let date = data.date ?? Date()
+                      let formattedDate = formatDate(date: date)
+                      return RecordMetaData(records: [
+                          Record(icon: workIcon, title: formattedDate, subtitle: data.workNote ?? "")
+                      ])
+                  }
+              } else {
+                  let sortedRecords = workRecords.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5)
+                  
+                  return sortedRecords.map { data in
+                      let workIcon = data.workPoint == 0 ? "XOn" : (data.workPoint == 1 ? "TriangleOn" : "CircleOn")
+                      let date = data.date ?? Date()
+                      let formattedDate = formatDate(date: date)
+                      return RecordMetaData(records: [
+                          Record(icon: workIcon, title: formattedDate, subtitle: data.workNote ?? "")
+                      ])
+                  }
+              }
+          }
+          
+          return []
+      }
 
     //날짜를 2023.08.10 처럼 바꿔주는 함수
     func formatDate(date: Date) -> String {
@@ -322,7 +461,7 @@ class CoreDataViewModel: ObservableObject {
         let month = calendar.component(.month, from: date)
         let day = calendar.component(.day, from: date)
         
-        return String(format: "%04d.%02d.%02d", year, month, day)
+        return String(format: "%04d. %02d. %02d", year, month, day)
     }
     
     

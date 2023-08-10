@@ -37,8 +37,8 @@ struct RecordView: View {
                             HStack {
                                 Spacer()
                                 Text("기록 확인하기")
-                                    .font(.system(size: 30))
-                                    .fontWeight(.heavy)
+                                    .font(.system(size: 28))
+                                    .fontWeight(.bold)
                                 Spacer()
                             }
                             
@@ -73,7 +73,6 @@ struct RecordView: View {
                                         }
                                     }
                                 }
-                                
                                 .padding(.top, 10)
                                 .padding(.bottom, 10)
                                 .padding(.horizontal, 30)
@@ -86,7 +85,6 @@ struct RecordView: View {
                         
                         //요소별
                         if (isShowingBtn == true) {
-                            
                             VStack{
                                 RecordElementView(recordIndex: .None)
                                     .padding(.bottom, 40)
@@ -97,7 +95,6 @@ struct RecordView: View {
                         else {
                             CalendarView(selectedYear: $viewModel.selectedYear, selectedMonth: $viewModel.selectedMonth, currentDate: $currentDate)
                                 .padding(.horizontal, 20)
-                            
                         }
                     }
                 }
@@ -147,7 +144,6 @@ struct YearPicker_: View {
 }
 
 struct MonthPicker_: View {
-
     @Binding var selectedMonth: Int
     @ObservedObject var viewModel: DateViewModel
 
@@ -206,7 +202,6 @@ struct YearMonthPickerPopup_: View {
                             Text("취소")
                                 .foregroundColor(.black)
                                 .font(.system(size: 15))
-                            
                         )
                 }
                 Button(action: {
@@ -254,13 +249,13 @@ struct recordCard: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .fontWeight(.semibold)
+                    .fontWeight(.medium)
                     .font(.system(size: 20))
                     .foregroundColor(.black)
 
                 if !subtitle.isEmpty {
                         Text(subtitle)
-                            .fontWeight(.medium)
+                            .fontWeight(.regular)
                             .font(.system(size: 15))
                             .foregroundColor(.black)
                             .lineLimit(nil)
@@ -268,7 +263,6 @@ struct recordCard: View {
                 }
             }
             .frame(minHeight: 55)
-
             Spacer()
         }
         .frame(width: 320)
@@ -279,7 +273,6 @@ struct recordCard: View {
 }
 
 struct RecordElementView : View {
-    
     @State var recordIndex: recordElement
     @State private var isShowPopup = false
     @StateObject private var viewModel = DateViewModel()
@@ -299,42 +292,6 @@ struct RecordElementView : View {
     var familyRecords: [RecordMetaData] {
             return coreDataViewModel.getFamilyRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
         }
-    
-    @ViewBuilder
-    private func commonView(for records: [RecordMetaData], buttonText: String, buttonImage: String) -> some View {
-        VStack {
-            Divider()
-                .padding(.horizontal)
-            
-            Button(action: {
-                isShowPopup = true
-            }) {
-                HStack {
-                    viewModel.yearMonthButtonTextRecordVer
-                        .foregroundColor(Color.black)
-                    
-                    Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
-                        .foregroundColor(.black)
-                        .font(.system(size: 15))
-                }
-                .padding(.top, 10)
-                .padding(.trailing, 180)
-            }
-            .sheet(isPresented: $isShowPopup) {
-                YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
-                    .frame(width: 300, height: 400)
-                    .background(BackgroundClearView_())
-                    .ignoresSafeArea()
-            }
-            
-            ForEach(records) { metaData in
-                ForEach(metaData.records) { record in
-                    recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                }
-                .padding(.horizontal, 20)
-            }
-        }
-    }
     
     var body: some View {
         VStack {
@@ -388,22 +345,223 @@ struct RecordElementView : View {
             .cornerRadius(20)
         }
         
-        switch recordIndex {
-        case .health:
-            commonView(for: healthRecords, buttonText: "건강", buttonImage: "cross.circle.fill")
-        case .work:
-            commonView(for: workRecords, buttonText: "일", buttonImage: "pencil")
-        case .money:
-            commonView(for: assetRecords, buttonText: "자산", buttonImage: "dollarsign.circle.fill")
-        case .relation:
-            commonView(for: relationshipRecords, buttonText: "관계", buttonImage: "person.3.fill")
-        case .family:
-            commonView(for: familyRecords, buttonText: "가족", buttonImage: "heart.fill")
-        case .None:
-            EmptyView()
-        }
+        if self.recordIndex == .health {
+                   VStack{
+                       Divider()
+                           .padding(.horizontal)
+                       
+                       Button(action: {
+                           isShowPopup = true
+                       }) {
+                           HStack {
+                               
+                               viewModel.yearMonthButtonTextRecordVer
+                                   .foregroundColor(Color.black)
+                               
+                               Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                                   .foregroundColor(.black)
+                                   .font(.system(size: 15))
+                               
+                           }
+                           .padding(.top, 10)
+                           .padding(.trailing, 180)
+                           
+                           
+                       }.sheet(isPresented: $isShowPopup) {
+                           YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
+                               .frame(width: 300, height: 400)
+                               .background(BackgroundClearView_())
+                               .ignoresSafeArea()
+                       }
+                       
+                       ForEach(healthRecords) { metaData in
+                           ForEach(metaData.records) { record in
+                               recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                           }
+                           
+                           .padding(.horizontal, 20)
+                       }
+                   }
+                   
+                   
+                   
+               }
+               
+               if self.recordIndex == .work {
+                   VStack{
+                       
+                       Divider()
+                           .padding(.horizontal)
+                       
+                       Button(action: {
+                           isShowPopup = true
+                       }) {
+                           HStack {
+                               
+                               viewModel.yearMonthButtonTextRecordVer
+                                   .foregroundColor(Color.black)
+                               
+                               Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                                   .foregroundColor(.black)
+                                   .font(.system(size: 15))
+                               
+                           }
+                           .padding(.top, 10)
+                           .padding(.trailing, 180)
+                           
+                           
+                       }.sheet(isPresented: $isShowPopup) {
+                           YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
+                               .frame(width: 300, height: 400)
+                               .background(BackgroundClearView_())
+                               .ignoresSafeArea()
+                       }
+                       
+                       ForEach(workRecords) { metaData in
+                           ForEach(metaData.records) { record in
+                               recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                           }
+                           
+                           .padding(.horizontal, 20)
+                       }
+                   }
+                   
+                   
+                   
+               }
+               
+               if self.recordIndex == .money {
+                   VStack{
+                       
+                       Divider()
+                           .padding(.horizontal)
+                       
+                       Button(action: {
+                           isShowPopup = true
+                       }) {
+                           HStack {
+                               
+                               viewModel.yearMonthButtonTextRecordVer
+                                   .foregroundColor(Color.black)
+                               
+                               Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                                   .foregroundColor(.black)
+                                   .font(.system(size: 15))
+                               
+                               
+                           }
+                           .padding(.top, 10)
+                           .padding(.trailing, 180)
+                           
+                           
+                       }.sheet(isPresented: $isShowPopup) {
+                           YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
+                               .frame(width: 300, height: 400)
+                               .background(BackgroundClearView_())
+                               .ignoresSafeArea()
+                       }
+                       
+                       ForEach(assetRecords) { metaData in
+                           ForEach(metaData.records) { record in
+                               recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                           }
+                           
+                           .padding(.horizontal, 20)
+                       }
+                   }
+                   
+                   
+                   
+               }
+               
+               if self.recordIndex == .relation {
+                   VStack{
+                       
+                       Divider()
+                           .padding(.horizontal)
+                       
+                       Button(action: {
+                           isShowPopup = true
+                       }) {
+                           HStack {
+                               
+                               viewModel.yearMonthButtonTextRecordVer
+                                   .foregroundColor(Color.black)
+                               
+                               Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                                   .foregroundColor(.black)
+                                   .font(.system(size: 15))
+                    
+                           }
+                           .padding(.top, 10)
+                           .padding(.trailing, 180)
+                           
+                           
+                       }.sheet(isPresented: $isShowPopup) {
+                           YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
+                               .frame(width: 300, height: 400)
+                               .background(BackgroundClearView_())
+                               .ignoresSafeArea()
+                       }
+                       
+                       ForEach(relationshipRecords) { metaData in
+                           ForEach(metaData.records) { record in
+                               recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                           }
+                           .padding(.horizontal, 20)
+                       }
+                   }
+                   
+                   
+                   
+               }
+               
+               if self.recordIndex == .family {
+                   VStack{
+                       Divider()
+                           .padding(.horizontal)
+                       
+                       Button(action: {
+                           isShowPopup = true
+                       }) {
+                           HStack {
+                               
+                               viewModel.yearMonthButtonTextRecordVer
+                                   .foregroundColor(Color.black)
+                               
+                               Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                                   .foregroundColor(.black)
+                                   .font(.system(size: 15))
+                               
+                               
+                           }
+                           .padding(.top, 10)
+                           .padding(.trailing, 180)
+                           
+                           
+                       }.sheet(isPresented: $isShowPopup) {
+                           YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
+                               .frame(width: 300, height: 400)
+                               .background(BackgroundClearView_())
+                               .ignoresSafeArea()
+                       }
+                       
+                       ForEach(familyRecords) { metaData in
+                           ForEach(metaData.records) { record in
+                               recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                           }
+                           
+                           .padding(.horizontal, 20)
+                       }
+                   }
+                   
+                   
+                   
+               }
+                   
+           }
+        
     }
-}
                         
     struct ElementCard : View {
         var icon : String
@@ -469,6 +627,7 @@ struct RecordElementView : View {
         }
         
     }
+
     
 struct CalendarView: View {
     
@@ -601,11 +760,6 @@ struct CalendarView: View {
         }
         .padding(.vertical, 4)
     }
-
-    func isSameMonth(date1: Date, date2: Date) -> Bool {
-        let calendar = Calendar.current
-        return calendar.isDate(date1, equalTo: date2, toGranularity: .month)
-    }
     
     func isSameDay(date1: Date, date2: Date) -> Bool {
         let calendar = Calendar.current
@@ -613,12 +767,10 @@ struct CalendarView: View {
         return calendar.isDate(date1, inSameDayAs: date2)
     }
     
-    //현재 날짜를 self.currentMonth만큼의 월(month)을 더한 날짜를 반환하는 함수
     func getCurrentMonth() -> Date {
         
         let calendar = Calendar.current
         
-        //Getting Current Month Date...
         guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else {
             return Date()
         }
