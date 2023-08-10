@@ -649,9 +649,7 @@ struct CalendarView: View {
             HStack(spacing: -7){
                 
                 Button(action: {
-                    
                     isShowPopup = true
-                    
                 }) {
                     viewModel.yearMonthButtonTextRecordVer
                         .padding(.horizontal)
@@ -686,13 +684,13 @@ struct CalendarView: View {
             
             let columns = Array(repeating: GridItem(.fixed(43)), count: 7)
             
-            LazyVGrid(columns: columns, spacing: 8) {
+            LazyVGrid(columns: columns, spacing: 7) {
                 ForEach(extractDate()) { value in
                     if value.day != -1 {
                         CardView(value: value)
                             .background (
                                 Circle()
-                                    .frame(width: 40, height: 40)
+                                    .frame(width: 43, height: 43)
                                     .foregroundColor(Color("DarkQ"))
                                     .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
                             )
@@ -700,12 +698,11 @@ struct CalendarView: View {
                                 currentDate = value.date
                             }
                     } else {
-                        Color.clear // 유효하지 않은 날짜의 경우 빈 공간
+                        Color.clear /
                     }
                 }
             }
             .fontWeight(.light)
-
         }
     
             if let task = coreDataViewModel.getRecordMetaData(selectedYear: selectedYear, selectedMonth: selectedMonth).first (where: { task in
@@ -740,7 +737,7 @@ struct CalendarView: View {
                 }) {
                     Circle()
                         .fill(isSameDay(date1: task.date, date2: currentDate) ? .white : Color("LightGray2") )
-                        .frame(width: 40, height: 40)
+                        .frame(width: 43, height: 43)
                         .opacity(isSameDay(date1: task.date, date2: currentDate) ? 0 : 1)
                         .padding(.vertical, -5)
                         .onTapGesture {
