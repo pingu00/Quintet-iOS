@@ -28,7 +28,6 @@ class CoreDataViewModel: ObservableObject {
         }
         today = Date()
     }
-   
     
     // 코어데이터에서의 영구 저장소에서 데이터를 비교하거나 가져올때 "일(day)" 을 필터링 하기위해 범위 설정하는 부분을 함수로 따로 구현
     private func createPredicate(from startDate: Date, to endDate: Date) -> NSPredicate {
@@ -37,8 +36,6 @@ class CoreDataViewModel: ObservableObject {
         let nextDate = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: endDate)!)
         return NSPredicate(format: "(date >= %@) AND (date < %@)", currentDate as NSDate, nextDate as NSDate)
     }
-
-
 
     
     // 현재 클래스의 프로퍼티인 currentQuintetData를 패치
@@ -225,6 +222,7 @@ class CoreDataViewModel: ObservableObject {
         var currentDate = startDate
         
         while currentDate <= lastDayOfMonth {
+            
             let quintetDataArray = getQuintetData(from: currentDate, to: calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate)
             
             var recordsForDate: [Record] = []
@@ -249,18 +247,22 @@ class CoreDataViewModel: ObservableObject {
                 }
             }
             
-            if !recordsForDate.isEmpty && currentDate == today {
-                let daysFromToday = calendar.dateComponents([.day], from: currentDate, to: today).day ?? 0
-                
-                let metaData = CalendarMetaData(records: recordsForDate, date: currentDate, offset: daysFromToday)
+            let daysFromToday = calendar.dateComponents([.day], from: currentDate, to: today).day ?? 0
+            let metaData = CalendarMetaData(records: recordsForDate, date: quintetDataArray.first?.date ?? currentDate, offset: daysFromToday)
+            
+            if !recordsForDate.isEmpty {
                 calendarMetaDataArray.append(metaData)
             }
             
             currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
         }
         
+        print(calendarMetaDataArray)
         return calendarMetaDataArray
     }
+
+
+
 
     //요소별
     
@@ -322,4 +324,6 @@ class CoreDataViewModel: ObservableObject {
         
         return String(format: "%04d.%02d.%02d", year, month, day)
     }
+    
+    
 }

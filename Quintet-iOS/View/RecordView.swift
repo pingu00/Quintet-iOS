@@ -25,9 +25,9 @@ struct RecordView: View {
     @State private var isShowingBtn = false
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
     @State private var selectedMonth = Calendar.current.component(.month, from: Date())
+   
     
     var body: some View {
-     
             ZStack {
                 Color("Background")
                     .ignoresSafeArea(.all)
@@ -287,16 +287,16 @@ struct RecordElementView : View {
     var healthRecords: [RecordMetaData] {
             return coreDataViewModel.getHealthRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
         }
-        var workRecords: [RecordMetaData] {
+    var workRecords: [RecordMetaData] {
             return coreDataViewModel.getWorkRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
         }
-        var relationshipRecords: [RecordMetaData] {
+    var relationshipRecords: [RecordMetaData] {
             return coreDataViewModel.getRelationshipRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
         }
-        var assetRecords: [RecordMetaData] {
+    var assetRecords: [RecordMetaData] {
             return coreDataViewModel.getAssetRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
         }
-        var familyRecords: [RecordMetaData] {
+    var familyRecords: [RecordMetaData] {
             return coreDataViewModel.getFamilyRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
         }
     
@@ -388,7 +388,6 @@ struct RecordElementView : View {
             .cornerRadius(20)
         }
         
-        // Use extracted common view components for each record type
         switch recordIndex {
         case .health:
             commonView(for: healthRecords, buttonText: "건강", buttonImage: "cross.circle.fill")
