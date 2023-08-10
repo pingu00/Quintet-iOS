@@ -698,7 +698,7 @@ struct CalendarView: View {
                                 currentDate = value.date
                             }
                     } else {
-                        Color.clear /
+                        Color.clear
                     }
                 }
             }
