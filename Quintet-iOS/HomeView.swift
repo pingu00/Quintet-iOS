@@ -24,158 +24,157 @@ struct HomeView: View {
     
     var body: some View {
         VStack{
-            NavigationView {
-                VStack{
-                    ScrollView {
-                        VStack{
-                            HStack{
-                                Text(viewModel.dateManager.getTodayText())
-                                    .font(.system(size: 18))
-                                    .fontWeight(.medium)
-                                    .padding(.leading, 5)
-                                Spacer()
-                            }
-                            Divider()
-                                .frame(height: 0.6)
-                                .background(Color("LightGray"))
-                                .padding(.vertical)
-                            // MARK: - 요일 Section
-                            HStack{
-                                
-                                ForEach(0..<7, id: \.self) { index in
-                                    WeekCellView(happinessInfo: viewModel.dummyData[index], is_selected: viewModel.selectDayIndex == index)
-                                        .onTapGesture {
-                                            viewModel.selectDay(index: index)
-                                        }
-                                }
-                            }
-                            .padding()
+            VStack{
+                ScrollView {
+                    VStack{
+                        HStack{
+                            Text(viewModel.dateManager.getTodayText())
+                                .font(.system(size: 18))
+                                .fontWeight(.medium)
+                                .padding(.leading, 5)
+                            Spacer()
+                        }
+                        Divider()
+                            .frame(height: 0.6)
+                            .background(Color("LightGray"))
+                            .padding(.vertical)
+                        // MARK: - 요일 Section
+                        HStack{
                             
-                            // MARK: - 선택한 날짜에 퀸텟 기록이 있으면 보여주고, 없으면 없다는 메세지를 보여줌
-                            if let happinessData = viewModel.selectDateData?.happiness{
-                                HappinessView(happinessData: happinessData)
-                            }
-                            else{
-                                Text("퀸텟체크 기록이 없습니다.")
-                            }
-                            Divider()
-                                .frame(height: 0.6)
-                                .background(Color("LightGray"))
-                                .padding(.vertical)
-                            
-                            // MARK: - 오늘의 퀸텟 체크 Section
-                            ZStack{
-                                NavigationLink(destination: QuintetCheckView()){
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .foregroundColor(.white)
-                                }
-                                HStack{
-                                    Text("오늘의 \n퀸텟체크")
-                                        .font(.system(size: 28))
-                                        .fontWeight(.bold)
-                                        .padding(.horizontal, 40)
-                                        .padding(.vertical, 30)
-                                    Spacer()
-                                    VStack{
-                                        Spacer()
-                                        Image(systemName: "arrow.right")
-                                            .tint(.black)
-                                            .font(.title)
+                            ForEach(0..<7, id: \.self) { index in
+                                WeekCellView(happinessInfo: viewModel.dummyData[index], is_selected: viewModel.selectDayIndex == index)
+                                    .onTapGesture {
+                                        viewModel.selectDay(index: index)
                                     }
-                                    .padding(.horizontal, 40)
-                                    .padding(.vertical, 30)
-                                }
                             }
-                            .padding(.bottom)
-                            
-                            // MARK: - 분석확인, 기록확인 Section
-                            ZStack{
+                        }
+                        .padding()
+                        
+                        // MARK: - 선택한 날짜에 퀸텟 기록이 있으면 보여주고, 없으면 없다는 메세지를 보여줌
+                        if let happinessData = viewModel.selectDateData?.happiness{
+                            HappinessView(happinessData: happinessData)
+                        }
+                        else{
+                            Text("퀸텟체크 기록이 없습니다.")
+                        }
+                        Divider()
+                            .frame(height: 0.6)
+                            .background(Color("LightGray"))
+                            .padding(.vertical)
+                        
+                        // MARK: - 오늘의 퀸텟 체크 Section
+                        ZStack{
+                            NavigationLink(destination: QuintetCheckView()){
                                 RoundedRectangle(cornerRadius: 10)
                                     .foregroundColor(.white)
+                            }
+                            HStack{
+                                Text("오늘의 \n퀸텟체크")
+                                    .font(.system(size: 28))
+                                    .fontWeight(.bold)
+                                    .padding(.horizontal, 40)
+                                    .padding(.vertical, 30)
+                                Spacer()
                                 VStack{
-                                    ZStack{
-                                        NavigationLink(destination: {StatisticsView()}){
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .foregroundColor(.white)
-                                        }
-                                        HStack(alignment: .center){
-                                            VStack(alignment: .leading){
-                                                Text("지난주 분석 확인하기")
-                                                    .fontWeight(.semibold)
-                                                    .font(.system(size: 18))
-                                                    .padding(.bottom, 0.5)
-                                                Text("2023. 06. 04 - 2023. 06. 10")
-                                                    .font(.system(size: 14))
-                                            }.padding()
-                                            Spacer()
-                                            Image(systemName: "chevron.right")
-                                                .tint(.black)
-                                                .font(.title)
-                                                .padding()
-                                        }
-                                    }.padding()
-                                    
-                                    Divider()
-                                        .background(Color("LightGray"))
-                                        .padding(.horizontal)
-                                    ZStack{
-                                        NavigationLink(destination: RecordView()){
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .foregroundColor(.white)
-                                        }
-                                        HStack(alignment: .center){
-                                            Text("기록 확인하기")
+                                    Spacer()
+                                    Image(systemName: "arrow.right")
+                                        .tint(.black)
+                                        .font(.title)
+                                }
+                                .padding(.horizontal, 40)
+                                .padding(.vertical, 30)
+                            }
+                        }
+                        .padding(.bottom)
+                        
+                        // MARK: - 분석확인, 기록확인 Section
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundColor(.white)
+                            VStack{
+                                ZStack{
+                                    NavigationLink(destination: {StatisticsView()}){
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .foregroundColor(.white)
+                                    }
+                                    HStack(alignment: .center){
+                                        VStack(alignment: .leading){
+                                            Text("지난주 분석 확인하기")
                                                 .fontWeight(.semibold)
                                                 .font(.system(size: 18))
-                                                .padding()
-                                            
-                                            Spacer()
-                                            Image(systemName: "chevron.right")
-                                                .tint(.black)
-                                                .font(.title)
-                                                .padding()
-                                            
+                                                .padding(.bottom, 0.5)
+                                            Text("2023. 06. 04 - 2023. 06. 10")
+                                                .font(.system(size: 14))
                                         }.padding()
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .tint(.black)
+                                            .font(.title)
+                                            .padding()
                                     }
-                                }.padding(.bottom, 10)
-                            }
-                            
-                            // MARK: - 추천 영상 Section
-                            HStack{
-                                Text("추천 영상으로\n행복을 챙겨요")
-                                    .fontWeight(.semibold)
-                                    .font(.system(size: 30))
-                                    .padding()
-                                Spacer()
-                            }.padding(.vertical, 10)
-                            
-                            VStack{
-                                HStack{
-                                    //각 영상 cell을 등록
-                                    VideoCellView(videoURL: "video1", videoTitle: "건강한 삶을 위한 규칙적인 식습관", thumbnail: "video1")
-                                        .padding(.leading)
-                                    Spacer()
-                                        .frame(width: 10)
-                                    VideoCellView(videoURL: "video2", videoTitle: "인간관계에서 편해지는 법", thumbnail: "video2")
-                                        .padding(.trailing)
-                                }.padding(.bottom)
-                                VideoCellView(videoURL: "video3", videoTitle: "월급의 몇 %를 저축하고 있나요?", thumbnail: "video3")
+                                }.padding()
+                                
+                                Divider()
+                                    .background(Color("LightGray"))
                                     .padding(.horizontal)
-                            }
+                                ZStack{
+                                    NavigationLink(destination: RecordView()){
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .foregroundColor(.white)
+                                    }
+                                    HStack(alignment: .center){
+                                        Text("기록 확인하기")
+                                            .fontWeight(.semibold)
+                                            .font(.system(size: 18))
+                                            .padding()
+                                        
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .tint(.black)
+                                            .font(.title)
+                                            .padding()
+                                        
+                                    }.padding()
+                                }
+                            }.padding(.bottom, 10)
                         }
-                        .padding(20)
+                        
+                        // MARK: - 추천 영상 Section
+                        HStack{
+                            Text("추천 영상으로\n행복을 챙겨요")
+                                .fontWeight(.semibold)
+                                .font(.system(size: 30))
+                                .padding()
+                            Spacer()
+                        }.padding(.vertical, 10)
+                        
+                        VStack{
+                            HStack{
+                                //각 영상 cell을 등록
+                                VideoCellView(videoURL: "video1", videoTitle: "건강한 삶을 위한 규칙적인 식습관", thumbnail: "video1")
+                                    .padding(.leading)
+                                Spacer()
+                                    .frame(width: 10)
+                                VideoCellView(videoURL: "video2", videoTitle: "인간관계에서 편해지는 법", thumbnail: "video2")
+                                    .padding(.trailing)
+                            }.padding(.bottom)
+                            VideoCellView(videoURL: "video3", videoTitle: "월급의 몇 %를 저축하고 있나요?", thumbnail: "video3")
+                                .padding(.horizontal)
+                        }
                     }
+                    .padding(20)
                 }
-                .background(Color("Background"))
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink(destination: MenuView()) {
-                            Image(systemName: "line.3.horizontal").padding()
-                                .tint(.black)
-                        }
+            }
+            .background(Color("Background"))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: MenuView()) {
+                        Image(systemName: "line.3.horizontal").padding()
+                            .tint(.black)
                     }
                 }
             }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
