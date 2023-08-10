@@ -22,9 +22,7 @@
 		28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */; };
 		311198D72A74F8C900D92E91 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D62A74F8C900D92E91 /* DateManager.swift */; };
 		311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D82A74FAFE00D92E91 /* DummyDataManager.swift */; };
-		31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31692C8F2A84A73100BC12EF /* HomeViewModel.swift */; };
 		31BF652E2A7B7ECD0014EC90 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BF652D2A7B7ECD0014EC90 /* LoginView.swift */; };
-		31FDB2062A84F7390091A899 /* DateProcessingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FDB2052A84F7390091A899 /* DateProcessingModel.swift */; };
 		4ED547B62A76845B002A5351 /* RecordViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED547B52A76845B002A5351 /* RecordViewData.swift */; };
 		AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E372A727B020025F8A7 /* DateViewModel.swift */; };
 		AA086E3C2A72E1C20025F8A7 /* StatisticsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */; };
@@ -47,9 +45,7 @@
 		28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetPointPer.swift; sourceTree = "<group>"; };
 		311198D62A74F8C900D92E91 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		311198D82A74FAFE00D92E91 /* DummyDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDataManager.swift; sourceTree = "<group>"; };
-		31692C8F2A84A73100BC12EF /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		31BF652D2A7B7ECD0014EC90 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		31FDB2052A84F7390091A899 /* DateProcessingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProcessingModel.swift; sourceTree = "<group>"; };
 		4ED547B52A76845B002A5351 /* RecordViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewData.swift; sourceTree = "<group>"; };
 		AA086E372A727B020025F8A7 /* DateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewModel.swift; sourceTree = "<group>"; };
 		AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCellViewModel.swift; sourceTree = "<group>"; };
@@ -109,10 +105,8 @@
 				311198D62A74F8C900D92E91 /* DateManager.swift */,
 				311198D82A74FAFE00D92E91 /* DummyDataManager.swift */,
 				28C3645A2A5FD5DB00847A88 /* HomeView.swift */,
-				31692C8F2A84A73100BC12EF /* HomeViewModel.swift */,
 				28C3645E2A5FD63600847A88 /* View */,
 				28997E832A73FA4600ED676C /* ViewModel */,
-				31FDB2042A84F7080091A899 /* Model */,
 				28C364502A5FD58F00847A88 /* Assets.xcassets */,
 				28C364522A5FD58F00847A88 /* Preview Content */,
 			);
@@ -140,14 +134,6 @@
 				31BF652D2A7B7ECD0014EC90 /* LoginView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		31FDB2042A84F7080091A899 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				31FDB2052A84F7390091A899 /* DateProcessingModel.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,9 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				311198D72A74F8C900D92E91 /* DateManager.swift in Sources */,
-				31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */,
 				28C3645B2A5FD5DB00847A88 /* HomeView.swift in Sources */,
-				31FDB2062A84F7390091A899 /* DateProcessingModel.swift in Sources */,
 				311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */,
 				28C364662A5FD63600847A88 /* MenuView.swift in Sources */,
 				28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */,
