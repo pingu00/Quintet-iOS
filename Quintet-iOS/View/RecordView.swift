@@ -16,21 +16,24 @@ enum recordElement {
 }
 
 struct RecordView: View {
-
+    
+    @Environment(\.dismiss) private var dismiss
     @State var currentDate: Date = Date()
     @State private var selectedDate = Date()
     @StateObject private var viewModel = DateViewModel()
+    @StateObject private var coreDataViewModel = CoreDataViewModel()
     @State private var isShowingBtn = false
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
     @State private var selectedMonth = Calendar.current.component(.month, from: Date())
-
+    
     var body: some View {
-        ZStack {
-            Color("Background")
-                .ignoresSafeArea(.all)
-            ScrollView {
-                VStack(spacing: 35) {
-                    VStack {
+     
+            ZStack {
+                Color("Background")
+                    .ignoresSafeArea(.all)
+                ScrollView {
+                    VStack(spacing: 35) {
+                        VStack {
                             HStack {
                                 Spacer()
                                 Text("기록 확인하기")
@@ -38,79 +41,92 @@ struct RecordView: View {
                                     .fontWeight(.heavy)
                                 Spacer()
                             }
-
+                            
                             VStack {
                                 ZStack {
                                     Rectangle()
                                         .frame(width: 300, height: 40)
                                         .cornerRadius(25)
                                         .foregroundColor(Color("LightGray2")) //LightGray2 ?
-
+                                    
                                     Rectangle()
                                         .frame(width: 155, height: 30)
                                         .cornerRadius(25)
                                         .foregroundColor(Color("DarkGray"))
                                         .offset(x: isShowingBtn ? 68 : -68, y: 0)
-
+                                    
                                     HStack(spacing: 95) {
                                         Button(action: {
-                                                isShowingBtn = false
+                                            isShowingBtn = false
                                         }) {
                                             Text("날짜별")
                                                 .fontWeight(.semibold)
                                                 .foregroundColor(isShowingBtn ? .black : .white)
                                         }
-
+                                        
                                         Button(action: {
-                                                isShowingBtn = true
+                                            isShowingBtn = true
                                         }) {
                                             Text("요소별")
                                                 .fontWeight(.semibold)
                                                 .foregroundColor(isShowingBtn ? .white : .black)
                                         }
+                                    }
                                 }
+                                
+                                .padding(.top, 10)
+                                .padding(.bottom, 10)
+                                .padding(.horizontal, 30)
                             }
-
-                            .padding(.top, 10)
-                            .padding(.bottom, 10)
-                            .padding(.horizontal, 30)
-                        }
-
-
-                    }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                        .padding(.top, 50)
-
-
-                    //요소별
-                    if (isShowingBtn == true) {
-
-                        VStack{
-                            RecordElementView(recordIndex: .None)
-                                .padding(.bottom, 40)
-                        }
-                    }
-
-                    //날짜별
-                    else {
-                        CalendarView(selectedYear: $viewModel.selectedYear, selectedMonth: $viewModel.selectedMonth, currentDate: $currentDate)
-                            .padding(.horizontal, 20)
+                            
+                            
+                        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                            .padding(.top, 50)
                         
+                        
+                        //요소별
+                        if (isShowingBtn == true) {
+                            
+                            VStack{
+                                RecordElementView(recordIndex: .None)
+                                    .padding(.bottom, 40)
+                            }
+                        }
+                        
+                        //날짜별
+                        else {
+                            CalendarView(selectedYear: $viewModel.selectedYear, selectedMonth: $viewModel.selectedMonth, currentDate: $currentDate)
+                                .padding(.horizontal, 20)
+                            
                         }
                     }
                 }
-
+            
             }
-                .onAppear {
-                    viewModel.updateCalendar()
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button (action:
+                                {dismiss()}){
+                        Image(systemName: "chevron.backward")
+                            .bold()
+                            .foregroundColor(Color(.black))
+                        
+                    }
                 }
-                .onChange(of: viewModel.selectedYear) { _ in
-                    viewModel.updateCalendar()
-                }
-                .onChange(of: viewModel.selectedMonth) { _ in
-                    viewModel.updateCalendar()
-                }
+            }
+            .onAppear {
+                viewModel.updateCalendar()
+            }
+            .onChange(of: viewModel.selectedYear) { _ in
+                viewModel.updateCalendar()
+            }
+            .onChange(of: viewModel.selectedMonth) { _ in
+                viewModel.updateCalendar()
+            }
+
         }
-    }
+}
 
 
 struct YearPicker_: View {
@@ -192,7 +208,6 @@ struct YearMonthPickerPopup_: View {
                                 .font(.system(size: 15))
                             
                         )
-                    
                 }
                 Button(action: {
                     isShowPopup = false
@@ -244,13 +259,11 @@ struct recordCard: View {
                     .foregroundColor(.black)
 
                 if !subtitle.isEmpty {
-                    ScrollView {
                         Text(subtitle)
                             .fontWeight(.medium)
                             .font(.system(size: 15))
                             .foregroundColor(.black)
                             .lineLimit(nil)
-                    }
                        
                 }
             }
@@ -267,325 +280,132 @@ struct recordCard: View {
 
 struct RecordElementView : View {
     
-    @State var recordIndex : recordElement
+    @State var recordIndex: recordElement
     @State private var isShowPopup = false
     @StateObject private var viewModel = DateViewModel()
     @ObservedObject private var coreDataViewModel = CoreDataViewModel()
     var healthRecords: [RecordMetaData] {
-        return coreDataViewModel.getHealthRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
-    }
-    var workRecords: [RecordMetaData] {
-        return coreDataViewModel.getWorkRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
-    }
-    var relationshipRecords: [RecordMetaData] {
-        return coreDataViewModel.getRelationshipRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
-    }
-    var assetRecords: [RecordMetaData] {
-        return coreDataViewModel.getAssetRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
-    }
-    var familyRecords: [RecordMetaData] {
-        return coreDataViewModel.getFamilyRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
-    }
+            return coreDataViewModel.getHealthRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+        }
+        var workRecords: [RecordMetaData] {
+            return coreDataViewModel.getWorkRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+        }
+        var relationshipRecords: [RecordMetaData] {
+            return coreDataViewModel.getRelationshipRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+        }
+        var assetRecords: [RecordMetaData] {
+            return coreDataViewModel.getAssetRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+        }
+        var familyRecords: [RecordMetaData] {
+            return coreDataViewModel.getFamilyRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+        }
     
+    @ViewBuilder
+    private func commonView(for records: [RecordMetaData], buttonText: String, buttonImage: String) -> some View {
+        VStack {
+            Divider()
+                .padding(.horizontal)
+            
+            Button(action: {
+                isShowPopup = true
+            }) {
+                HStack {
+                    viewModel.yearMonthButtonTextRecordVer
+                        .foregroundColor(Color.black)
+                    
+                    Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                        .foregroundColor(.black)
+                        .font(.system(size: 15))
+                }
+                .padding(.top, 10)
+                .padding(.trailing, 180)
+            }
+            .sheet(isPresented: $isShowPopup) {
+                YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
+                    .frame(width: 300, height: 400)
+                    .background(BackgroundClearView_())
+                    .ignoresSafeArea()
+            }
+            
+            ForEach(records) { metaData in
+                ForEach(metaData.records) { record in
+                    recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                }
+                .padding(.horizontal, 20)
+            }
+        }
+    }
     
     var body: some View {
-        
         VStack {
-            
-            HStack{
+            HStack {
                 Button(action: {
                     self.recordIndex = .work
-                }){
+                }) {
                     ElementCard(icon: "pencil", title: "일", size: 34, space: 55, fC: recordIndex == .work ? Color.white : Color("DarkGray"), bC: recordIndex == .work ? Color("DarkQ") : Color.white)
                 }
                 
                 Button(action: {
                     self.recordIndex = .health
-                }){
+                }) {
                     ElementCard(icon: "cross.circle.fill", title: "건강", size: 30, space: 30, fC: recordIndex == .health ? Color.white : Color("DarkGray"), bC: recordIndex == .health ? Color("DarkQ") : Color.white)
-                    
                 }
-                
             }
+            
             HStack {
-                
                 Button(action: {
                     self.recordIndex = .relation
-                }){
+                }) {
                     ElementCard(icon: "person.3.fill", title: "관계", size: 25, space: 25, fC: recordIndex == .relation ? Color.white : Color("DarkGray"), bC: recordIndex == .relation ? Color("DarkQ") : Color.white)
                 }
                 
                 Button(action: {
                     self.recordIndex = .family
-                    
-                }){
+                }) {
                     ElementCard(icon: "heart.fill", title: "가족", size: 30, space: 30, fC: recordIndex == .family ? Color.white : Color("DarkGray"), bC: recordIndex == .family ? Color("DarkQ") : Color.white)
                 }
-                
-                
             }
+            
             HStack(spacing: 230) {
                 Button(action: {
                     self.recordIndex = .money
-                }){
-                    
+                }) {
                     Text("자산")
                         .fontWeight(.bold)
                         .font(.system(size: 23))
                         .foregroundColor(recordIndex == .money ? Color.white : Color("DarkGray"))
                         .offset(x: -113)
+                    
                     Image(systemName: "dollarsign.circle.fill")
                         .font(.system(size: 30))
                         .foregroundColor(recordIndex == .money ? Color.white : Color("DarkGray"))
                         .offset(x: 106)
                 }
-                
             }
             .frame(width: 330, height: 50)
             .padding(20)
             .background(recordIndex == .money ? Color("DarkQ") : Color.white)
             .cornerRadius(20)
-            
         }
         
-        if self.recordIndex == .health {
-            
-            VStack{
-                Divider()
-                    .padding(.horizontal)
-                
-                Button(action: {
-                    
-                    isShowPopup = true
-                    
-                }) {
-                    HStack {
-                        
-                        viewModel.yearMonthButtonText
-                            .foregroundColor(Color.black)
-                        
-                        Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
-                            .foregroundColor(.black)
-                            .font(.system(size: 15))
-                        
-                        
-                    }
-                    .padding(.top, 10)
-                    .padding(.trailing, 180)
-                    
-                    
-                }.sheet(isPresented: $isShowPopup) {
-                    YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
-                        .frame(width: 300, height: 400)
-                        .background(BackgroundClearView_())
-                        .ignoresSafeArea()
-                }
-                
-                ForEach(healthRecords) { metaData in
-                    ForEach(metaData.records) { record in
-                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                    }
-                    
-                    .padding(.horizontal, 20)
-                }
-            }
-            
-            
-            
+        // Use extracted common view components for each record type
+        switch recordIndex {
+        case .health:
+            commonView(for: healthRecords, buttonText: "건강", buttonImage: "cross.circle.fill")
+        case .work:
+            commonView(for: workRecords, buttonText: "일", buttonImage: "pencil")
+        case .money:
+            commonView(for: assetRecords, buttonText: "자산", buttonImage: "dollarsign.circle.fill")
+        case .relation:
+            commonView(for: relationshipRecords, buttonText: "관계", buttonImage: "person.3.fill")
+        case .family:
+            commonView(for: familyRecords, buttonText: "가족", buttonImage: "heart.fill")
+        case .None:
+            EmptyView()
         }
-        
-        if self.recordIndex == .work {
-            
-            VStack{
-                
-                Divider()
-                    .padding(.horizontal)
-                
-                Button(action: {
-                    
-                    isShowPopup = true
-                    
-                }) {
-                    HStack {
-                        
-                        viewModel.yearMonthButtonText
-                            .foregroundColor(Color.black)
-                        
-                        Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
-                            .foregroundColor(.black)
-                            .font(.system(size: 15))
-                        
-                        
-                    }
-                    .padding(.top, 10)
-                    .padding(.trailing, 180)
-                    
-                    
-                }.sheet(isPresented: $isShowPopup) {
-                    YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
-                        .frame(width: 300, height: 400)
-                        .background(BackgroundClearView_())
-                        .ignoresSafeArea()
-                }
-                
-                ForEach(workRecords) { metaData in
-                    ForEach(metaData.records) { record in
-                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                    }
-                    
-                    .padding(.horizontal, 20)
-                }
-            }
-            
-            
-            
-        }
-        
-        if self.recordIndex == .money {
-            
-            VStack{
-                
-                Divider()
-                    .padding(.horizontal)
-                
-                Button(action: {
-                    
-                    isShowPopup = true
-                    
-                }) {
-                    HStack {
-                        
-                        viewModel.yearMonthButtonText
-                            .foregroundColor(Color.black)
-                        
-                        Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
-                            .foregroundColor(.black)
-                            .font(.system(size: 15))
-                        
-                        
-                    }
-                    .padding(.top, 10)
-                    .padding(.trailing, 180)
-                    
-                    
-                }.sheet(isPresented: $isShowPopup) {
-                    YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
-                        .frame(width: 300, height: 400)
-                        .background(BackgroundClearView_())
-                        .ignoresSafeArea()
-                }
-                
-                ForEach(assetRecords) { metaData in
-                    ForEach(metaData.records) { record in
-                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                    }
-                    
-                    .padding(.horizontal, 20)
-                }
-            }
-            
-            
-            
-        }
-        
-        if self.recordIndex == .relation {
-
-            VStack{
-                
-                Divider()
-                    .padding(.horizontal)
-                
-                Button(action: {
-                    
-                    isShowPopup = true
-                    
-                }) {
-                    HStack {
-                        
-                        viewModel.yearMonthButtonText
-                            .foregroundColor(Color.black)
-                        
-                        Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
-                            .foregroundColor(.black)
-                            .font(.system(size: 15))
-                        
-                        
-                    }
-                    .padding(.top, 10)
-                    .padding(.trailing, 180)
-                    
-                    
-                }.sheet(isPresented: $isShowPopup) {
-                    YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
-                        .frame(width: 300, height: 400)
-                        .background(BackgroundClearView_())
-                        .ignoresSafeArea()
-                }
-                
-                ForEach(relationshipRecords) { metaData in
-                    ForEach(metaData.records) { record in
-                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                    }
-                    
-                    .padding(.horizontal, 20)
-                }
-            }
-            
-            
-            
-        }
-        
-        if self.recordIndex == .family {
-            
-            VStack{
-                
-                Divider()
-                    .padding(.horizontal)
-                
-                Button(action: {
-                    
-                    isShowPopup = true
-                    
-                }) {
-                    HStack {
-                        
-                        viewModel.yearMonthButtonText
-                            .foregroundColor(Color.black)
-                        
-                        Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
-                            .foregroundColor(.black)
-                            .font(.system(size: 15))
-                        
-                        
-                    }
-                    .padding(.top, 10)
-                    .padding(.trailing, 180)
-                    
-                    
-                }.sheet(isPresented: $isShowPopup) {
-                    YearMonthPickerPopup_(viewModel: viewModel, isShowPopup: $isShowPopup)
-                        .frame(width: 300, height: 400)
-                        .background(BackgroundClearView_())
-                        .ignoresSafeArea()
-                }
-                
-                ForEach(familyRecords) { metaData in
-                    ForEach(metaData.records) { record in
-                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
-                    }
-                    
-                    .padding(.horizontal, 20)
-                }
-            }
-            
-            
-            
-        }
-            
     }
-        
 }
-    
+                        
     struct ElementCard : View {
         var icon : String
         var title : String
@@ -662,7 +482,6 @@ struct CalendarView: View {
     @State private var isShowPopup = false
     @State var currentMonth: Int = 0
     
-    
     let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
     
     var body: some View {
@@ -676,7 +495,7 @@ struct CalendarView: View {
                     isShowPopup = true
                     
                 }) {
-                    viewModel.yearMonthButtonText
+                    viewModel.yearMonthButtonTextRecordVer
                         .padding(.horizontal)
                         .foregroundColor(Color.black)
                     
@@ -710,9 +529,7 @@ struct CalendarView: View {
             let columns = Array(repeating: GridItem(.fixed(43)), count: 7)
             
             LazyVGrid(columns: columns, spacing: 8) {
-                
                 ForEach(extractDate()) { value in
-                    
                     CardView(value: value)
                         .background (
                             
@@ -728,79 +545,67 @@ struct CalendarView: View {
             }
             .fontWeight(.light)
         }
-        
-        let task = coreDataViewModel.getTodayRecordMetaData()
-        if isSameDay(date1: selectedDate, date2: currentDate) {
-            VStack {
-                
-                Text("오늘의 5요소")
-                    .font(.system(size: 23))
-                    .fontWeight(.semibold)
-                    .padding(.trailing, 190)
-                    .padding(.bottom, 20)
-                    .padding(.top, 10)
-                    .foregroundColor(Color.black)
-                
-                
-                ForEach(task.records) { task in
+    
+            if let task = coreDataViewModel.getRecordMetaData(selectedYear: selectedYear, selectedMonth: selectedMonth).first (where: { task in
+                return isSameDay(date1: task.date, date2: currentDate)
+            }) {
+                VStack {
+                    Text("오늘의 5요소")
+                        .font(.system(size: 23))
+                        .fontWeight(.semibold)
+                        .padding(.trailing, 190)
+                        .padding(.bottom, 20)
+                        .padding(.top, 10)
+                        .foregroundColor(Color.black)
                     
-                    recordCard(icon: task.icon, title: task.title, subtitle: task.subtitle)
-                    
+                    ForEach(task.records) { record in
+                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                    }
+                }
+                .onChange(of: currentMonth) { newValue in
+                    //updating Month
+                    currentDate = getCurrentMonth()
                 }
             }
-            .onChange(of: currentMonth) { newValue in
-                //updating Month
-                currentDate = getCurrentMonth()
-            }
-        }
     }
         
-    
-    
-    
     @ViewBuilder
     func CardView(value: DateValue) -> some View {
-        
         ZStack {
-            if value.day != -1
-            {
-                
-                if let task = coreDataViewModel.calendarMetaDataArray.first(where: { task in
+            if value.day != -1 {
+                if let task = coreDataViewModel.getRecordMetaData(selectedYear: selectedYear, selectedMonth: selectedMonth).first (where: { task in
                     return isSameDay(date1: task.date, date2: value.date)
                 }) {
-                    
-                    
                     Circle()
-                        .fill(isSameDay(date1: task.date, date2: currentDate) ? .white : Color("LightGray2") ) //LightGray2
+                        .fill(isSameDay(date1: task.date, date2: currentDate) ? .white : Color("LightGray2") )
                         .frame(width: 32, height: 32)
                         .opacity(isSameDay(date1: task.date, date2: currentDate) ? 0 : 1)
                         .padding(.vertical, -5)
                         .onTapGesture {
                             currentDate = value.date
                         }
-                    
+
                     Text("\(value.day)")
                         .font(.title3.bold())
                         .foregroundColor(isSameDay(date1: task.date, date2: currentDate) ? .white : .primary)
                         .frame(maxWidth: .infinity)
                     
-                }else {
-                    
+                } else {
                     Text("\(value.day)")
                         .font(.title3.bold())
                         .foregroundColor(isSameDay(date1: value.date , date2: currentDate) ? .white : .primary)
                         .frame(maxWidth: .infinity)
-                    
+
                     Spacer()
                 }
-                
-                
             }
-            
         }
         .padding(.vertical, 4)
-        
-        
+    }
+
+    func isSameMonth(date1: Date, date2: Date) -> Bool {
+        let calendar = Calendar.current
+        return calendar.isDate(date1, equalTo: date2, toGranularity: .month)
     }
     
     func isSameDay(date1: Date, date2: Date) -> Bool {
@@ -844,16 +649,10 @@ extension Date {
     }
 }
 
-//날짜와 요일 저장
-struct DateValue: Identifiable {
-    var id = UUID().uuidString
-    var day: Int
-    var date: Date
-}
-
 struct RecordView_Previews: PreviewProvider {
     static var previews: some View {
         RecordView()
     }
 }
+
 
