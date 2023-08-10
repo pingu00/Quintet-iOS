@@ -688,20 +688,24 @@ struct CalendarView: View {
             
             LazyVGrid(columns: columns, spacing: 8) {
                 ForEach(extractDate()) { value in
-                    CardView(value: value)
-                        .background (
-                            
-                            Capsule()
-                                .fill(Color("DarkQ"))
-                                .padding(.horizontal, 4)
-                                .opacity(isSameDay(date1 : value.date, date2: currentDate) ? 1: 0)
-                        )
-                        .onTapGesture {
-                            currentDate = value.date
-                        }
+                    if value.day != -1 {
+                        CardView(value: value)
+                            .background (
+                                Circle()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(Color("DarkQ"))
+                                    .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
+                            )
+                            .onTapGesture {
+                                currentDate = value.date
+                            }
+                    } else {
+                        Color.clear // 유효하지 않은 날짜의 경우 빈 공간
+                    }
                 }
             }
             .fontWeight(.light)
+
         }
     
             if let task = coreDataViewModel.getRecordMetaData(selectedYear: selectedYear, selectedMonth: selectedMonth).first (where: { task in
@@ -736,7 +740,7 @@ struct CalendarView: View {
                 }) {
                     Circle()
                         .fill(isSameDay(date1: task.date, date2: currentDate) ? .white : Color("LightGray2") )
-                        .frame(width: 32, height: 32)
+                        .frame(width: 40, height: 40)
                         .opacity(isSameDay(date1: task.date, date2: currentDate) ? 0 : 1)
                         .padding(.vertical, -5)
                         .onTapGesture {
