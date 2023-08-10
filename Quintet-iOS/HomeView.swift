@@ -41,16 +41,14 @@ struct HomeView: View {
                             if let quintetData = viewModel.getSelectDayData(date: viewModel.selectDay){
                                 HappinessView(quintetData: quintetData)
                             }
+                            else{
+                                Text("퀸텟체크 기록이 없습니다.")
+                            }
                         }
                         .padding()
                         
-                        // MARK: - 선택한 날짜에 퀸텟 기록이 있으면 보여주고, 없으면 없다는 메세지를 보여줌
-                        if let happinessData = viewModel.selectDateData?.happiness{
-                            HappinessView(happinessData: happinessData)
-                        }
-                        else{
-                            Text("퀸텟체크 기록이 없습니다.")
-                        }
+                        
+
                         Divider()
                             .frame(height: 0.6)
                             .background(Color("LightGray"))
