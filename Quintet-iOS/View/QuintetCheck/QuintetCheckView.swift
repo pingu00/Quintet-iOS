@@ -120,12 +120,12 @@ struct QuintetCheckView: View {
                 }
             }
         }
-        .navigationBarBackButtonHidden(true)
         .onAppear{
             vm.loadCurrentData()
             vm.checkAllCoreData()
             print(vm.getPercentOfData(from: Date(), to: Date()))
         }
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             if !isComplete {
                 ToolbarItem(placement: .navigationBarLeading) {
