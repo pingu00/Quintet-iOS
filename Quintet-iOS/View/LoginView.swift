@@ -8,54 +8,69 @@
 import SwiftUI
 
 struct LoginView: View {
+    @State private var isLoading = true
+
     var body: some View {
         NavigationView{
             ZStack{
-                Color("Background").ignoresSafeArea(.all)
-                VStack{
-                    Spacer()
-                    Image("Quintet_main")
-                    
-                    Spacer()
-                    
-                    //MARK: 회원 로그인 버튼 모음
+                Color("Background").ignoresSafeArea(.all).transition(.opacity)
+                if isLoading {
+                    Image("Logo")
+                        .transition(.opacity)
+                }
+                else {
                     VStack{
-                        Button {
-                            print("kakao loginBtn Tapped")
-                        } label: {
-                            Image("Kakao_login")
-                        }
+                        Spacer()
+                        Image("Quintet_main")
                         
-                        Button {
-                            print("apple loginBtn Tapped")
-                        } label: {
-                            Image("Apple_login")
-                        }
+                        Spacer()
                         
-                        Button {
-                            print("google loginBtn Tapped")
-                        } label: {
-                            Image("Google_login")
-                        }
-                    }.padding(.vertical, 30)
-                    
-                    //MARK: 비회원 로그인 버튼
-                    NavigationLink(destination: {
-                        HomeView()
-                    }){
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color("DarkGray"))
-                                .frame(width: 345, height: 52)
-                                .overlay(Text("비회원으로 로그인 하기")
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.white)
-                                )
+                        //MARK: 회원 로그인 버튼 모음
+                        VStack{
+                            Button {
+                                print("kakao loginBtn Tapped")
+                            } label: {
+                                Image("Kakao_login")
+                            }
                             
-                        }
-                    }.padding(.bottom, 20)
+                            Button {
+                                print("apple loginBtn Tapped")
+                            } label: {
+                                Image("Apple_login")
+                            }
+                            
+                            Button {
+                                print("google loginBtn Tapped")
+                            } label: {
+                                Image("Google_login")
+                            }
+                        }.padding(.vertical, 30)
+                        
+                        //MARK: 비회원 로그인 버튼
+                        NavigationLink(destination: {
+                            HomeView()
+                        }){
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color("DarkGray"))
+                                    .frame(width: 345, height: 52)
+                                    .overlay(Text("비회원으로 로그인 하기")
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.white)
+                                    )
+                                
+                            }
+                        }.padding(.bottom, 20)
+                    }
                 }
             }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                withAnimation{
+                    isLoading.toggle()
+                }
+            })
         }
     }
 }
