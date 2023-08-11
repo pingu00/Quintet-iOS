@@ -16,9 +16,6 @@ class CoreDataViewModel: ObservableObject {
     @Published var currentQuintetData: QuintetData?  // 오늘의 퀸텐 데이터가 있다면 담고 없으면 default 값
     @Published var userName = "로니"
 
-    let container: NSPersistentContainer
-    let today : Date
-    
     //MARK: - QuintetCheckView에 보여지는 값
     @Published var workPoint = -1
     @Published var healthPoint = -1
