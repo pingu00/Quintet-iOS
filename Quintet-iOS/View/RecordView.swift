@@ -391,7 +391,7 @@ struct CalendarView: View {
             }
             .padding(.bottom, 17)
             
-            HStack(spacing: 4) {
+            HStack(spacing: 1) {
                 
                 ForEach(days, id: \.self) { day in
                     
@@ -405,14 +405,14 @@ struct CalendarView: View {
             Divider()
                 .padding(.horizontal)
             
-            let columns = Array(repeating: GridItem(.fixed(43)), count: 7)
-            LazyVGrid(columns: columns, spacing: 7) {
+            let columns = Array(repeating: GridItem(.fixed(39)), count: 7)
+            LazyVGrid(columns: columns, spacing: 9) {
                 ForEach(extractDate()) { value in
                     if value.day != -1 {
                         CardView(value: value)
                             .background (
                                 Circle()
-                                    .frame(width: 43, height: 43)
+                                    .frame(width: 40, height: 40)
                                     .foregroundColor(Color("DarkQ"))
                                     .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
                             )
@@ -459,7 +459,7 @@ struct CalendarView: View {
                 }) {
                     Circle()
                         .fill(isSameDay(date1: task.date, date2: currentDate) ? .white : Color("LightGray2") )
-                        .frame(width: 43, height: 43)
+                        .frame(width: 40, height: 40)
                         .opacity(isSameDay(date1: task.date, date2: currentDate) ? 0 : 1)
                         .padding(.vertical, -5)
                         .onTapGesture {
