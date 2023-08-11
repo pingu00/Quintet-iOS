@@ -11,7 +11,7 @@ import SwiftUI
 struct Quintet_iOSApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            LoginView()
         }
     }
 }

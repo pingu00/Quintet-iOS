@@ -14,18 +14,6 @@ struct QuintetCheckView: View {
     @State private var hasAddNote = false
     @State private var isComplete = false
     
-    @State private var workPoint = -1
-    @State private var healthPoint = -1
-    @State private var familyPoint = -1
-    @State private var relationshipPoint = -1
-    @State private var assetPoint = -1
-    
-    @State private var workNote = ""
-    @State private var healthNote = ""
-    @State private var familyNote = ""
-    @State private var relationshipNote = ""
-    @State private var assetNote = ""
-    
     var body: some View {
         ZStack{
             Color("Background").ignoresSafeArea(.all)
@@ -46,20 +34,20 @@ struct QuintetCheckView: View {
                         
                         if !hasAddNote{ // 완료 아니고 노트도 없음
                             VStack (spacing: 18){
-                                CheckCellView (part: "일", point : $workPoint)
-                                CheckCellView (part: "건강", point : $healthPoint)
-                                CheckCellView (part: "가족", point : $familyPoint)
-                                CheckCellView (part: "관계", point : $relationshipPoint)
-                                CheckCellView (part: "자산", point : $assetPoint)
+                                CheckCellView (part: "일", point : $vm.workPoint)
+                                CheckCellView (part: "건강", point : $vm.healthPoint)
+                                CheckCellView (part: "가족", point : $vm.familyPoint)
+                                CheckCellView (part: "관계", point : $vm.relationshipPoint)
+                                CheckCellView (part: "자산", point : $vm.assetPoint)
                             }
                         }
                         else { // 완료 아닌데 노트 있음
                             VStack(spacing: 18){
-                                AddNoteCellView(part: "일",symbol: "pencil", note: $workNote)
-                                AddNoteCellView(part: "건강",symbol: "cross.circle.fill", note : $healthNote)
-                                AddNoteCellView(part: "가족",symbol: "heart.fill", note: $familyNote)
-                                AddNoteCellView(part: "관계",symbol: "person.3.fill", note: $relationshipNote)
-                                AddNoteCellView(part: "자산",symbol: "dollarsign.circle.fill", note: $assetNote)
+                                AddNoteCellView(part: "일",symbol: "pencil", note: $vm.workNote)
+                                AddNoteCellView(part: "건강",symbol: "cross.circle.fill", note : $vm.healthNote)
+                                AddNoteCellView(part: "가족",symbol: "heart.fill", note: $vm.familyNote)
+                                AddNoteCellView(part: "관계",symbol: "person.3.fill", note: $vm.relationshipNote)
+                                AddNoteCellView(part: "자산",symbol: "dollarsign.circle.fill", note: $vm.assetNote)
                             }
                         }
                         Spacer(minLength: 102)
@@ -68,7 +56,7 @@ struct QuintetCheckView: View {
                             isComplete = true
                         }) {
                             RoundedRectangle(cornerRadius: 20)
-                                .fill(workPoint == -1 || familyPoint == -1 || relationshipPoint == -1 || assetPoint == -1 || healthPoint == -1 ? Color("DarkGray") : Color("DarkQ"))
+                                .fill(vm.isAllSelected ? Color("DarkQ") : Color("DarkGray"))
                                 .frame(width: 345, height: 66)
                                 .overlay(
                                     hasAddNote ? Text("기록완료") : Text("체크완료")
@@ -76,7 +64,7 @@ struct QuintetCheckView: View {
                                 .foregroundColor(.white)
                                 .font(.system(size: 20))
                         }
-                        .disabled(workPoint == -1 || familyPoint == -1 || relationshipPoint == -1 || assetPoint == -1 || healthPoint == -1)
+                        .disabled(!vm.isAllSelected)
                         
                         .padding(.vertical)
                     }
@@ -101,8 +89,7 @@ struct QuintetCheckView: View {
                     
                     Spacer()
                     Button(action: {
-                        vm.updateQuintetData(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint, workNote, healthNote, familyNote, relationshipNote, assetNote)
-                        
+                        vm.updateQuintetData()
                         dismiss()
                     }){
                         RoundedRectangle(cornerRadius: 20)
@@ -133,45 +120,22 @@ struct QuintetCheckView: View {
                 }
             }
         }
-        .navigationBarBackButtonHidden(true)
         .onAppear{
-            loadCurrentData()
+            vm.loadCurrentData()
             vm.checkAllCoreData()
             print(vm.getPercentOfData(from: Date(), to: Date()))
         }
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             if !isComplete {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button (action:
-                                {dismiss()}){
+                    Button (action:{dismiss()}){
                         Image(systemName: "chevron.backward")
                             .bold()
                             .foregroundColor(Color(.black))
-                        
                     }
                 }
             }
-        }
-    }
-    private func loadCurrentData() {
-        print("Current Time? : \(Date())")
-        vm.fetchCurrentQuintetData()
-        if let currentQuintetData = vm.currentQuintetData {
-            print("Today Has Data")
-            workPoint = Int(currentQuintetData.workPoint)
-            healthPoint = Int(currentQuintetData.healthPoint)
-            familyPoint = Int(currentQuintetData.familyPoint)
-            relationshipPoint = Int(currentQuintetData.relationshipPoint)
-            assetPoint = Int(currentQuintetData.assetPoint)
-            
-            workNote = currentQuintetData.workNote ?? ""
-            healthNote = currentQuintetData.healthNote ?? ""
-            familyNote = currentQuintetData.familyNote ?? ""
-            relationshipNote = currentQuintetData.relationshipNote ?? ""
-            assetNote = currentQuintetData.assetNote ?? ""
-        }
-        else {
-            print("No Data Today")
         }
     }
 }

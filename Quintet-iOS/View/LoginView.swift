@@ -9,41 +9,52 @@ import SwiftUI
 
 struct LoginView: View {
     var body: some View {
-        ZStack{
-            Color("Background").ignoresSafeArea(.all)
-            VStack{
-                Spacer()
-                Image("Quintet_main")
-        
-                Spacer()
-                
-                //MARK: 회원 로그인 버튼 모음
+        NavigationView{
+            ZStack{
+                Color("Background").ignoresSafeArea(.all)
                 VStack{
-                    Button {
-                        print("kakao loginBtn Tapped")
-                    } label: {
-                        Image("Kakao_login")
-                    }
+                    Spacer()
+                    Image("Quintet_main")
                     
-                    Button {
-                        print("apple loginBtn Tapped")
-                    } label: {
-                        Image("Apple_login")
-                    }
+                    Spacer()
                     
-                    Button {
-                        print("google loginBtn Tapped")
-                    } label: {
-                        Image("Google_login")
-                    }
-                }.padding(.vertical, 30)
-                
-                //MARK: 비회원 로그인 버튼
-                Button {
-                    print("non_member loginBtn Tapped")
-                } label: {
-                    Image("Non_member_login")
-                }.padding(.bottom, 20)
+                    //MARK: 회원 로그인 버튼 모음
+                    VStack{
+                        Button {
+                            print("kakao loginBtn Tapped")
+                        } label: {
+                            Image("Kakao_login")
+                        }
+                        
+                        Button {
+                            print("apple loginBtn Tapped")
+                        } label: {
+                            Image("Apple_login")
+                        }
+                        
+                        Button {
+                            print("google loginBtn Tapped")
+                        } label: {
+                            Image("Google_login")
+                        }
+                    }.padding(.vertical, 30)
+                    
+                    //MARK: 비회원 로그인 버튼
+                    NavigationLink(destination: {
+                        HomeView()
+                    }){
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color("DarkGray"))
+                                .frame(width: 345, height: 52)
+                                .overlay(Text("비회원으로 로그인 하기")
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.white)
+                                )
+                            
+                        }
+                    }.padding(.bottom, 20)
+                }
             }
         }
     }
