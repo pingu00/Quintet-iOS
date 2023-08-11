@@ -14,8 +14,8 @@ class CoreDataViewModel: ObservableObject {
     let today = Date()
     
     @Published var currentQuintetData: QuintetData?  // 오늘의 퀸텐 데이터가 있다면 담고 없으면 default 값
-    @Published var userName = "로니"
-
+    @Published var userName : String = ""
+    
     //MARK: - QuintetCheckView에 보여지는 값
     @Published var workPoint = -1
     @Published var healthPoint = -1
@@ -44,6 +44,7 @@ class CoreDataViewModel: ObservableObject {
         }
         
         fetchCurrentQuintetData()
+        loadUserName()
         //addDummyData()
     }
     
@@ -163,14 +164,13 @@ class CoreDataViewModel: ObservableObject {
         default:
             break
         }
-        
+        saveContext()
         return QuintetPointPer(workPointPer: workPointPer,
                                healthPointPer: healthPointPer,
                                familyPointPer: familyPointPer,
                                assetPointPer: assetPointPer,
                                relationshipPointPer: relationshipPointPer,
                                maxValue: maxValue)
-        saveContext()
     }
     
     
@@ -280,14 +280,13 @@ class CoreDataViewModel: ObservableObject {
     }
     
     //MARK: 로그인 이후 프로필 이름을 관리하는 함수
-    func saveUserName() {
+    func saveUserName(name : String) {
+        userName = name
         UserDefaults.standard.set(userName, forKey: "userName")
     }
     
     func loadUserName() {
-        if let savedUserName = UserDefaults.standard.string(forKey: "userName") {
-            userName = savedUserName
-        }
+        userName = UserDefaults.standard.string(forKey: "userName") ?? "사용자"
     }
     
     //날짜별
