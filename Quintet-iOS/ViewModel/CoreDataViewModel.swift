@@ -8,12 +8,16 @@
 import Foundation
 import CoreData
 
+
 class CoreDataViewModel: ObservableObject {
     let container: NSPersistentContainer
     let today = Date()
     
     @Published var currentQuintetData: QuintetData?  // 오늘의 퀸텐 데이터가 있다면 담고 없으면 default 값
     @Published var userName = "로니"
+
+    let container: NSPersistentContainer
+    let today : Date
     
     //MARK: - QuintetCheckView에 보여지는 값
     @Published var workPoint = -1
@@ -70,13 +74,12 @@ class CoreDataViewModel: ObservableObject {
         
     }
     
-    
     // 코어데이터에서의 영구 저장소에서 데이터를 비교하거나 가져올때 "일(day)" 을 필터링 하기위해 범위 설정하는 부분을 함수로 따로 구현
     private func createPredicate(from startDate: Date, to endDate: Date) -> NSPredicate {
         let calendar = Calendar.current
         let currentDate = calendar.startOfDay(for: startDate)
-        let nextDate = calendar.date(byAdding: .day, value: 1, to: endDate)!
-        return NSPredicate(format: "date >= %@ AND date < %@", currentDate as NSDate, nextDate as NSDate)
+        let nextDate = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: endDate)!)
+        return NSPredicate(format: "(date >= %@) AND (date < %@)", currentDate as NSDate, nextDate as NSDate)
     }
     
     // 현재 클래스의 프로퍼티인 currentQuintetData를 패치
@@ -126,6 +129,7 @@ class CoreDataViewModel: ObservableObject {
             return []
         }
     }
+
     
     //startDate 부터 endDate 까지의 QuintetData의 요소별 퍼센트를 반환!
     func getPercentOfData(from startDate: Date, to endDate: Date) -> QuintetPointPer {
@@ -288,4 +292,128 @@ class CoreDataViewModel: ObservableObject {
             userName = savedUserName
         }
     }
+    
+    //날짜별
+    func getRecordMetaData(selectedYear: Int, selectedMonth: Int) -> [CalendarMetaData] {
+        let calendar = Calendar.current
+        var calendarMetaDataArray: [CalendarMetaData] = []
+        
+        guard let startDate = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 1)),
+              let endDate = calendar.date(byAdding: .month, value: 1, to: startDate),
+              let lastDayOfMonth = calendar.date(byAdding: .day, value: -1, to: endDate) else {
+            return []
+        }
+        
+        let today = calendar.startOfDay(for: Date()) // Get the start of today
+        
+        var currentDate = startDate
+        
+        while currentDate <= lastDayOfMonth {
+            
+            let quintetDataArray = getQuintetData(from: currentDate, to: calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate)
+            
+            var recordsForDate: [Record] = []
+            
+            for data in quintetDataArray {
+                if data.workPoint >= 0 && data.workPoint <= 2 {
+                    let workIcon = data.workPoint == 0 ? "XOn" : (data.workPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let healthIcon = data.healthPoint == 0 ? "XOn" : (data.healthPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let familyIcon = data.familyPoint == 0 ? "XOn" : (data.familyPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let assetIcon = data.assetPoint == 0 ? "XOn" : (data.assetPoint == 1 ? "TriangleOn" : "CircleOn")
+                    let relationshipIcon = data.relationshipPoint == 0 ? "XOn" : (data.relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
+                    
+                    let tasks = [
+                        Record(icon: workIcon, title: "일", subtitle: data.workNote ?? ""),
+                        Record(icon: healthIcon, title: "건강", subtitle: data.healthNote ?? ""),
+                        Record(icon: familyIcon, title: "가족", subtitle: data.familyNote ?? ""),
+                        Record(icon: relationshipIcon, title: "관계", subtitle: data.relationshipNote ?? ""),
+                        Record(icon: assetIcon, title: "자산", subtitle: data.assetNote ?? "")
+                    ]
+                    
+                    recordsForDate.append(contentsOf: tasks)
+                }
+            }
+            
+            let daysFromToday = calendar.dateComponents([.day], from: currentDate, to: today).day ?? 0
+            let metaData = CalendarMetaData(records: recordsForDate, date: quintetDataArray.first?.date ?? currentDate, offset: daysFromToday)
+            
+            if !recordsForDate.isEmpty {
+                calendarMetaDataArray.append(metaData)
+            }
+            
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
+        }
+        
+        print(calendarMetaDataArray)
+        return calendarMetaDataArray
+    }
+
+    //요소별 뷰
+    func getRecords(for year: Int, month: Int, filterKeyPath: KeyPath<QuintetData, Int64>, iconClosure: (Int64) -> String, noteKeyPath: KeyPath<QuintetData, String?>) -> [RecordMetaData] {
+        let calendar = Calendar.current
+        let startDateComponents = DateComponents(year: year, month: month, day: 1)
+        let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
+        
+        guard let startDate = calendar.date(from: startDateComponents),
+              let endDate = calendar.date(from: endDateComponents) else {
+            return []
+        }
+        
+        let quintetData = getQuintetData(from: startDate, to: endDate)
+        let filteredData = quintetData.filter { $0[keyPath: filterKeyPath] >= 0 }
+        
+        let sortedRecords = filteredData.sorted(by: { ($0.date ?? Date()) < ($1.date ?? Date()) }).prefix(5)
+        
+        return sortedRecords.map { data in
+            let icon = iconClosure(data[keyPath: filterKeyPath])
+            let date = data.date ?? Date()
+            let formattedDate = formatDate(date: date)
+            let subtitle = data[keyPath: noteKeyPath] ?? ""
+            return RecordMetaData(records: [
+                Record(icon: icon, title: formattedDate, subtitle: subtitle)
+            ])
+        }
+    }
+
+    func getHealthRecords(for year: Int, month: Int) -> [RecordMetaData] {
+        return getRecords(for: year, month: month, filterKeyPath: \.healthPoint, iconClosure: { healthPoint in
+            return healthPoint == 0 ? "XOn" : (healthPoint == 1 ? "TriangleOn" : "CircleOn")
+        }, noteKeyPath: \.healthNote)
+    }
+
+    func getAssetRecords(for year: Int, month: Int) -> [RecordMetaData] {
+        return getRecords(for: year, month: month, filterKeyPath: \.assetPoint, iconClosure: { assetPoint in
+            return assetPoint == 0 ? "XOn" : (assetPoint == 1 ? "TriangleOn" : "CircleOn")
+        }, noteKeyPath: \.assetNote)
+    }
+
+    func getFamilyRecords(for year: Int, month: Int) -> [RecordMetaData] {
+        return getRecords(for: year, month: month, filterKeyPath: \.familyPoint, iconClosure: { familyPoint in
+            return familyPoint == 0 ? "XOn" : (familyPoint == 1 ? "TriangleOn" : "CircleOn")
+        }, noteKeyPath: \.familyNote)
+    }
+
+    func getRelationshipRecords(for year: Int, month: Int) -> [RecordMetaData] {
+        return getRecords(for: year, month: month, filterKeyPath: \.relationshipPoint, iconClosure: { relationshipPoint in
+            return relationshipPoint == 0 ? "XOn" : (relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
+        }, noteKeyPath: \.relationshipNote)
+    }
+
+    func getWorkRecords(for year: Int, month: Int) -> [RecordMetaData] {
+        return getRecords(for: year, month: month, filterKeyPath: \.workPoint, iconClosure: { workPoint in
+            return workPoint == 0 ? "XOn" : (workPoint == 1 ? "TriangleOn" : "CircleOn")
+        }, noteKeyPath: \.workNote)
+    }
+
+    //날짜를 2023.08.10 처럼 바꿔주는 함수
+    func formatDate(date: Date) -> String {
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
+        
+        return String(format: "%04d. %02d. %02d", year, month, day)
+    }
+    
+    
 }
