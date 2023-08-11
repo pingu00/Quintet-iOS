@@ -109,7 +109,6 @@
 				28C3644C2A5FD58E00847A88 /* Quintet_iOSApp.swift */,
 				311198D62A74F8C900D92E91 /* DateManager.swift */,
 				311198D82A74FAFE00D92E91 /* DummyDataManager.swift */,
-				28C3645A2A5FD5DB00847A88 /* HomeView.swift */,
 				28C3645E2A5FD63600847A88 /* View */,
 				28997E832A73FA4600ED676C /* ViewModel */,
 				31FDB2042A84F7080091A899 /* Model */,
@@ -130,11 +129,12 @@
 		28C3645E2A5FD63600847A88 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				31BF652D2A7B7ECD0014EC90 /* LoginView.swift */,
+				28C3645A2A5FD5DB00847A88 /* HomeView.swift */,
 				28C3645F2A5FD63600847A88 /* RecordView.swift */,
 				28C364602A5FD63600847A88 /* StatisticsView.swift */,
 				286E48A72A76DD1100D109E9 /* QuintetCheck */,
 				28C364622A5FD63600847A88 /* MenuView.swift */,
-				31BF652D2A7B7ECD0014EC90 /* LoginView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
