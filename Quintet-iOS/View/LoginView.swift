@@ -15,7 +15,7 @@ struct LoginView: View {
             ZStack{
                 Color("Background").ignoresSafeArea(.all).transition(.opacity)
                 if isLoading {
-                    Image("Logo")
+                    Image("QuintetLogo")
                         .transition(.opacity)
                 }
                 else {
