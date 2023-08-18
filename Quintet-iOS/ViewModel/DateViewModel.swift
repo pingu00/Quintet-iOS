@@ -47,7 +47,6 @@ class DateViewModel: ObservableObject {
     
     var yearMonthButtonTextRecordVer: Text {
         Text("\(Utilities.formatNum(selectedYear))년 \(selectedMonth)월")
-            .fontWeight(.medium)
             .font(.system(size: 23))
     }
     
