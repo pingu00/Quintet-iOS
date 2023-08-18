@@ -18,30 +18,11 @@ struct StatisticsView: View {
     @State private var selectedOption = 1
     @State private var isShowPopup = false
     
-    func cellWeekUpdate() {
-        let endDate = Calendar.current.date(byAdding: .day, value: 6, to: dateViewModel.startOfWeek)!
-        statisticsCellViewModel.updateValuesFromCoreData(startDate: dateViewModel.startOfWeek, endDate: endDate)
-    }
-
-    func cellMonthUpdate() {
-        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: dateViewModel.selectedMonthFirstDay)!
-        statisticsCellViewModel.updateValuesFromCoreData(startDate: dateViewModel.selectedMonthFirstDay, endDate: endDate)
-    }
-
-    func cellYearUpdate() {
-        let endDate = Calendar.current.date(byAdding: .year, value: 1, to: dateViewModel.selectedYearFirstDay)!
-        statisticsCellViewModel.updateValuesFromCoreData(startDate: dateViewModel.selectedYearFirstDay, endDate: endDate)
-    }
-
-    func updateStatistics() {
-        if selectedOption == 1 {
-            cellWeekUpdate()
-        } else if selectedOption == 2 {
-            cellMonthUpdate()
-        } else {
-            cellYearUpdate()
-        }
-    }
+    let workTextArray = ["일은 삶의 필수적인 부분이고 많은 보상을 가져다줄 수 있지만, 삶에서 다른 요소들의 중요성도 인식하는 것이 중요합니다. 건강, 관계, 가족 및 자산을 소홀히 하면 전반적인 웰빙과 행복감에 영향을 미칠 수 있는 중대한 결과를 초래할 수 있습니다. 자신의 일에 열정을 갖는 것은 자연스러운 일이지만, 전반적인 성취감과 행복감에 기여할 수 있는 다른 중요한 요소가 있다는 것을 인식하는 것이 중요합니다.", "b", "c"]
+    let healthTextArray = ["건강한 삶을 위해 충분한 관심을 보이는 모습이 보입니다. 하지만 건강에 힘쓰는 만큼 일과 가족에도 집중해보는 것이 어떨까요? 가족과 소중한 사람들과의 소통과 시간을 늘리며, 일상의 작은 순간들을 함께 나누는 것이 중요합니다. 자산과 관계에도 균형을 유지하면서 일과 가족을 동시에 행복하게 발전시키는 것을 추구해야합니다. 균형 잡힌 삶을 위해 모든 요소에 균등한 노력을 기울여보세요!", "b", "c"]
+    let familyTextArray = ["a", "b", "c"]
+    let relationshipTextArray = ["관계에 많은 노력을 기울였다는 점이 돋보입니다. 전체적으로 5요소의 균형이 나쁘지 않지만, 자산에도 관심을 가져주세요! 자산을 키우기 위해 더 많은 관심과 노력을 기울이는 것이 도움이 될 것입니다. 투자, 저축, 재정관리에 더 신경을 쓰면서 미래를 위한 준비를 강화해보세요. 모든 영역에 균형을 유지하면서 더욱 행복하고 풍요로운 삶을 즐기시기를 바랍니다.", "b", "c"]
+    let assetTextArray = ["a", "b", "c"]
     
     var body: some View {
         ZStack{
@@ -76,13 +57,13 @@ struct StatisticsView: View {
                             }, imageName: "chevron.backward", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: DateComponents(weekOfYear: 1, yearForWeekOfYear: 2017)))
                             
                             Spacer()
-                                .frame(maxWidth: 40)
+                                .frame(maxWidth: 20)
                             
                             dateViewModel.weekButtonText
                                 .foregroundColor(.black)
                             
                             Spacer()
-                                .frame(maxWidth: 40)
+                                .frame(maxWidth: 20)
                             
                             ArrowButton(action: {
                                 dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: dateViewModel.startOfWeek)!
@@ -218,35 +199,13 @@ struct StatisticsView: View {
                             .overlay(
                                 HStack{
                                     Spacer()
-                                    if statisticsCellViewModel.maxNoteArray[0] == "일" {
-                                        Text("일은 삶의 필수적인 부분이고 많은 보상을 가져다줄 수 있지만, 삶에서 다른 요소들의 중요성도 인식하는 것이 중요합니다. 건강, 관계, 가족 및 자산을 소홀히 하면 전반적인 웰빙과 행복감에 영향을 미칠 수 있는 중대한 결과를 초래할 수 있습니다. 자신의 일에 열정을 갖는 것은 자연스러운 일이지만, 전반적인 성취감과 행복감에 기여할 수 있는 다른 중요한 요소가 있다는 것을 인식하는 것이 중요합니다.")
+                                    if let selectedText = selectedTextForCategory() {
+                                        Text(selectedText)
                                             .font(.system(size: 16))
                                             .multilineTextAlignment(.leading)
                                             .frame(width: 250, height: 300)
                                             .lineSpacing(1)
                                             .padding(35)
-                                    }
-                                    else if statisticsCellViewModel.maxNoteArray[0] == "건강" {
-                                        Text("건강한 삶을 위해 충분한 관심을 보이는 모습이 보입니다. 하지만 건강에 힘쓰는 만큼 일과 가족에도 집중해보는 것이 어떨까요? 가족과 소중한 사람들과의 소통과 시간을 늘리며, 일상의 작은 순간들을 함께 나누는 것이 중요합니다. 자산과 관계에도 균형을 유지하면서 일과 가족을 동시에 행복하게 발전시키는 것을 추구해야합니다. 균형 잡힌 삶을 위해 모든 요소에 균등한 노력을 기울여보세요!")
-                                            .font(.system(size: 16))
-                                            .multilineTextAlignment(.leading)
-                                            .frame(width: 250, height: 300)
-                                            .lineSpacing(1)
-                                            .padding(35)
-                                    }
-                                    else if statisticsCellViewModel.maxNoteArray[0] == "가족" {
-                                        Text(".")
-                                    }
-                                    else if statisticsCellViewModel.maxNoteArray[0] == "관계" {
-                                        Text("관계에 많은 노력을 기울였다는 점이 돋보입니다. 전체적으로 5요소의 균형이 나쁘지 않지만, 자산에도 관심을 가져주세요! 자산을 키우기 위해 더 많은 관심과 노력을 기울이는 것이 도움이 될 것입니다. 투자, 저축, 재정관리에 더 신경을 쓰면서 미래를 위한 준비를 강화해보세요. 모든 영역에 균형을 유지하면서 더욱 행복하고 풍요로운 삶을 즐기시기를 바랍니다.")
-                                            .font(.system(size: 16))
-                                            .multilineTextAlignment(.leading)
-                                            .frame(width: 250, height: 300)
-                                            .lineSpacing(1)
-                                            .padding(35)
-                                    }
-                                    else if statisticsCellViewModel.maxNoteArray[0] == "자산" {
-                                        Text(".")
                                     }
                                     
                                     Spacer()
@@ -274,6 +233,66 @@ struct StatisticsView: View {
                 .background(BackgroundClearView())
                 .ignoresSafeArea()
         }
+    }
+    
+    private func selectedTextForCategory() -> String? {
+        guard let category = statisticsCellViewModel.maxNoteArray.first else {
+            return nil
+        }
+        
+        let textArray: [String]
+        switch category {
+        case "일":
+            textArray = workTextArray
+        case "건강":
+            textArray = healthTextArray
+        case "가족":
+            textArray = familyTextArray
+        case "관계":
+            textArray = relationshipTextArray
+        case "자산":
+            textArray = assetTextArray
+        default:
+            return nil
+        }
+        
+        return textArray.randomElement()
+    }
+    
+    func cellWeekUpdate() {
+        let endDate = Calendar.current.date(byAdding: .day, value: 6, to: dateViewModel.startOfWeek)!
+        statisticsCellViewModel.updateValuesFromCoreData(startDate: dateViewModel.startOfWeek, endDate: endDate)
+    }
+
+    func cellMonthUpdate() {
+        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: dateViewModel.selectedMonthFirstDay)!
+        statisticsCellViewModel.updateValuesFromCoreData(startDate: dateViewModel.selectedMonthFirstDay, endDate: endDate)
+    }
+
+    func cellYearUpdate() {
+        let endDate = Calendar.current.date(byAdding: .year, value: 1, to: dateViewModel.selectedYearFirstDay)!
+        statisticsCellViewModel.updateValuesFromCoreData(startDate: dateViewModel.selectedYearFirstDay, endDate: endDate)
+    }
+
+    func updateStatistics() {
+        if selectedOption == 1 {
+            cellWeekUpdate()
+        } else if selectedOption == 2 {
+            cellMonthUpdate()
+        } else {
+            cellYearUpdate()
+        }
+    }
+    
+    func calculateTextHeight(text: String, font: Font, maxWidth: CGFloat) -> CGFloat {
+        let size = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
+        let textRect = NSString(string: text).boundingRect(
+            with: size,
+            options: .usesLineFragmentOrigin,
+            attributes: [.font: font],
+            context: nil
+        )
+        return ceil(textRect.height)
     }
 }
 
@@ -332,124 +351,6 @@ struct BackgroundClearView: UIViewRepresentable {
     func updateUIView(_ uiView: UIView, context: Context) {}
 }
 
-// MARK: - YearMonthPickerPopup
-struct YearMonthPickerPopup: View {
-    @ObservedObject var viewModel: DateViewModel
-    @Binding var isShowPopup: Bool
-    @Binding var selectedOption: Int
-    
-    @State private var oldSelectedYear: Int
-    @State private var oldSelectedMonth: Int
-        
-    init(viewModel: DateViewModel, isShowPopup: Binding<Bool>, selectedOption: Binding<Int>) {
-        self.viewModel = viewModel
-        _isShowPopup = isShowPopup
-        _selectedOption = selectedOption
-        _oldSelectedYear = State(initialValue: viewModel.selectedYear)
-        _oldSelectedMonth = State(initialValue: viewModel.selectedMonth)
-    }
-    
-    var body: some View {
-        GeometryReader{ geometry in
-            VStack{
-                HStack {
-                    YearPicker(viewModel: viewModel)
-                    if selectedOption == 2{
-                        MonthPicker(viewModel: viewModel)
-                    }
-                }
-                .padding()
-                HStack{
-                    Button(action: {
-                        viewModel.selectedYear = oldSelectedYear
-                        viewModel.selectedMonth = oldSelectedMonth
-                        isShowPopup = false
-                    }) {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color("Background"))
-                            .frame(width: 100, height: 40)
-                            .overlay(
-                                Text("취소")
-                                    .foregroundColor(.black)
-                                    .font(.system(size: 15))
-                            )
-                    }
-                    Button(action: {
-                        isShowPopup = false
-                    }) {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color("DarkQ"))
-                            .frame(width: 100, height: 40)
-                            .overlay(
-                                Text("확인")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 15))
-                            )
-                    }
-                }
-            }
-            .padding()
-            .frame(width: 300, height: 400)
-            .background(Color.white)
-            .cornerRadius(30)
-            
-        }
-        .background(
-            Color.clear
-                .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    withAnimation {
-                        self.isShowPopup.toggle()
-                    }
-                }
-        )
-    }
-}
-
-// MARK: - YearPicker
-struct YearPicker: View {
-    @ObservedObject var viewModel: DateViewModel
-    
-    let currentYear: Int = Calendar.current.component(.year, from: Date())
-    
-    var body: some View {
-        Picker("년도 선택", selection: $viewModel.selectedYear){
-            ForEach(2017...currentYear, id: \.self) { year in
-                Text("\(Utilities.formatNum(year))년")
-            }
-        }
-        .pickerStyle(WheelPickerStyle())
-    }
-}
-
-// MARK: - MonthPicker
-struct MonthPicker: View {
-    @ObservedObject var viewModel: DateViewModel
-    
-    var body: some View {
-        Picker("월 선택", selection: $viewModel.selectedMonth) {
-            ForEach(1...getMaxMonth(), id: \.self) { month in
-                Text("\(month)월")
-            }
-        }
-        .pickerStyle(WheelPickerStyle())
-    }
-    
-    private func getMaxMonth() -> Int {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        let currentMonth = Calendar.current.component(.month, from: Date())
-        if viewModel.selectedYear == currentYear {
-            if viewModel.selectedMonth > currentMonth {
-                viewModel.selectedMonth = currentMonth
-            }
-            return currentMonth
-        }
-        else {
-            return 12
-        }
-    }
-}
-
 // MARK: - StatisticsCellView
 struct StatisticsCellView: View {
     @Binding var selectedOption: Int
@@ -486,28 +387,6 @@ struct StatisticsCellView: View {
                 Text(String(format: "%.1f", heightRatio * 100) + "%").font(.system(size: 13))
             }
         }
-    }
-}
-
-
-// MARK: - Utilities
-struct Utilities {
-    static func formatNum(_ num: Int) -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .none
-        
-        return numberFormatter.string(from: NSNumber(value: num)) ?? ""
-    }
-    
-    static func formatYearMonthDay(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd"
-        return formatter.string(from: date)
-    }
-    static func formatMonthDay(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM.dd"
-        return formatter.string(from: date)
     }
 }
 

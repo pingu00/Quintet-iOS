@@ -28,6 +28,7 @@
 		4EBBB1C72A84F25000D27B67 /* RecordViewStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBBB1C62A84F24F00D27B67 /* RecordViewStruct.swift */; };
 		AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E372A727B020025F8A7 /* DateViewModel.swift */; };
 		AA086E3C2A72E1C20025F8A7 /* StatisticsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */; };
+		AA086E3E2A875F6E0025F8A7 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3D2A875F6E0025F8A7 /* PickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		4EBBB1C62A84F24F00D27B67 /* RecordViewStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewStruct.swift; sourceTree = "<group>"; };
 		AA086E372A727B020025F8A7 /* DateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewModel.swift; sourceTree = "<group>"; };
 		AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCellViewModel.swift; sourceTree = "<group>"; };
+		AA086E3D2A875F6E0025F8A7 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,8 +135,9 @@
 				28C3645A2A5FD5DB00847A88 /* HomeView.swift */,
 				28C3645F2A5FD63600847A88 /* RecordView.swift */,
 				28C364602A5FD63600847A88 /* StatisticsView.swift */,
-				286E48A72A76DD1100D109E9 /* QuintetCheck */,
 				28C364622A5FD63600847A88 /* MenuView.swift */,
+				AA086E3D2A875F6E0025F8A7 /* PickerView.swift */,
+				286E48A72A76DD1100D109E9 /* QuintetCheck */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				28C364662A5FD63600847A88 /* MenuView.swift in Sources */,
 				28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */,
 				28997E7B2A73F00300ED676C /* CoreDataModel.xcdatamodeld in Sources */,
+				AA086E3E2A875F6E0025F8A7 /* PickerView.swift in Sources */,
 				28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */,
 				4EBBB1C72A84F25000D27B67 /* RecordViewStruct.swift in Sources */,
 				28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */,
