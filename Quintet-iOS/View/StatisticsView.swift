@@ -44,88 +44,91 @@ struct StatisticsView: View {
                                 DateOptionView(text: "연간", num: 3, selectedOption: $selectedOption)
                             }
                         )
-                        .padding(.bottom, 20)
+                        .padding(.bottom, 25)
                 }
                 VStack{
                     HStack{
                         switch selectedOption {
                             // MARK: - 주간
                         case 1:
-                            ArrowButton(action: {
-                                dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: dateViewModel.startOfWeek)!
-                                cellWeekUpdate()
-                            }, imageName: "chevron.backward", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: DateComponents(weekOfYear: 1, yearForWeekOfYear: 2017)))
-                            
-                            Spacer()
-                                .frame(maxWidth: 20)
-                            
-                            dateViewModel.weekButtonText
-                                .foregroundColor(.black)
-                            
-                            Spacer()
-                                .frame(maxWidth: 20)
-                            
-                            ArrowButton(action: {
-                                dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: dateViewModel.startOfWeek)!
-                                cellWeekUpdate()
-                            }, imageName: "chevron.forward", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!)
-                            
+                            HStack{
+                                ArrowButton(action: {
+                                    dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: dateViewModel.startOfWeek)!
+                                    cellWeekUpdate()
+                                }, imageName: "chevron.backward", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: DateComponents(weekOfYear: 1, yearForWeekOfYear: 2017)))
+                                
+                                Spacer()
+                                
+                                dateViewModel.weekButtonText
+                                    .foregroundColor(.black)
+                                
+                                Spacer()
+                                
+                                ArrowButton(action: {
+                                    dateViewModel.startOfWeek = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: dateViewModel.startOfWeek)!
+                                    cellWeekUpdate()
+                                }, imageName: "chevron.forward", isDisabled: dateViewModel.startOfWeek == Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!)
+                            }
+                            .frame(width: 300)
                             // MARK: - 월간
                         case 2:
-                            ArrowButton(action: {
-                                dateViewModel.selectedMonth -= 1
-                                if dateViewModel.selectedMonth < 1 {
-                                    dateViewModel.selectedMonth = 12
-                                    dateViewModel.selectedYear -= 1
+                            HStack{
+                                ArrowButton(action: {
+                                    dateViewModel.selectedMonth -= 1
+                                    if dateViewModel.selectedMonth < 1 {
+                                        dateViewModel.selectedMonth = 12
+                                        dateViewModel.selectedYear -= 1
+                                    }
+                                    cellMonthUpdate()
+                                }, imageName: "chevron.backward", isDisabled: dateViewModel.selectedYear == 2017 && dateViewModel.selectedMonth == 1)
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    isShowPopup = true
+                                }) {
+                                    dateViewModel.yearMonthButtonText
+                                        .foregroundColor(.black)
+                                    Image(systemName: "arrowtriangle.down.circle").foregroundColor(.gray)
                                 }
-                                cellMonthUpdate()
-                            }, imageName: "chevron.backward", isDisabled: dateViewModel.selectedYear == 2017 && dateViewModel.selectedMonth == 1)
-                            
-                            Spacer()
-                                .frame(maxWidth: 40)
-                            
-                            Button(action: {
-                                isShowPopup = true
-                            }) {
-                                dateViewModel.yearMonthButtonText
-                                    .foregroundColor(.black)
+                                Spacer()
+                                                                    
+                                ArrowButton(action: {
+                                    dateViewModel.selectedMonth += 1
+                                    if dateViewModel.selectedMonth > 12 {
+                                        dateViewModel.selectedMonth = 1
+                                        dateViewModel.selectedYear += 1
+                                    }
+                                    cellMonthUpdate()
+                                }, imageName: "chevron.forward", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()) && dateViewModel.selectedMonth == Calendar.current.component(.month, from: Date()))
                             }
-                            Spacer()
-                                .frame(maxWidth: 40)
-                            
-                            ArrowButton(action: {
-                                dateViewModel.selectedMonth += 1
-                                if dateViewModel.selectedMonth > 12 {
-                                    dateViewModel.selectedMonth = 1
-                                    dateViewModel.selectedYear += 1
-                                }
-                                cellMonthUpdate()
-                            }, imageName: "chevron.forward", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()) && dateViewModel.selectedMonth == Calendar.current.component(.month, from: Date()))
-                            
+                            .frame(width: 300)
                             // MARK: - 연간
                         case 3:
-                            ArrowButton(action: {
-                                dateViewModel.selectedYear -= 1
-                                cellYearUpdate()
-                            }, imageName: "chevron.backward", isDisabled: dateViewModel.selectedYear == 2017)
-                            
-                            Spacer()
-                                .frame(maxWidth: 40)
-                            
-                            Button(action: {
-                                isShowPopup = true
-                            }) {
-                                dateViewModel.yearButtonText
-                                    .foregroundColor(.black)
+                            HStack{
+                                ArrowButton(action: {
+                                    dateViewModel.selectedYear -= 1
+                                    cellYearUpdate()
+                                }, imageName: "chevron.backward", isDisabled: dateViewModel.selectedYear == 2017)
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    isShowPopup = true
+                                }) {
+                                    dateViewModel.yearButtonText
+                                        .foregroundColor(.black)
+                                    Image(systemName: "arrowtriangle.down.circle").foregroundColor(.gray)
+                                }
+                                
+                                Spacer()
+                                
+                                ArrowButton(action: {
+                                    dateViewModel.selectedYear += 1
+                                    cellYearUpdate()
+                                }, imageName: "chevron.forward", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()))
                             }
-                            
-                            Spacer()
-                                .frame(maxWidth: 40)
-                            
-                            ArrowButton(action: {
-                                dateViewModel.selectedYear += 1
-                                cellYearUpdate()
-                            }, imageName: "chevron.forward", isDisabled: dateViewModel.selectedYear == Calendar.current.component(.year, from: Date()))
+                            .frame(width: 300)
                         default:
                             Text("")
                         }
@@ -141,6 +144,7 @@ struct StatisticsView: View {
                         dateViewModel.selectedMonth = Calendar.current.component(.month, from: Date())
                     }
                 }
+                .padding(.bottom, -15)
                 
                 VStack {
                     HStack(spacing: 0) {
@@ -155,7 +159,10 @@ struct StatisticsView: View {
                 }
                 .padding(20)
                 if statisticsCellViewModel.maxPoint == 0{
-                    Text("기록된 데이터가 없어요...")
+                    VStack{
+                        Text("기록된 데이터가 없어요...")
+                            .padding(.top, 20)
+                    }
                 }
                 else {
                     VStack {
@@ -193,24 +200,24 @@ struct StatisticsView: View {
                         }
                     }
                     VStack{
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.white)
-                            .frame(width: 330, height: 280)
-                            .overlay(
-                                HStack{
-                                    Spacer()
-                                    if let selectedText = selectedTextForCategory() {
-                                        Text(selectedText)
-                                            .font(.system(size: 16))
-                                            .multilineTextAlignment(.leading)
-                                            .frame(width: 250, height: 300)
-                                            .lineSpacing(1)
-                                            .padding(35)
-                                    }
-                                    
-                                    Spacer()
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(Color.white)
+                                .frame(width: 330, height: nil)
+                            HStack{
+                                Spacer()
+                                if let selectedText = selectedTextForCategory() {
+                                    Text(selectedText)
+                                        .font(.system(size: 16))
+                                        .multilineTextAlignment(.leading)
+                                        .lineSpacing(3)
+                                        .padding(35)
+                                        .frame(width: 320, height: nil)
+                                        .fixedSize(horizontal: false, vertical: true)
                                 }
-                            )
+                                Spacer()
+                            }
+                        }
                     }
                 }
             }
@@ -282,17 +289,6 @@ struct StatisticsView: View {
         } else {
             cellYearUpdate()
         }
-    }
-    
-    func calculateTextHeight(text: String, font: Font, maxWidth: CGFloat) -> CGFloat {
-        let size = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
-        let textRect = NSString(string: text).boundingRect(
-            with: size,
-            options: .usesLineFragmentOrigin,
-            attributes: [.font: font],
-            context: nil
-        )
-        return ceil(textRect.height)
     }
 }
 
@@ -382,9 +378,10 @@ struct StatisticsCellView: View {
                     .mask(RoundedRectangle(cornerRadius: 10))
                     .frame(width: geometry.size.width, height: geometry.size.height)
             }
-            VStack {
+            VStack(spacing: 4) {
                 Text(note).font(.system(size: 15))
-                Text(String(format: "%.1f", heightRatio * 100) + "%").font(.system(size: 13))
+                Text(String(format: "%.1f", heightRatio * 100) + "%").font(.system(size: 11))
+                    .foregroundColor(.gray)
             }
         }
     }
