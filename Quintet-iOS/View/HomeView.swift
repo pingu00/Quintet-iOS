@@ -24,7 +24,7 @@ struct HomeView: View {
                     Divider()
                         .frame(height: 0.6)
                         .background(Color("LightGray"))
-                        .padding(.vertical)
+                        .padding(.top)
                     // MARK: - 요일 Section
                     HStack{
                         ForEach(0..<7, id: \.self) { index in
@@ -37,16 +37,20 @@ struct HomeView: View {
                     
                     // MARK: - 선택한 날짜에 퀸텟 기록이 있으면 보여주고, 없으면 없다는 메세지를 보여줌
                     if let quintetData = viewModel.getSelectDayData(date: viewModel.selectDay){
-                        HappinessView(quintetData: quintetData)
+                        HappinessView(quintetData: quintetData).padding(.top, 10)
+                        Divider()
+                            .frame(height: 0.6)
+                            .background(Color("LightGray"))
+                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                     }
                     else{
-                        Text("퀸텟체크 기록이 없습니다.")
+                        HStack{
+                            Text("퀸텟체크 기록이 없습니다.").padding(.leading, 20)
+                            Spacer()
+                        }.padding(EdgeInsets(top: 20, leading: 0, bottom: 25, trailing: 0))
                     }
-                    Divider()
-                        .frame(height: 0.6)
-                        .background(Color("LightGray"))
-                        .padding(.vertical)
                     
+
                     // MARK: - 오늘의 퀸텟 체크 Section
                     ZStack{
                         NavigationLink(destination: QuintetCheckView()){
@@ -73,7 +77,7 @@ struct HomeView: View {
                         print("update QuintetData")
                         viewModel.updateValuesFromCoreData(startDate: viewModel.startDate, endDate: viewModel.endDate)
                     }
-                    .padding(.bottom)
+                    .padding(.vertical)
                     
                     // MARK: - 분석확인, 기록확인 Section
                     ZStack{
@@ -125,7 +129,7 @@ struct HomeView: View {
                                 }.padding()
                             }
                         }.padding(.bottom, 10)
-                    }
+                    }.padding(.vertical)
                     
                     // MARK: - 추천 영상 Section
                     HStack{
@@ -134,20 +138,20 @@ struct HomeView: View {
                             .font(.system(size: 30))
                             .padding()
                         Spacer()
-                    }.padding(.vertical, 10)
+                    }.padding(EdgeInsets(top: 20, leading: 0, bottom: 10, trailing: 0))
                     
                     VStack{
                         HStack{
                             //각 영상 cell을 등록
                             VideoCellView(videoURL: "video1", videoTitle: "건강한 삶을 위한 규칙적인 식습관", thumbnail: "video1")
-                                .padding(.leading)
+                                .padding(.leading, 7)
                             Spacer()
-                                .frame(width: 10)
+                                .frame(width: 7)
                             VideoCellView(videoURL: "video2", videoTitle: "인간관계에서 편해지는 법", thumbnail: "video2")
-                                .padding(.trailing)
-                        }.padding(.bottom)
+                                .padding(.trailing, 7)
+                        }.padding(.bottom, 7)
                         VideoCellView(videoURL: "video3", videoTitle: "월급의 몇 %를 저축하고 있나요?", thumbnail: "video3")
-                            .padding(.horizontal)
+                            .padding(.horizontal, 7)
                     }
                 }
                 .padding(20)
