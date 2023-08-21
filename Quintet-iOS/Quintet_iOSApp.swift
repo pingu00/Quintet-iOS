@@ -12,6 +12,9 @@ struct Quintet_iOSApp: App {
     var body: some Scene {
         WindowGroup {
             LoginView()
+                .onAppear {
+                    NetworkManager.shared.fetchWeekCheckData(userID : 2)
+                }
         }
     }
 }

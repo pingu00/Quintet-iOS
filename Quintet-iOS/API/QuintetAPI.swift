@@ -9,23 +9,23 @@ import Foundation
 import Moya
 
 enum QuintetAPI {
-    case getWeekCheck(email : String, date : String)
-    case postTodays(Data)
+    case getWeekCheck(user_id : Int)
+    case postTodays (parameters: [String: Any])
     case patchTodays(Data)
-    case getRecords(email : String, type : String , year : Int, month : Int)
-    case getWeekStatic(email : String, startDate : Date, endDate: Date)
-    case getMonthStatic(email : String, year: Int, month: Int)
-    case getYearStatic(email : String, year: Int)
+    case getRecords(user_id : Int, type : String , year : Int, month : Int)
+    case getWeekStatic(user_id : Int, startDate : Date, endDate: Date)
+    case getMonthStatic(user_id : Int, year: Int, month: Int)
+    case getYearStatic(user_id : Int, year: Int)
 }
 
 extension QuintetAPI : TargetType {
     var baseURL: URL {
-        return URL(string: "52.78.123.107:3000")!
+        return URL(string: "http://52.79.148.241:3000")!
     }
     
     var path: String {
         switch self {
-        case .getWeekCheck :
+        case .getWeekCheck:
             return "/home"
         case .postTodays, .patchTodays:
             return "/record"
@@ -53,24 +53,24 @@ extension QuintetAPI : TargetType {
     
     var task: Task {
         switch self {
-        case .getWeekCheck(let email, let date) :
-            return .requestPlain
-        case .postTodays(let data) :
-            return .requestData(data)
+        case .getWeekCheck(let userID) :
+            return .requestParameters(parameters: ["user_id": userID], encoding: URLEncoding.default)
+        case .postTodays(let parameters) :
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .patchTodays(let data) :
             return .requestData(data)
-        case .getRecords(let email, let type, let year, let month) :
+        case .getRecords(let user_id, let type, let year, let month) :
             return .requestParameters(parameters:
-                                        ["email" : email, "type" : type, "year" : year, "month" : month], encoding: URLEncoding.default)
-        case .getWeekStatic(let email, let startDate, let endDate) :
+                                        ["user_id" : user_id, "type" : type, "year" : year, "month" : month], encoding: URLEncoding.default)
+        case .getWeekStatic(let user_id, let startDate, let endDate) :
             return .requestParameters(parameters:
-                                        ["email" : email, "startDate" : startDate, "endDate" : endDate], encoding: URLEncoding.default)
-        case .getMonthStatic(let email, let year, let month) :
+                                        ["user_id" : user_id, "startDate" : startDate, "endDate" : endDate], encoding: URLEncoding.default)
+        case .getMonthStatic(let user_id, let year, let month) :
             return .requestParameters(parameters:
-                                        ["email" : email, "year" : year, "month" : month], encoding: URLEncoding.default)
-        case .getYearStatic(let email, let year) :
+                                        ["user_id" : user_id, "year" : year, "month" : month], encoding: URLEncoding.default)
+        case .getYearStatic(let user_id, let year) :
             return .requestParameters(parameters:
-                                        ["email" : email, "year" : year], encoding: URLEncoding.default)
+                                        ["user_id" : user_id, "year" : year], encoding: URLEncoding.default)
         }
     }
     
