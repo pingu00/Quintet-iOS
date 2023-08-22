@@ -71,7 +71,22 @@ class StatisticsCellViewModel: ObservableObject {
         return maxNotes
     }
     
+    var minPoint: Int {
+        min(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint)
+    }
     
+    var minNoteArray: [String]{
+        var minNotes: [String] = []
+        let minPoint = self.minPoint
+        
+        for (point, note) in noteArray {
+            if minPoint == point {
+                minNotes.append(note)
+            }
+        }
+        
+        return minNotes
+    }
 
     
     
