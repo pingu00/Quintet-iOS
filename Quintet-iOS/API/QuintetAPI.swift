@@ -12,10 +12,10 @@ enum QuintetAPI {
     case getWeekCheck(user_id : Int)
     case postTodays (parameters: [String: Any])
     case patchTodays(Data)
-    case getRecords(user_id : Int, type : String , year : Int, month : Int)
-    case getWeekStatic(user_id : Int, startDate : Date, endDate: Date)
-    case getMonthStatic(user_id : Int, year: Int, month: Int)
-    case getYearStatic(user_id : Int, year: Int)
+    case getRecords(user_id : String, type : String , year : Int, month : Int)
+    case getWeekStatic(user_id : String, startDate : String, endDate: String)
+    case getMonthStatic(user_id : String, year: Int, month: Int)
+    case getYearStatic(user_id : String, year: Int)
 }
 
 extension QuintetAPI : TargetType {

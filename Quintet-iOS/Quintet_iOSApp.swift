@@ -14,6 +14,9 @@ struct Quintet_iOSApp: App {
             LoginView()
                 .onAppear {
                     NetworkManager.shared.fetchWeekCheckData(userID : 2)
+                    NetworkManager.shared.fetchWeekStatistics(userID : "2", startDate: "2023-08-13", endDate: "2023-08-19")
+                    NetworkManager.shared.fetchMonthStatistics(userID : "2", year: 2023, month: 8)
+                    NetworkManager.shared.fetchYearStatistics(userID : "2", year: 2023)
                 }
         }
     }

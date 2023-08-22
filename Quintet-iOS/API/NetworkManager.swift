@@ -34,14 +34,59 @@ class NetworkManager {
             switch result {
             case let .success(response):
                 if response.statusCode == 200 {
-                    print("POST request successful!")
+                    print("오늘의 체크내용 post 성공!")
                 } else {
-                    print("POST request failed with status code: \(response.statusCode)")
+                    print("포스팅 실패 code: \(response.statusCode)")
                 }
             case let .failure(error):
                 print("Error: \(error)")
             }
         }
     }
-    
+    func fetchWeekStatistics(userID: String, startDate: String, endDate : String) {
+        provider.request(.getWeekStatic(user_id: userID, startDate: startDate, endDate: endDate)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decodedResponse = try JSONDecoder().decode(StatisticsDataResponse.self, from: response.data)
+                    print (decodedResponse.result)
+                } catch let err {
+                    print(err)
+                }
+            case .failure(let moyaError):
+                print("There's an error, \(moyaError)")
+            }
+        }
+    }
+    func fetchMonthStatistics(userID: String, year: Int, month: Int) {
+        provider.request(.getMonthStatic(user_id: userID, year: year, month: month)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decodedResponse = try JSONDecoder().decode(StatisticsDataResponse.self, from: response.data)
+                    print (decodedResponse.result)
+                } catch let err {
+                    print(err)
+                }
+            case .failure(let moyaError):
+                print("There's an error, \(moyaError)")
+            }
+        }
+    }
+    func fetchYearStatistics(userID: String, year: Int) {
+        provider.request(.getYearStatic(user_id: userID, year: year)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decodedResponse = try JSONDecoder().decode(StatisticsDataResponse.self, from: response.data)
+                    print (decodedResponse.result)
+                } catch let err {
+                    print(err)
+                }
+            case .failure(let moyaError):
+                print("There's an error, \(moyaError)")
+            }
+        }
+    }
 }
+
