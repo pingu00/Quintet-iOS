@@ -91,6 +91,15 @@ struct QuintetCheckView: View {
                     Button(action: {
                         vm.updateQuintetData()
                         dismiss()
+                        //MARK: - 임시 API 방식. 추후 viewModel 에서 처리 할 예정
+                        NetworkManager.shared.postCheckData(parameters: [
+                            "user_id": 2,
+                            "work_deg": vm.workPoint,
+                            "health_deg": vm.healthPoint,
+                            "family_deg": vm.familyPoint,
+                            "relationship_deg": vm.relationshipPoint,
+                            "money_deg": vm.assetPoint
+                        ])
                     }){
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color("DarkQ"))
@@ -123,7 +132,6 @@ struct QuintetCheckView: View {
         .onAppear{
             vm.loadCurrentData()
             vm.checkAllCoreData()
-            print(vm.getPercentOfData(from: Date(), to: Date()))
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
