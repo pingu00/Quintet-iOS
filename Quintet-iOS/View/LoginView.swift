@@ -6,13 +6,18 @@
 //
 
 import SwiftUI
+import GoogleSignIn
+import GoogleSignInSwift
+import Moya
 
 struct LoginView: View {
     @State private var isLoading = true
-
+    
     var body: some View {
         NavigationView{
+            
             ZStack{
+                
                 Color("Background").ignoresSafeArea(.all).transition(.opacity)
                 if isLoading {
                     Image("QuintetLogo")
@@ -41,6 +46,8 @@ struct LoginView: View {
                             
                             Button {
                                 print("google loginBtn Tapped")
+                                handleSignInButton()
+                                
                             } label: {
                                 Image("Google_login")
                             }
@@ -58,7 +65,6 @@ struct LoginView: View {
                                         .fontWeight(.medium)
                                         .foregroundColor(.white)
                                     )
-                                
                             }
                         }.padding(.bottom, 20)
                     }
@@ -73,8 +79,39 @@ struct LoginView: View {
             })
         }
     }
-}
+    
+    
+    func handleSignInButton() {
+                guard let presentingViewController = (UIApplication.shared.connectedScenes.first
+                                                      as? UIWindowScene)?.windows.first?.rootViewController
+                else {return}
+                let serverClientID = "57072604372-mp0psmdo18mme37oan2u72aff4iqeqod.apps.googleusercontent.com"
+                let clientID = "57072604372-atronfd68sgo0l369sd215l4veu05rtb.apps.googleusercontent.com"
+        
+                GIDSignIn.sharedInstance.configuration = .init(clientID: clientID, serverClientID: serverClientID)
+                GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController){ signInResult, err in
+                    if let error = err{
+                        print("google login 실패 \(error.localizedDescription)")
+                        return
+                    }
+                    
 
+                    let provider = MoyaProvider<LoginAPI>()
+                    
+                    provider.request(.getCallBack) { result in
+                        switch result{
+                        case .success(let data):
+                            print(data)
+                        case .failure(let error):
+                            print("로그인은 성공했으나, call API error:\(error)")
+                        }
+                    }
+                }
+        
+
+    }
+    
+}
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()

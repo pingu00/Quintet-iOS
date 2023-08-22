@@ -22,6 +22,10 @@
 		28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */; };
 		311198D72A74F8C900D92E91 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D62A74F8C900D92E91 /* DateManager.swift */; };
 		311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D82A74FAFE00D92E91 /* DummyDataManager.swift */; };
+		315DAF142A9238A1006C81BE /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 315DAF132A9238A1006C81BE /* Moya */; };
+		315DAF162A923A91006C81BE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315DAF152A923A91006C81BE /* API.swift */; };
+		315DAF192A923F38006C81BE /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 315DAF182A923F38006C81BE /* GoogleSignIn */; };
+		315DAF1B2A923F38006C81BE /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 315DAF1A2A923F38006C81BE /* GoogleSignInSwift */; };
 		31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31692C8F2A84A73100BC12EF /* HomeViewModel.swift */; };
 		31BF652E2A7B7ECD0014EC90 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BF652D2A7B7ECD0014EC90 /* LoginView.swift */; };
 		31FDB2062A84F7390091A899 /* DateProcessingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FDB2052A84F7390091A899 /* DateProcessingModel.swift */; };
@@ -48,6 +52,8 @@
 		28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetPointPer.swift; sourceTree = "<group>"; };
 		311198D62A74F8C900D92E91 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		311198D82A74FAFE00D92E91 /* DummyDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDataManager.swift; sourceTree = "<group>"; };
+		313504152A947EFE00834CB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		315DAF152A923A91006C81BE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		31692C8F2A84A73100BC12EF /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		31BF652D2A7B7ECD0014EC90 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		31FDB2052A84F7390091A899 /* DateProcessingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProcessingModel.swift; sourceTree = "<group>"; };
@@ -62,6 +68,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				315DAF1B2A923F38006C81BE /* GoogleSignInSwift in Frameworks */,
+				315DAF142A9238A1006C81BE /* Moya in Frameworks */,
+				315DAF192A923F38006C81BE /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +117,7 @@
 		28C3644B2A5FD58E00847A88 /* Quintet-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				313504152A947EFE00834CB3 /* Info.plist */,
 				28C3644C2A5FD58E00847A88 /* Quintet_iOSApp.swift */,
 				311198D62A74F8C900D92E91 /* DateManager.swift */,
 				311198D82A74FAFE00D92E91 /* DummyDataManager.swift */,
@@ -146,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */,
+				315DAF152A923A91006C81BE /* API.swift */,
 				4EBBB1C62A84F24F00D27B67 /* RecordViewStruct.swift */,
 				31FDB2052A84F7390091A899 /* DateProcessingModel.swift */,
 				28997E792A73F00300ED676C /* CoreDataModel.xcdatamodeld */,
@@ -170,6 +181,9 @@
 			);
 			name = "Quintet-iOS";
 			packageProductDependencies = (
+				315DAF132A9238A1006C81BE /* Moya */,
+				315DAF182A923F38006C81BE /* GoogleSignIn */,
+				315DAF1A2A923F38006C81BE /* GoogleSignInSwift */,
 			);
 			productName = "Quintet-iOS";
 			productReference = 28C364492A5FD58E00847A88 /* Quintet-iOS.app */;
@@ -200,6 +214,8 @@
 			);
 			mainGroup = 28C364402A5FD58E00847A88;
 			packageReferences = (
+				315DAF122A9238A1006C81BE /* XCRemoteSwiftPackageReference "Moya" */,
+				315DAF172A923F38006C81BE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = 28C3644A2A5FD58E00847A88 /* Products */;
 			projectDirPath = "";
@@ -240,6 +256,7 @@
 				4EBBB1C72A84F25000D27B67 /* RecordViewStruct.swift in Sources */,
 				28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */,
 				286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */,
+				315DAF162A923A91006C81BE /* API.swift in Sources */,
 				28997E822A73F76A00ED676C /* CoreDataViewModel.swift in Sources */,
 				AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */,
 				28C364632A5FD63600847A88 /* RecordView.swift in Sources */,
@@ -377,6 +394,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Quintet-iOS/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Quintet-iOS/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -405,6 +423,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Quintet-iOS/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Quintet-iOS/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -445,6 +464,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		315DAF122A9238A1006C81BE /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.0;
+			};
+		};
+		315DAF172A923F38006C81BE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		315DAF132A9238A1006C81BE /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 315DAF122A9238A1006C81BE /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		315DAF182A923F38006C81BE /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 315DAF172A923F38006C81BE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		315DAF1A2A923F38006C81BE /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 315DAF172A923F38006C81BE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		28997E792A73F00300ED676C /* CoreDataModel.xcdatamodeld */ = {

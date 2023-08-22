@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
-
+import GoogleSignIn
 @main
 struct Quintet_iOSApp: App {
+
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            LoginView().onOpenURL { url in
+                GIDSignIn.sharedInstance.handle(url)
+            }
         }
     }
 }
