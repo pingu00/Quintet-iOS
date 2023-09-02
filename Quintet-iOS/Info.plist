@@ -7,14 +7,17 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.googleusercontent.apps.57072604372-atronfd68sgo0l369sd215l4veu05rtb</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.57072604372-atronfd68sgo0l369sd215l4veu05rtb</string>
+				<string>com.googleusercontent.apps.57072604372-mp0psmdo18mme37oan2u72aff4iqeqod</string>
 			</array>
 		</dict>
 	</array>
 	<key>GIDClientID</key>
-	<string>844330211149-e6mgprvkre39i51klvd4jgfv74un2dsa.apps.googleusercontent.com</string>
+	<string>57072604372-atronfd68sgo0l369sd215l4veu05rtb.apps.googleusercontent.com</string>
 	<key>GIDServerClientID</key>
 	<string>57072604372-mp0psmdo18mme37oan2u72aff4iqeqod.apps.googleusercontent.com</string>
 </dict>

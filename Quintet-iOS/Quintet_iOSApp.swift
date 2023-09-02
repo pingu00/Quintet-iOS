@@ -13,8 +13,10 @@ struct Quintet_iOSApp: App {
     var body: some Scene {
         WindowGroup {
             LoginView().onOpenURL { url in
+                print(url)
                 GIDSignIn.sharedInstance.handle(url)
             }
         }
     }
 }
+

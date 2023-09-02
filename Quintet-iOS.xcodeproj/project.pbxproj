@@ -22,8 +22,12 @@
 		28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */; };
 		311198D72A74F8C900D92E91 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D62A74F8C900D92E91 /* DateManager.swift */; };
 		311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D82A74FAFE00D92E91 /* DummyDataManager.swift */; };
+		311BC54E2AA36BC200EDD27E /* SwiftJWT in Frameworks */ = {isa = PBXBuildFile; productRef = 311BC54D2AA36BC200EDD27E /* SwiftJWT */; };
+		311BC5502AA36F0D00EDD27E /* IdTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311BC54F2AA36F0D00EDD27E /* IdTokenResponse.swift */; };
+		311BC5522AA36FAE00EDD27E /* OAuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311BC5512AA36FAE00EDD27E /* OAuthAPI.swift */; };
+		311BC5542AA3808D00EDD27E /* JWTClaims.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311BC5532AA3808D00EDD27E /* JWTClaims.swift */; };
+		311BC5562AA3811800EDD27E /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311BC5552AA3811800EDD27E /* LoginViewModel.swift */; };
 		315DAF142A9238A1006C81BE /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 315DAF132A9238A1006C81BE /* Moya */; };
-		315DAF162A923A91006C81BE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315DAF152A923A91006C81BE /* API.swift */; };
 		315DAF192A923F38006C81BE /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 315DAF182A923F38006C81BE /* GoogleSignIn */; };
 		315DAF1B2A923F38006C81BE /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 315DAF1A2A923F38006C81BE /* GoogleSignInSwift */; };
 		31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31692C8F2A84A73100BC12EF /* HomeViewModel.swift */; };
@@ -52,8 +56,11 @@
 		28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetPointPer.swift; sourceTree = "<group>"; };
 		311198D62A74F8C900D92E91 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		311198D82A74FAFE00D92E91 /* DummyDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDataManager.swift; sourceTree = "<group>"; };
+		311BC54F2AA36F0D00EDD27E /* IdTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdTokenResponse.swift; sourceTree = "<group>"; };
+		311BC5512AA36FAE00EDD27E /* OAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthAPI.swift; sourceTree = "<group>"; };
+		311BC5532AA3808D00EDD27E /* JWTClaims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTClaims.swift; sourceTree = "<group>"; };
+		311BC5552AA3811800EDD27E /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		313504152A947EFE00834CB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		315DAF152A923A91006C81BE /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		31692C8F2A84A73100BC12EF /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		31BF652D2A7B7ECD0014EC90 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		31FDB2052A84F7390091A899 /* DateProcessingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProcessingModel.swift; sourceTree = "<group>"; };
@@ -70,6 +77,7 @@
 			files = (
 				315DAF1B2A923F38006C81BE /* GoogleSignInSwift in Frameworks */,
 				315DAF142A9238A1006C81BE /* Moya in Frameworks */,
+				311BC54E2AA36BC200EDD27E /* SwiftJWT in Frameworks */,
 				315DAF192A923F38006C81BE /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				31692C8F2A84A73100BC12EF /* HomeViewModel.swift */,
+				311BC5552AA3811800EDD27E /* LoginViewModel.swift */,
 				AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */,
 				AA086E372A727B020025F8A7 /* DateViewModel.swift */,
 				28997E812A73F76A00ED676C /* CoreDataViewModel.swift */,
@@ -156,10 +165,12 @@
 			isa = PBXGroup;
 			children = (
 				28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */,
-				315DAF152A923A91006C81BE /* API.swift */,
 				4EBBB1C62A84F24F00D27B67 /* RecordViewStruct.swift */,
+				311BC5512AA36FAE00EDD27E /* OAuthAPI.swift */,
 				31FDB2052A84F7390091A899 /* DateProcessingModel.swift */,
 				28997E792A73F00300ED676C /* CoreDataModel.xcdatamodeld */,
+				311BC54F2AA36F0D00EDD27E /* IdTokenResponse.swift */,
+				311BC5532AA3808D00EDD27E /* JWTClaims.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -184,6 +195,7 @@
 				315DAF132A9238A1006C81BE /* Moya */,
 				315DAF182A923F38006C81BE /* GoogleSignIn */,
 				315DAF1A2A923F38006C81BE /* GoogleSignInSwift */,
+				311BC54D2AA36BC200EDD27E /* SwiftJWT */,
 			);
 			productName = "Quintet-iOS";
 			productReference = 28C364492A5FD58E00847A88 /* Quintet-iOS.app */;
@@ -216,6 +228,7 @@
 			packageReferences = (
 				315DAF122A9238A1006C81BE /* XCRemoteSwiftPackageReference "Moya" */,
 				315DAF172A923F38006C81BE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				311BC54C2AA36BC200EDD27E /* XCRemoteSwiftPackageReference "Swift-JWT" */,
 			);
 			productRefGroup = 28C3644A2A5FD58E00847A88 /* Products */;
 			projectDirPath = "";
@@ -252,15 +265,18 @@
 				28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */,
 				28997E7B2A73F00300ED676C /* CoreDataModel.xcdatamodeld in Sources */,
 				AA086E3E2A875F6E0025F8A7 /* PickerView.swift in Sources */,
+				311BC5502AA36F0D00EDD27E /* IdTokenResponse.swift in Sources */,
+				311BC5522AA36FAE00EDD27E /* OAuthAPI.swift in Sources */,
 				28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */,
 				4EBBB1C72A84F25000D27B67 /* RecordViewStruct.swift in Sources */,
 				28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */,
 				286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */,
-				315DAF162A923A91006C81BE /* API.swift in Sources */,
 				28997E822A73F76A00ED676C /* CoreDataViewModel.swift in Sources */,
 				AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */,
 				28C364632A5FD63600847A88 /* RecordView.swift in Sources */,
+				311BC5542AA3808D00EDD27E /* JWTClaims.swift in Sources */,
 				286E48AB2A76DE1600D109E9 /* AddNoteCellView.swift in Sources */,
+				311BC5562AA3811800EDD27E /* LoginViewModel.swift in Sources */,
 				28C3644D2A5FD58E00847A88 /* Quintet_iOSApp.swift in Sources */,
 				31BF652E2A7B7ECD0014EC90 /* LoginView.swift in Sources */,
 				AA086E3C2A72E1C20025F8A7 /* StatisticsCellViewModel.swift in Sources */,
@@ -466,6 +482,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		311BC54C2AA36BC200EDD27E /* XCRemoteSwiftPackageReference "Swift-JWT" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/IBM-Swift/Swift-JWT.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		315DAF122A9238A1006C81BE /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
@@ -485,6 +509,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		311BC54D2AA36BC200EDD27E /* SwiftJWT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 311BC54C2AA36BC200EDD27E /* XCRemoteSwiftPackageReference "Swift-JWT" */;
+			productName = SwiftJWT;
+		};
 		315DAF132A9238A1006C81BE /* Moya */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 315DAF122A9238A1006C81BE /* XCRemoteSwiftPackageReference "Moya" */;
