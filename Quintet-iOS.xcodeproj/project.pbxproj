@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		281E2FAD2A8F6FF700DEAAD8 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 281E2FAC2A8F6FF700DEAAD8 /* CombineMoya */; };
+		281E2FAF2A8F6FF700DEAAD8 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 281E2FAE2A8F6FF700DEAAD8 /* Moya */; };
+		281E2FB12A8F6FF700DEAAD8 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 281E2FB02A8F6FF700DEAAD8 /* ReactiveMoya */; };
+		281E2FB32A8F6FF700DEAAD8 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 281E2FB22A8F6FF700DEAAD8 /* RxMoya */; };
+		281E2FB62A8F74D600DEAAD8 /* QuintetAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281E2FB52A8F74D600DEAAD8 /* QuintetAPI.swift */; };
+		281E2FBC2A925DD800DEAAD8 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281E2FBB2A925DD800DEAAD8 /* Response.swift */; };
+		281E2FBE2A93731300DEAAD8 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281E2FBD2A93731300DEAAD8 /* NetworkManager.swift */; };
 		286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286E48A82A76DD6B00D109E9 /* CheckCellView.swift */; };
 		286E48AB2A76DE1600D109E9 /* AddNoteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286E48AA2A76DE1600D109E9 /* AddNoteCellView.swift */; };
 		28997E7B2A73F00300ED676C /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 28997E792A73F00300ED676C /* CoreDataModel.xcdatamodeld */; };
@@ -40,6 +47,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		281E2FB52A8F74D600DEAAD8 /* QuintetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetAPI.swift; sourceTree = "<group>"; };
+		281E2FBB2A925DD800DEAAD8 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		281E2FBD2A93731300DEAAD8 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		286E48A82A76DD6B00D109E9 /* CheckCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCellView.swift; sourceTree = "<group>"; };
 		286E48AA2A76DE1600D109E9 /* AddNoteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteCellView.swift; sourceTree = "<group>"; };
 		28997E7A2A73F00300ED676C /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -75,16 +85,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+
 				315DAF1B2A923F38006C81BE /* GoogleSignInSwift in Frameworks */,
-				315DAF142A9238A1006C81BE /* Moya in Frameworks */,
 				311BC54E2AA36BC200EDD27E /* SwiftJWT in Frameworks */,
 				315DAF192A923F38006C81BE /* GoogleSignIn in Frameworks */,
+				281E2FAF2A8F6FF700DEAAD8 /* Moya in Frameworks */,
+				281E2FAD2A8F6FF700DEAAD8 /* CombineMoya in Frameworks */,
+				281E2FB32A8F6FF700DEAAD8 /* RxMoya in Frameworks */,
+				281E2FB12A8F6FF700DEAAD8 /* ReactiveMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		281E2FB42A8F743200DEAAD8 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				281E2FBD2A93731300DEAAD8 /* NetworkManager.swift */,
+				281E2FB52A8F74D600DEAAD8 /* QuintetAPI.swift */,
+				281E2FBB2A925DD800DEAAD8 /* Response.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 		286E48A72A76DD1100D109E9 /* QuintetCheck */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +157,7 @@
 				28C3645E2A5FD63600847A88 /* View */,
 				28997E832A73FA4600ED676C /* ViewModel */,
 				31FDB2042A84F7080091A899 /* Model */,
+				281E2FB42A8F743200DEAAD8 /* API */,
 				28C364502A5FD58F00847A88 /* Assets.xcassets */,
 				28C364522A5FD58F00847A88 /* Preview Content */,
 			);
@@ -192,10 +217,15 @@
 			);
 			name = "Quintet-iOS";
 			packageProductDependencies = (
-				315DAF132A9238A1006C81BE /* Moya */,
+				
 				315DAF182A923F38006C81BE /* GoogleSignIn */,
 				315DAF1A2A923F38006C81BE /* GoogleSignInSwift */,
 				311BC54D2AA36BC200EDD27E /* SwiftJWT */,
+				281E2FAC2A8F6FF700DEAAD8 /* CombineMoya */,
+				281E2FAE2A8F6FF700DEAAD8 /* Moya */,
+				281E2FB02A8F6FF700DEAAD8 /* ReactiveMoya */,
+				281E2FB22A8F6FF700DEAAD8 /* RxMoya */,
+
 			);
 			productName = "Quintet-iOS";
 			productReference = 28C364492A5FD58E00847A88 /* Quintet-iOS.app */;
@@ -226,9 +256,11 @@
 			);
 			mainGroup = 28C364402A5FD58E00847A88;
 			packageReferences = (
-				315DAF122A9238A1006C81BE /* XCRemoteSwiftPackageReference "Moya" */,
+
 				315DAF172A923F38006C81BE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				311BC54C2AA36BC200EDD27E /* XCRemoteSwiftPackageReference "Swift-JWT" */,
+				281E2FAB2A8F6FF700DEAAD8 /* XCRemoteSwiftPackageReference "Moya" */,
+
 			);
 			productRefGroup = 28C3644A2A5FD58E00847A88 /* Products */;
 			projectDirPath = "";
@@ -256,8 +288,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				281E2FBE2A93731300DEAAD8 /* NetworkManager.swift in Sources */,
+				281E2FB62A8F74D600DEAAD8 /* QuintetAPI.swift in Sources */,
 				311198D72A74F8C900D92E91 /* DateManager.swift in Sources */,
 				31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */,
+				281E2FBC2A925DD800DEAAD8 /* Response.swift in Sources */,
 				28C3645B2A5FD5DB00847A88 /* HomeView.swift in Sources */,
 				31FDB2062A84F7390091A899 /* DateProcessingModel.swift in Sources */,
 				311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */,
@@ -482,6 +517,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+
 		311BC54C2AA36BC200EDD27E /* XCRemoteSwiftPackageReference "Swift-JWT" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/IBM-Swift/Swift-JWT.git";
@@ -490,7 +526,8 @@
 				minimumVersion = 4.0.0;
 			};
 		};
-		315DAF122A9238A1006C81BE /* XCRemoteSwiftPackageReference "Moya" */ = {
+
+		281E2FAB2A8F6FF700DEAAD8 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
 			requirement = {
@@ -498,6 +535,7 @@
 				minimumVersion = 15.0.0;
 			};
 		};
+
 		315DAF172A923F38006C81BE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -514,11 +552,6 @@
 			package = 311BC54C2AA36BC200EDD27E /* XCRemoteSwiftPackageReference "Swift-JWT" */;
 			productName = SwiftJWT;
 		};
-		315DAF132A9238A1006C81BE /* Moya */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 315DAF122A9238A1006C81BE /* XCRemoteSwiftPackageReference "Moya" */;
-			productName = Moya;
-		};
 		315DAF182A923F38006C81BE /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 315DAF172A923F38006C81BE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
@@ -528,6 +561,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 315DAF172A923F38006C81BE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		281E2FAC2A8F6FF700DEAAD8 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 281E2FAB2A8F6FF700DEAAD8 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		281E2FAE2A8F6FF700DEAAD8 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 281E2FAB2A8F6FF700DEAAD8 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		281E2FB02A8F6FF700DEAAD8 /* ReactiveMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 281E2FAB2A8F6FF700DEAAD8 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = ReactiveMoya;
+		};
+		281E2FB22A8F6FF700DEAAD8 /* RxMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 281E2FAB2A8F6FF700DEAAD8 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = RxMoya;
+
 		};
 /* End XCSwiftPackageProductDependency section */
 

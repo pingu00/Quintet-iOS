@@ -8,7 +8,6 @@
 import Foundation
 import CoreData
 
-
 class CoreDataViewModel: ObservableObject {
     let container: NSPersistentContainer
     let today = Date()
@@ -210,6 +209,7 @@ class CoreDataViewModel: ObservableObject {
             savedQuintetData.assetNote = assetNote
             
             saveContext()
+            
         } else {
             addNewData()
         }

@@ -30,9 +30,12 @@ class DateProcessingModel{
     }
     
     func formatTodayToString() -> String{
-        let month = Calendar.current.component(.month, from: Date())
-        let day = Calendar.current.component(.day, from: Date())
-        return "\(month)월 \(day)일"
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "M월 d일 EEEE"
+        
+        let formattedDate = dateFormatter.string(from: Date())
+        return formattedDate
     }
     
     func isSameDay(date1: Date, date2: Date) -> Bool{
