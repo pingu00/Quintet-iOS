@@ -20,7 +20,7 @@ enum QuintetAPI {
 
 extension QuintetAPI : TargetType {
     var baseURL: URL {
-        return URL(string: "http://52.79.148.241:3000")!
+        return URL(string: "https://quintet.store")!
     }
     
     var path: String {

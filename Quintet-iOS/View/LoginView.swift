@@ -9,9 +9,11 @@ import SwiftUI
 
 struct LoginView: View {
     @State private var isLoading = true
-
+    @StateObject private var loginViewModel = LoginViewModel()
+    
     var body: some View {
         NavigationView{
+            
             ZStack{
                 Color("Background").ignoresSafeArea(.all).transition(.opacity)
                 if isLoading {
@@ -38,9 +40,10 @@ struct LoginView: View {
                             } label: {
                                 Image("Apple_login")
                             }
-                            
                             Button {
                                 print("google loginBtn Tapped")
+                                loginViewModel.googleSignIn()
+                                
                             } label: {
                                 Image("Google_login")
                             }
@@ -58,7 +61,6 @@ struct LoginView: View {
                                         .fontWeight(.medium)
                                         .foregroundColor(.white)
                                     )
-                                
                             }
                         }.padding(.bottom, 20)
                     }
