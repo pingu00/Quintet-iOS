@@ -12,6 +12,7 @@ import SwiftJWT
 
 
 class LoginViewModel: ObservableObject{
+    @Published var isLoggedIn = false
     private let key = "qu1nt3tJs0nS3cr3tV4lue"
     
     func getGoogleIDToken(completion: @escaping (String?) -> Void){
@@ -92,6 +93,9 @@ class LoginViewModel: ObservableObject{
             print("id:\(jwt.claims.id)")
             print("이름:\(jwt.claims.username)")
             print("email:\(jwt.claims.email)")
+            isLoggedIn = true
+            UserDefaults.standard.set(jwt.claims.id, forKey: "LoginID")
+            
         } catch {
             print("토큰 해독 및 검증 실패: \(error.localizedDescription)")
         }
@@ -116,6 +120,11 @@ class LoginViewModel: ObservableObject{
                 self.decodeJWTToken(jwtToken: jwtToken)
             }
         }
+        
+        // MARK: - 서버 연결 없이 HomeView로 이동하고 싶으면 아래 주석을 해제
+//        print("서버 닫힌 상태에서 테스트")
+//        isLoggedIn = true
+//        UserDefaults.standard.set(1, forKey: "LoginID")
         
         print("구글 로그인 시도 마무리")
     }

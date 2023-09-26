@@ -13,6 +13,17 @@ class NetworkManager {
     static let shared = NetworkManager()
     private let provider = MoyaProvider<QuintetAPI>()
     
+    //로그인한 ID를 얻는 함수
+    func getUserID() -> Int?{
+        if let loginID = UserDefaults.standard.string(forKey: "LoginID") {
+            print("Login ID: \(loginID)")
+            return Int(loginID)!
+        } else {
+            print("Login ID가 없습니다.")
+            return nil
+        }
+    }
+    
     func fetchWeekCheckData(userID: Int) {
         provider.request(.getWeekCheck(user_id: userID)) { result in
             switch result {
