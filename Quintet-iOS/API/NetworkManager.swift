@@ -88,5 +88,36 @@ class NetworkManager {
             }
         }
     }
+    func fetchRecordsByDate(userID: String, year: Int, month: Int) {
+        provider.request(.getRecordsByDate(user_id: userID, year: year, month: month)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decodedResponse = try JSONDecoder().decode(RecordDataResponse.self, from: response.data)
+                    print (decodedResponse.result)
+                } catch let err {
+                    print(err)
+                }
+            case .failure(let moyaError):
+                print("There's an error, \(moyaError)")
+            }
+        }
+    }
+    func fetchRecordsByElement(userID: String, year: Int, month: Int, element : String) {
+        provider.request(.getRecordsByElement(user_id: userID, year: year, month: month, element: element)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decodedResponse = try JSONDecoder().decode(RecordDataResponse.self, from: response.data)
+                    print (decodedResponse.result)
+                } catch let err {
+                    print(err)
+                }
+            case .failure(let moyaError):
+                print("There's an error, \(moyaError)")
+            }
+        }
+    }
+    
 }
 
