@@ -13,6 +13,12 @@ struct WeeklyDataResponse: Codable {
     let message: String
     let result: WeeklyResult
 }
+struct WeeklyResult : Codable{
+    let user_id: String
+    let startOfWeek: String
+    let endOfWeek: String
+    let weeklyData: [DailyData]
+}
 
 struct DailyData : Codable{
     let date: String
@@ -23,13 +29,7 @@ struct DailyData : Codable{
     let money_deg: Int
 }
 
-struct WeeklyResult : Codable{
-    let user_id: String
-    let startOfWeek: String
-    let endOfWeek: String
-    let weeklyData: [DailyData]
-}
-
+//MARK: - Statistics
 struct StatisticsDataResponse: Codable {
     let isSuccess: Bool
     let code: Int
@@ -51,14 +51,57 @@ struct StatisticsResult : Codable {
     let maxValue : [String]
     
     enum CodingKeys: String, CodingKey {
-            case user_id,year,month
-            case startDate = "start_date"
-            case endDate = "end_date"
-            case workPointPer = "work_per"
-            case healthPointPer = "health_per"
-            case familyPointPer = "family_per"
-            case assetPointPer = "money_per"
-            case relationshipPointPer = "relationship_per"
-            case maxValue = "maxVals"
-        }
+        case user_id,year,month
+        case startDate = "start_date"
+        case endDate = "end_date"
+        case workPointPer = "work_per"
+        case healthPointPer = "health_per"
+        case familyPointPer = "family_per"
+        case assetPointPer = "money_per"
+        case relationshipPointPer = "relationship_per"
+        case maxValue = "maxVals"
+    }
 }
+
+struct RecordDataResponse : Codable {
+    var isSuccess : Bool
+    var code : Int
+    var message : String
+    var result : [RecordResult]
+}
+struct RecordResult : Codable {
+    var id: Int
+    var date: String
+    var workDeg: Int?
+    var workDoc: String?
+    var healthDeg: Int?
+    var healthDoc: String?
+    var familyDeg: Int?
+    var familyDoc: String?
+    var relationshipDeg: Int?
+    var relationshipDoc: String?
+    var moneyDeg: Int?
+    var moneyDoc: String?
+    var userId: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case id, date
+        case workDeg = "work_deg"
+        case workDoc = "work_doc"
+        case healthDeg = "health_deg"
+        case healthDoc = "health_doc"
+        case familyDeg = "family_deg"
+        case familyDoc = "family_doc"
+        case relationshipDeg = "relationship_deg"
+        case relationshipDoc = "relationship_doc"
+        case moneyDeg = "money_deg"
+        case moneyDoc = "money_doc"
+        case userId = "user_id"
+    }
+}
+
+
+
+
+
+
