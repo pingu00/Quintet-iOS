@@ -358,7 +358,7 @@ class CoreDataViewModel: ObservableObject {
         let quintetData = getQuintetData(from: startDate, to: endDate)
         let filteredData = quintetData.filter { $0[keyPath: filterKeyPath] >= 0 }
         
-        let sortedRecords = filteredData.sorted(by: { ($0.date ?? Date()) < ($1.date ?? Date()) }).prefix(5)
+        let sortedRecords = filteredData.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5).reversed()
         
         return sortedRecords.map { data in
             let icon = iconClosure(data[keyPath: filterKeyPath])

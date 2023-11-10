@@ -26,7 +26,7 @@ struct RecordView: View {
                 Color("Background")
                     .ignoresSafeArea(.all)
                 ScrollView {
-                    VStack(spacing: 35) {
+                    VStack(spacing: 30) {
                         VStack {
                             HStack {
                                 Spacer()
@@ -38,12 +38,12 @@ struct RecordView: View {
                             VStack {
                                 ZStack {
                                     Rectangle()
-                                        .frame(width: 300, height: 40)
+                                        .frame(width: 300, height: 45)
                                         .cornerRadius(25)
                                         .foregroundColor(Color("LightGray2"))
                                     
                                     Rectangle()
-                                        .frame(width: 155, height: 30)
+                                        .frame(width: 155, height: 37)
                                         .cornerRadius(25)
                                         .foregroundColor(Color("DarkGray"))
                                         .offset(x: isShowingBtn ? 68 : -68, y: 0)
@@ -78,7 +78,7 @@ struct RecordView: View {
                         //요소별
                         if (isShowingBtn == true) {
                                 RecordElementView(recordIndex: .None)
-                                    .padding(.bottom, 40)
+                                    .padding(.bottom, 21)
                         }
                         
                         //날짜별
@@ -123,7 +123,7 @@ struct YearPicker_: View {
     var body: some View {
         Picker("년도 선택", selection: $selectedYear){
             ForEach(2017...currentYear, id: \.self) { year in
-                Text("\(Utilities_.formatNum(year))년")
+                Text("\(Utilities.formatNum(year))년")
             }
         }
         .pickerStyle(WheelPickerStyle())
@@ -161,7 +161,7 @@ struct recordCard: View {
             .frame(minHeight: 55)
             Spacer()
         }
-        .frame(width: 320)
+        .frame(width: 310)
         .padding(20)
         .background(Color.white)
         .cornerRadius(20)
@@ -199,11 +199,11 @@ struct RecordElementView : View {
                 HStack {
                     viewModel.yearMonthButtonTextRecordVer
                         .foregroundColor(Color.black)
-                    Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                    Image(systemName: isShowPopup ? "chevron.up" : "chevron.down")
                         .foregroundColor(.black)
                         .font(.system(size: 15))
                 }
-                .padding(.top, 10)
+                .padding(.top, 25)
                 .padding(.trailing, 180)
             }
             .sheet(isPresented: $isShowPopup) {
@@ -267,7 +267,7 @@ struct RecordElementView : View {
                         .offset(x: 106)
                 }
             }
-            .frame(width: 330, height: 50)
+            .frame(width: 310, height: 50)
             .padding(20)
             .background(recordIndex == .money ? Color("DarkQ") : Color.white)
             .cornerRadius(20)
@@ -313,8 +313,8 @@ struct RecordElementView : View {
                     .fontWeight(.bold)
                 
             }
-            .frame(width: 140, height: 50)
-            .padding(20)
+            .frame(width: 135, height: 50)
+            .padding(18)
             .background(bC)
             .cornerRadius(20)
             
@@ -330,27 +330,6 @@ struct RecordElementView : View {
             return view
         }
         func updateUIView(_ uiView: UIView, context: Context) {}
-    }
-    
-    struct Utilities_{
-        static func formatNum(_ num: Int) -> String {
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .none
-            
-            return numberFormatter.string(from: NSNumber(value: num)) ?? ""
-        }
-        
-        static func formatYearMonthDay(_ date: Date) -> String {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy.MM.dd"
-            return formatter.string(from: date)
-        }
-        static func formatMonthDay(_ date: Date) -> String {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MM.dd"
-            return formatter.string(from: date)
-        }
-        
     }
 
     
@@ -385,19 +364,20 @@ struct CalendarView: View {
                         .ignoresSafeArea()
                 }
                 
-                Image(systemName: isShowPopup ? "chevron.compact.up" : "chevron.compact.down")
+                Image(systemName: isShowPopup ? "chevron.up" : "chevron.down")
                     .foregroundColor(.black)
                     .font(.system(size: 15))
             }
             .padding(.bottom, 17)
             
-            HStack(spacing: 1) {
+            HStack(spacing: 2) {
                 
                 ForEach(days, id: \.self) { day in
                     
                     Text(day)
                         .fontWeight(.medium)
                         .padding(.horizontal)
+                        .foregroundColor(Color("DarkGray"))
                     
                 }
             }
@@ -405,7 +385,7 @@ struct CalendarView: View {
             Divider()
                 .padding(.horizontal)
             
-            let columns = Array(repeating: GridItem(.fixed(39)), count: 7)
+            let columns = Array(repeating: GridItem(.fixed(41)), count: 7)
             LazyVGrid(columns: columns, spacing: 9) {
                 ForEach(extractDate()) { value in
                     if value.day != -1 {
@@ -468,13 +448,13 @@ struct CalendarView: View {
 
                     Text("\(value.day)")
                         .font(.title3.bold())
-                        .foregroundColor(isSameDay(date1: task.date, date2: currentDate) ? .white : .primary)
+                        .foregroundColor(isSameDay(date1: task.date, date2: currentDate) ? .white : Color("DarkGray"))
                         .frame(maxWidth: .infinity)
                     
                 } else {
                     Text("\(value.day)")
                         .font(.title3.bold())
-                        .foregroundColor(isSameDay(date1: value.date , date2: currentDate) ? .white : .primary)
+                        .foregroundColor(isSameDay(date1: value.date , date2: currentDate) ? .white : Color("DarkGray"))
                         .frame(maxWidth: .infinity)
 
                     Spacer()

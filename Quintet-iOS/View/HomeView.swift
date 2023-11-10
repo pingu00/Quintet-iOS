@@ -24,7 +24,7 @@ struct HomeView: View {
                     Divider()
                         .frame(height: 0.6)
                         .background(Color("LightGray"))
-                        .padding(.vertical)
+                        .padding(.top)
                     // MARK: - 요일 Section
                     HStack{
                         ForEach(0..<7, id: \.self) { index in
@@ -37,16 +37,20 @@ struct HomeView: View {
                     
                     // MARK: - 선택한 날짜에 퀸텟 기록이 있으면 보여주고, 없으면 없다는 메세지를 보여줌
                     if let quintetData = viewModel.getSelectDayData(date: viewModel.selectDay){
-                        HappinessView(quintetData: quintetData)
+                        HappinessView(quintetData: quintetData).padding(.top, 10)
+                        Divider()
+                            .frame(height: 0.6)
+                            .background(Color("LightGray"))
+                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                     }
                     else{
-                        Text("퀸텟체크 기록이 없습니다.")
+                        HStack{
+                            Text("퀸텟체크 기록이 없습니다.").padding(.leading, 20)
+                            Spacer()
+                        }.padding(EdgeInsets(top: 20, leading: 0, bottom: 25, trailing: 0))
                     }
-                    Divider()
-                        .frame(height: 0.6)
-                        .background(Color("LightGray"))
-                        .padding(.vertical)
                     
+
                     // MARK: - 오늘의 퀸텟 체크 Section
                     ZStack{
                         NavigationLink(destination: QuintetCheckView()){
@@ -73,7 +77,7 @@ struct HomeView: View {
                         print("update QuintetData")
                         viewModel.updateValuesFromCoreData(startDate: viewModel.startDate, endDate: viewModel.endDate)
                     }
-                    .padding(.bottom)
+                    .padding(.vertical)
                     
                     // MARK: - 분석확인, 기록확인 Section
                     ZStack{
@@ -86,24 +90,20 @@ struct HomeView: View {
                                         .foregroundColor(.white)
                                 }
                                 HStack(alignment: .center){
-                                    VStack(alignment: .leading){
-                                        Text("지난주 분석 확인하기")
-                                            .fontWeight(.semibold)
-                                            .font(.system(size: 18))
-                                            .padding(.bottom, 0.5)
-                                        Text("\(viewModel.getDateString(date: viewModel.previousStartDate)) - \(viewModel.getDateString(date: viewModel.previousEndDate))")
-                                            .font(.system(size: 14))
-                                    }.padding()
+                                    Text("분석 확인하기")
+                                        .fontWeight(.semibold)
+                                        .font(.system(size: 18)).padding()
+                                        
                                     Spacer()
                                     Image(systemName: "chevron.right")
                                         .tint(.black)
                                         .font(.title)
                                         .padding()
-                                }
-                            }.padding()
+                                }.padding(.horizontal)
+                            }
                             
-                            Divider()
-                                .background(Color("LightGray"))
+                            Divider().frame(height: 2.5)
+                                .background(Color("LightGray2"))
                                 .padding(.horizontal)
                             ZStack{
                                 NavigationLink(destination: RecordView()){
@@ -122,10 +122,10 @@ struct HomeView: View {
                                         .font(.title)
                                         .padding()
                                     
-                                }.padding()
+                                }.padding(.horizontal)
                             }
-                        }.padding(.bottom, 10)
-                    }
+                        }.padding(.vertical, 10)
+                    }.padding(.vertical)
                     
                     // MARK: - 추천 영상 Section
                     HStack{
@@ -134,20 +134,20 @@ struct HomeView: View {
                             .font(.system(size: 30))
                             .padding()
                         Spacer()
-                    }.padding(.vertical, 10)
+                    }.padding(EdgeInsets(top: 20, leading: 0, bottom: 10, trailing: 0))
                     
                     VStack{
                         HStack{
                             //각 영상 cell을 등록
-                            VideoCellView(videoURL: "video1", videoTitle: "건강한 삶을 위한 규칙적인 식습관", thumbnail: "video1")
-                                .padding(.leading)
+                            VideoCellView(videoURL: "https://youtu.be/Y4r_rfQ09Vg", videoTitle: "건강한 삶을 위한 규칙적인 식습관", thumbnail: "video1")
+                                .padding(.leading, 7)
                             Spacer()
-                                .frame(width: 10)
-                            VideoCellView(videoURL: "video2", videoTitle: "인간관계에서 편해지는 법", thumbnail: "video2")
-                                .padding(.trailing)
-                        }.padding(.bottom)
-                        VideoCellView(videoURL: "video3", videoTitle: "월급의 몇 %를 저축하고 있나요?", thumbnail: "video3")
-                            .padding(.horizontal)
+                                .frame(width: 7)
+                            VideoCellView(videoURL: "https://www.youtube.com/watch?v=9cxwIX9YBeY", videoTitle: "인간관계에서 편해지는 법", thumbnail: "video2")
+                                .padding(.trailing, 7)
+                        }.padding(.bottom, 7)
+                        VideoCellView(videoURL: "https://youtu.be/kQZSeJXq7lE", videoTitle: "월급의 몇 %를 저축하고 있나요?", thumbnail: "video3")
+                            .padding(.horizontal, 7)
                     }
                 }
                 .padding(20)
@@ -281,8 +281,7 @@ struct VideoCellView: View{
         ZStack{
             Button {
                 print("video cell tapped")
-                UIApplication.shared.open(URL(string: "https://www.youtube.com/watch?v=OIV6peKMj9M")!) //임시 주소
-                print("there's something in the Air")
+                UIApplication.shared.open(URL(string: videoURL)!) //임시 주소
             } label: {
                 Image(thumbnail)
                     .resizable()
