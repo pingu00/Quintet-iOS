@@ -305,8 +305,6 @@ class CoreDataViewModel: ObservableObject {
 
         while currentDate <= lastDayOfMonth {
 
-            print("Current Date:", currentDate, "Start Date:", startDate, "End Date:", endDate)
-
             let quintetDataArray = getQuintetData(from: currentDate, to: calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate)
 
             var recordsForDate: [Record] = []
@@ -341,8 +339,6 @@ class CoreDataViewModel: ObservableObject {
             currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
         }
 
-
-        print(calendarMetaDataArray)
         return calendarMetaDataArray
     }
 
