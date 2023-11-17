@@ -36,6 +36,8 @@
 		AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E372A727B020025F8A7 /* DateViewModel.swift */; };
 		AA086E3C2A72E1C20025F8A7 /* StatisticsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */; };
 		AA086E3E2A875F6E0025F8A7 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3D2A875F6E0025F8A7 /* PickerView.swift */; };
+		AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */; };
+		AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */ = {isa = PBXBuildFile; fileRef = AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +67,8 @@
 		AA086E372A727B020025F8A7 /* DateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewModel.swift; sourceTree = "<group>"; };
 		AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCellViewModel.swift; sourceTree = "<group>"; };
 		AA086E3D2A875F6E0025F8A7 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
+		AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsStruct.swift; sourceTree = "<group>"; };
+		AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = QuintetAdvice.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,8 +174,10 @@
 		31FDB2042A84F7080091A899 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */,
 				28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */,
 				4EBBB1C62A84F24F00D27B67 /* RecordViewStruct.swift */,
+				AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */,
 				31FDB2052A84F7390091A899 /* DateProcessingModel.swift */,
 				28997E792A73F00300ED676C /* CoreDataModel.xcdatamodeld */,
 			);
@@ -246,6 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28C364542A5FD58F00847A88 /* Preview Assets.xcassets in Resources */,
+				AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */,
 				28C364512A5FD58F00847A88 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				281E2FBE2A93731300DEAAD8 /* NetworkManager.swift in Sources */,
+				AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */,
 				281E2FB62A8F74D600DEAAD8 /* QuintetAPI.swift in Sources */,
 				311198D72A74F8C900D92E91 /* DateManager.swift in Sources */,
 				31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */,

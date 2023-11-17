@@ -11,12 +11,12 @@ import SwiftUI
 struct YearMonthPickerPopup: View {
     @ObservedObject var viewModel: DateViewModel
     @Binding var isShowPopup: Bool
-    @Binding var selectedOption: Int
+    @Binding var selectedOption: String
     
     @State private var oldSelectedYear: Int
     @State private var oldSelectedMonth: Int
         
-    init(viewModel: DateViewModel, isShowPopup: Binding<Bool>, selectedOption: Binding<Int>) {
+    init(viewModel: DateViewModel, isShowPopup: Binding<Bool>, selectedOption: Binding<String>) {
         self.viewModel = viewModel
         _isShowPopup = isShowPopup
         _selectedOption = selectedOption
@@ -29,7 +29,7 @@ struct YearMonthPickerPopup: View {
             VStack{
                 HStack {
                     YearPicker(viewModel: viewModel)
-                    if selectedOption == 2{
+                    if selectedOption == "월간"{
                         MonthPicker(viewModel: viewModel)
                     }
                 }
