@@ -72,6 +72,7 @@
 		3155DE492AA56A7000A63AED /* OAuthClaim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthClaim.swift; sourceTree = "<group>"; };
 		31692C8F2A84A73100BC12EF /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		31BF652D2A7B7ECD0014EC90 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		31F9CCE42AFE4D9200AF1805 /* Quintet-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Quintet-iOS.entitlements"; sourceTree = "<group>"; };
 		31FDB2052A84F7390091A899 /* DateProcessingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProcessingModel.swift; sourceTree = "<group>"; };
 		4EBBB1C62A84F24F00D27B67 /* RecordViewStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewStruct.swift; sourceTree = "<group>"; };
 		AA086E372A727B020025F8A7 /* DateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewModel.swift; sourceTree = "<group>"; };
@@ -152,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				3155DE3F2AA567FA00A63AED /* Info.plist */,
+				31F9CCE42AFE4D9200AF1805 /* Quintet-iOS.entitlements */,
 				28C3644C2A5FD58E00847A88 /* Quintet_iOSApp.swift */,
 				311198D62A74F8C900D92E91 /* DateManager.swift */,
 				311198D82A74FAFE00D92E91 /* DummyDataManager.swift */,
@@ -434,6 +436,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Quintet-iOS/Quintet-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Quintet-iOS/Preview Content\"";
@@ -463,6 +466,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Quintet-iOS/Quintet-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Quintet-iOS/Preview Content\"";

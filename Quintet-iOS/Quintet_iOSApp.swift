@@ -26,7 +26,7 @@ struct Quintet_iOSApp: App{
                     }
             }
             else{
-                if UserDefaults.standard.string(forKey: "LoginID") != nil || loginViewModel.isLoggedIn{
+                if loginViewModel.isLoggedIn{
                     HomeView()
                 }
                 else{

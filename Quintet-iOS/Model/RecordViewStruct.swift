@@ -33,4 +33,3 @@ struct RecordMetaData: Identifiable {
     var id = UUID().uuidString
     var records : [Record]
 }
-

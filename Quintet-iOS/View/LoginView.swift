@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct LoginView: View {
     @State private var isLoading = true
@@ -24,24 +25,60 @@ struct LoginView: View {
                     //MARK: 회원 로그인 버튼 모음
                     VStack{
                         Button {
-                            print("kakao loginBtn Tapped")
+                            print("카카오 로그인 버튼 눌림")
                         } label: {
-                            Image("Kakao_login")
+                            HStack {
+                                Image("KakaoLogo")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 25, height: 25)
+                                Text("카카오로 계속하기")
+                                    .font(.system(size: 28, weight: .medium))
+                                    .foregroundColor(.black)
+                            }
                         }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 66)
+                        .background(Color(.kakao))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .padding(.bottom, 10)
                         
-                        Button {
-                            print("apple loginBtn Tapped")
-                        } label: {
-                            Image("Apple_login")
+                        SignInWithAppleButton(.continue) { request in
+                            request.requestedScopes = [.fullName, .email]
+                        } onCompletion: { result in
+                            switch result {
+                            case .success(let authResults):
+                                print("Auth Success: \(authResults)")
+                            case .failure(let error):
+                                print("Auth Fail: \(error.localizedDescription)")
+                            }
                         }
+                        .frame(height: 66)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .padding(.bottom, 10)
+                        
                         Button {
                             print("google loginBtn Tapped")
                             loginViewModel.googleSignIn()
                             
                         } label: {
-                            Image("Google_login")
+                            HStack {
+                                Image("GoogleLogo")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 25, height: 25)
+                                Text("Google로 계속하기")
+                                    .font(.system(size: 28, weight: .medium))
+                                    .foregroundColor(.black)
+                            }
                         }
-                    }.padding(.vertical, 30)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 66)
+                        .background(Color(.white))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 48)
                     
                     //MARK: 비회원 로그인 버튼
                     NavigationLink(destination: {
@@ -50,13 +87,16 @@ struct LoginView: View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(Color("DarkGray"))
-                                .frame(width: 345, height: 52)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 52)
                                 .overlay(Text("비회원으로 로그인 하기")
                                     .fontWeight(.medium)
                                     .foregroundColor(.white)
                                 )
                         }
-                    }.padding(.bottom, 20)
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 20)
                 }
                 
             }

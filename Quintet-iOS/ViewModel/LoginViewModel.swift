@@ -83,7 +83,6 @@ class LoginViewModel: ObservableObject{
     
     // MARK: - 백엔드 서버에서 전달받은 jwt 토큰을 Decode
     func decodeJWTToken(jwtToken: String) {
-        
         do {
             // 토큰 검증
             let jwtVerifier = JWTVerifier.hs256(key: key.data(using: .utf8)!)
