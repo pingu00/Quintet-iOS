@@ -28,7 +28,6 @@ class CoreDataViewModel: ObservableObject {
     @Published var relationshipNote = ""
     @Published var assetNote = ""
     
-    
     var isAllSelected : Bool {
         workPoint != -1 && familyPoint != -1 && relationshipPoint != -1 && assetPoint != -1 && healthPoint != -1
     }
@@ -289,27 +288,27 @@ class CoreDataViewModel: ObservableObject {
         userName = UserDefaults.standard.string(forKey: "userName") ?? "사용자"
     }
     
-    //날짜별
+//    날짜별
     func getRecordMetaData(selectedYear: Int, selectedMonth: Int) -> [CalendarMetaData] {
         let calendar = Calendar.current
         var calendarMetaDataArray: [CalendarMetaData] = []
-        
-        guard let startDate = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 1)),
+
+        guard let startDate = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 2)),
               let endDate = calendar.date(byAdding: .month, value: 1, to: startDate),
               let lastDayOfMonth = calendar.date(byAdding: .day, value: -1, to: endDate) else {
             return []
         }
-        
-        let today = calendar.startOfDay(for: Date()) // Get the start of today
-        
+
+        let today = calendar.startOfDay(for: startDate)
+
         var currentDate = startDate
-        
+
         while currentDate <= lastDayOfMonth {
-            
+
             let quintetDataArray = getQuintetData(from: currentDate, to: calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate)
-            
+
             var recordsForDate: [Record] = []
-            
+
             for data in quintetDataArray {
                 if data.workPoint >= 0 && data.workPoint <= 2 {
                     let workIcon = data.workPoint == 0 ? "XOn" : (data.workPoint == 1 ? "TriangleOn" : "CircleOn")
@@ -317,7 +316,7 @@ class CoreDataViewModel: ObservableObject {
                     let familyIcon = data.familyPoint == 0 ? "XOn" : (data.familyPoint == 1 ? "TriangleOn" : "CircleOn")
                     let assetIcon = data.assetPoint == 0 ? "XOn" : (data.assetPoint == 1 ? "TriangleOn" : "CircleOn")
                     let relationshipIcon = data.relationshipPoint == 0 ? "XOn" : (data.relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
-                    
+
                     let tasks = [
                         Record(icon: workIcon, title: "일", subtitle: data.workNote ?? ""),
                         Record(icon: healthIcon, title: "건강", subtitle: data.healthNote ?? ""),
@@ -325,25 +324,25 @@ class CoreDataViewModel: ObservableObject {
                         Record(icon: relationshipIcon, title: "관계", subtitle: data.relationshipNote ?? ""),
                         Record(icon: assetIcon, title: "자산", subtitle: data.assetNote ?? "")
                     ]
-                    
+
                     recordsForDate.append(contentsOf: tasks)
                 }
             }
-            
+
             let daysFromToday = calendar.dateComponents([.day], from: currentDate, to: today).day ?? 0
             let metaData = CalendarMetaData(records: recordsForDate, date: quintetDataArray.first?.date ?? currentDate, offset: daysFromToday)
-            
+
             if !recordsForDate.isEmpty {
                 calendarMetaDataArray.append(metaData)
             }
-            
+
             currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
         }
-        
-        print(calendarMetaDataArray)
+
         return calendarMetaDataArray
     }
 
+    
     //요소별 뷰
     func getRecords(for year: Int, month: Int, filterKeyPath: KeyPath<QuintetData, Int64>, iconClosure: (Int64) -> String, noteKeyPath: KeyPath<QuintetData, String?>) -> [RecordMetaData] {
         let calendar = Calendar.current
