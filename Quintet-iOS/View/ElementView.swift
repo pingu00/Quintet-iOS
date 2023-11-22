@@ -99,12 +99,12 @@ struct RecordElementView : View {
                     Text("자산")
                         .fontWeight(.bold)
                         .font(.system(size: 23))
-                        .foregroundColor(recordIndex == .money ? Color.white : Color("DarkGray"))
+                        .foregroundColor(recordIndex == .money ? .white : Color("DarkGray"))
                         .offset(x: -113)
                     
                     Image(systemName: "dollarsign.circle.fill")
                         .font(.system(size: 30))
-                        .foregroundColor(recordIndex == .money ? Color.white : Color("DarkGray"))
+                        .foregroundColor(recordIndex == .money ? .white : Color("DarkGray"))
                         .offset(x: 106)
                 }
             }

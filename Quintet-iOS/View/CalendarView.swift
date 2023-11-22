@@ -15,6 +15,7 @@ struct CalendarView: View {
     @State private var isShowPopup = false
     @State var currentMonth: Int = 0
     let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
+    let invalidDayValue = -1
     
     var body: some View {
         
@@ -27,7 +28,7 @@ struct CalendarView: View {
                 }) {
                     viewModel.yearMonthButtonTextRecordVer
                         .padding(.horizontal)
-                        .foregroundColor(Color.black)
+                        .foregroundColor(.black)
                     
                 }.sheet(isPresented: $isShowPopup) {
                     CalendarYearMonthPickerPopup(viewModel: viewModel, isShowPopup: $isShowPopup)
@@ -50,7 +51,6 @@ struct CalendarView: View {
                         .fontWeight(.medium)
                         .padding(.horizontal)
                         .foregroundColor(Color("DarkGray"))
-                    
                 }
             }
             
@@ -60,7 +60,7 @@ struct CalendarView: View {
             let columns = Array(repeating: GridItem(.fixed(41)), count: 7)
             LazyVGrid(columns: columns, spacing: 9) {
                 ForEach(extractDate()) { value in
-                    if value.day != -1 {
+                    if value.day != invalidDayValue {
                         CardView(value: value)
                             .background (
                                 Circle()
@@ -79,7 +79,12 @@ struct CalendarView: View {
             .fontWeight(.light)
         }
     
-        if let task = coreDataViewModel.getRecordMetaData(selectedYear: viewModel.selectedYear, selectedMonth: viewModel.selectedMonth).first (where: { task in
+        if let task = coreDataViewModel
+            .getRecordMetaData(
+                selectedYear: viewModel.selectedYear,
+                selectedMonth: viewModel.selectedMonth
+            )
+            .first(where: { task in
                 return isSameDay(date1: task.date, date2: currentDate)
             }) {
                 VStack {
@@ -89,10 +94,14 @@ struct CalendarView: View {
                         .padding(.trailing, 190)
                         .padding(.bottom, 20)
                         .padding(.top, 10)
-                        .foregroundColor(Color.black)
+                        .foregroundColor(.black)
                     
                     ForEach(task.records) { record in
-                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                                            recordCard(
+                                                icon: record.icon,
+                                                title: record.title,
+                                                subtitle: record.subtitle
+                                            )
                     }
                 }
                 .onChange(of: currentMonth) { newValue in
