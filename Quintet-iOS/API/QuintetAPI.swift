@@ -12,15 +12,16 @@ enum QuintetAPI {
     case getWeekCheck(user_id : Int)
     case postTodays (parameters: [String: Any])
     case patchTodays(Data)
-    case getRecords(user_id : String, type : String , year : Int, month : Int)
     case getWeekStatic(user_id : String, startDate : String, endDate: String)
     case getMonthStatic(user_id : String, year: Int, month: Int)
     case getYearStatic(user_id : String, year: Int)
+    case getRecordsByDate(user_id : String, year : Int, month : Int)
+    case getRecordsByElement(user_id : String, year : Int, month : Int, element : String)
 }
 
 extension QuintetAPI : TargetType {
     var baseURL: URL {
-        return URL(string: "http://52.79.148.241:3000")!
+        return URL(string: "https://quintet.store")!
     }
     
     var path: String {
@@ -29,20 +30,22 @@ extension QuintetAPI : TargetType {
             return "/home"
         case .postTodays, .patchTodays:
             return "/record"
-        case .getRecords:
-            return "/records"
         case .getWeekStatic:
             return "/static/week"
         case .getMonthStatic:
             return "/static/month"
         case .getYearStatic:
             return "/static/year"
+        case .getRecordsByDate:
+            return "/records/date"
+        case .getRecordsByElement:
+            return "/records/element"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getWeekCheck,.getRecords,.getWeekStatic, .getMonthStatic, .getYearStatic :
+        case .getWeekCheck,.getWeekStatic, .getMonthStatic, .getYearStatic, .getRecordsByDate, .getRecordsByElement:
             return .get
         case .postTodays:
             return .post
@@ -59,9 +62,7 @@ extension QuintetAPI : TargetType {
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .patchTodays(let data) :
             return .requestData(data)
-        case .getRecords(let user_id, let type, let year, let month) :
-            return .requestParameters(parameters:
-                                        ["user_id" : user_id, "type" : type, "year" : year, "month" : month], encoding: URLEncoding.default)
+
         case .getWeekStatic(let user_id, let startDate, let endDate) :
             return .requestParameters(parameters:
                                         ["user_id" : user_id, "startDate" : startDate, "endDate" : endDate], encoding: URLEncoding.default)
@@ -71,6 +72,12 @@ extension QuintetAPI : TargetType {
         case .getYearStatic(let user_id, let year) :
             return .requestParameters(parameters:
                                         ["user_id" : user_id, "year" : year], encoding: URLEncoding.default)
+        case .getRecordsByDate(let user_id, let year, let month) :
+            return .requestParameters(parameters:
+                                        ["user_id" : user_id, "year" : year, "month" : month], encoding: URLEncoding.default)
+        case .getRecordsByElement(let user_id, let year, let month, let element) :
+            return .requestParameters(parameters:
+                                        ["user_id" : user_id, "year" : year, "month" : month, "element" : element], encoding: URLEncoding.default)
         }
     }
     

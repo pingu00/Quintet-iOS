@@ -88,6 +88,36 @@ class StatisticsCellViewModel: ObservableObject {
         return minNotes
     }
 
-    
-    
+    var selectedText: String? {
+        if maxNoteArray.count >= 2 && minNoteArray.count == 1 {
+            let maxNote: String? = nil
+            let minNote: String? = minNoteArray.first
+            
+            let matchingAdvice = adviceData.first { advice in
+                return advice.high == maxNote && advice.low == minNote
+            }
+            
+            return matchingAdvice?.content
+            
+        } else if maxNoteArray.count == 1 && minNoteArray.count >= 2 {
+            let maxNote: String? = maxNoteArray.first
+            let minNote: String? = nil
+            
+            let matchingAdvice = adviceData.first { advice in
+                return advice.high == maxNote && advice.low == minNote
+            }
+            
+            return matchingAdvice?.content
+            
+        } else {
+            let maxNote: String? = maxNoteArray.first
+            let minNote: String? = minNoteArray.first
+            
+            let matchingAdvice = adviceData.first { advice in
+                return advice.high == maxNote && advice.low == minNote
+            }
+            
+            return matchingAdvice?.content
+        }
+    }
 }
