@@ -40,6 +40,8 @@
 		AA086E3E2A875F6E0025F8A7 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3D2A875F6E0025F8A7 /* PickerView.swift */; };
 		AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */; };
 		AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */ = {isa = PBXBuildFile; fileRef = AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */; };
+		AAC1A5692B0E49340072591A /* OnboardingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC1A5682B0E49340072591A /* OnboardingTabView.swift */; };
+		AAC1A56B2B0E49520072591A /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC1A56A2B0E49520072591A /* OnboardingPageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +75,8 @@
 		AA086E3D2A875F6E0025F8A7 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsStruct.swift; sourceTree = "<group>"; };
 		AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = QuintetAdvice.json; sourceTree = "<group>"; };
+		AAC1A5682B0E49340072591A /* OnboardingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTabView.swift; sourceTree = "<group>"; };
+		AAC1A56A2B0E49520072591A /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +172,7 @@
 				4E2EB64B2AFE4A1600821A8F /* CalendarView.swift */,
 				31BF652D2A7B7ECD0014EC90 /* LoginView.swift */,
 				28C3645A2A5FD5DB00847A88 /* HomeView.swift */,
+				AAC1A5672B0E48A20072591A /* OnboardingViews */,
 				28C3645F2A5FD63600847A88 /* RecordView.swift */,
 				28C364602A5FD63600847A88 /* StatisticsView.swift */,
 				28C364622A5FD63600847A88 /* MenuView.swift */,
@@ -188,6 +193,15 @@
 				28997E792A73F00300ED676C /* CoreDataModel.xcdatamodeld */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		AAC1A5672B0E48A20072591A /* OnboardingViews */ = {
+			isa = PBXGroup;
+			children = (
+				AAC1A5682B0E49340072591A /* OnboardingTabView.swift */,
+				AAC1A56A2B0E49520072591A /* OnboardingPageView.swift */,
+			);
+			path = OnboardingViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,6 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				281E2FBE2A93731300DEAAD8 /* NetworkManager.swift in Sources */,
+				AAC1A5692B0E49340072591A /* OnboardingTabView.swift in Sources */,
 				AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */,
 				281E2FB62A8F74D600DEAAD8 /* QuintetAPI.swift in Sources */,
 				4E2EB64C2AFE4A1600821A8F /* CalendarView.swift in Sources */,
@@ -291,6 +306,7 @@
 				286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */,
 				28997E822A73F76A00ED676C /* CoreDataViewModel.swift in Sources */,
 				AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */,
+				AAC1A56B2B0E49520072591A /* OnboardingPageView.swift in Sources */,
 				28C364632A5FD63600847A88 /* RecordView.swift in Sources */,
 				286E48AB2A76DE1600D109E9 /* AddNoteCellView.swift in Sources */,
 				28C3644D2A5FD58E00847A88 /* Quintet_iOSApp.swift in Sources */,

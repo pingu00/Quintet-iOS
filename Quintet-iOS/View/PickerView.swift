@@ -269,6 +269,7 @@ struct Utilities {
     }
 }
 
+// MARK: - BackgroundClearView
 struct BackgroundClearView: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
@@ -278,4 +279,22 @@ struct BackgroundClearView: UIViewRepresentable {
         return view
     }
     func updateUIView(_ uiView: UIView, context: Context) {}
+}
+
+struct ClearBackgroundViewModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 16.4, *) {
+            content
+                .presentationBackground(.clear)
+        } else {
+            content
+                .background(BackgroundClearView())
+        }
+    }
+}
+
+extension View {
+    func clearModalBackground()->some View {
+        self.modifier(ClearBackgroundViewModifier())
+    }
 }
