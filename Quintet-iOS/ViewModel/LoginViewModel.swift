@@ -59,6 +59,10 @@ class LoginViewModel: ObservableObject{
             switch result{
             case .success(let response):
                 do{
+                    if let header = response.response?.allHeaderFields as? [String: String],
+                       let authorizationToken = header["Authorization"] {
+                        print("Received Authorization header: \(authorizationToken)")
+                    }
                     // JSON 파싱
                     let decoder = JSONDecoder()
                     let apiResponse = try decoder.decode(GoogleIdTokenResponse.self, from: response.data)
@@ -81,25 +85,6 @@ class LoginViewModel: ObservableObject{
         }
     }
     
-    // MARK: - 백엔드 서버에서 전달받은 jwt 토큰을 Decode
-    func decodeJWTToken(jwtToken: String) {
-        do {
-            // 토큰 검증
-            let jwtVerifier = JWTVerifier.hs256(key: key.data(using: .utf8)!)
-            let jwtDecoder = JWTDecoder(jwtVerifier: jwtVerifier)
-            let jwt = try jwtDecoder.decode(JWT<GoogleJWTClaims>.self, fromString: jwtToken)
-            
-            print("id:\(jwt.claims.id)")
-            print("이름:\(jwt.claims.username)")
-            print("email:\(jwt.claims.email)")
-            isLoggedIn = true
-            UserDefaults.standard.set(jwt.claims.id, forKey: "LoginID")
-            
-        } catch {
-            print("토큰 해독 및 검증 실패: \(error.localizedDescription)")
-        }
-    }
-    
     // MARK: - 전체 로그인 과정을 처리
     func googleSignIn() {
         print("구글 로그인 시도 시작")
@@ -114,9 +99,7 @@ class LoginViewModel: ObservableObject{
                     print("JWT 토큰 얻기 실패")
                     return
                 }
-                
-                // JWT 토큰 Decode
-                self.decodeJWTToken(jwtToken: jwtToken)
+                print(jwtToken)
             }
         }
         

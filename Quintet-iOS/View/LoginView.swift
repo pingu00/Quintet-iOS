@@ -26,22 +26,23 @@ struct LoginView: View {
                     VStack{
                         Button {
                             print("카카오 로그인 버튼 눌림")
+                            
                         } label: {
                             HStack {
                                 Image("KakaoLogo")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 25, height: 25)
-                                Text("카카오로 계속하기")
-                                    .font(.system(size: 28, weight: .medium))
+                                    .frame(width: 15, height: 15)
+                        
+                                Text("Continue with Kakao")
+                                    .font(.system(size: 19, weight: .medium))
                                     .foregroundColor(.black)
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .frame(height: 66)
+                        .frame(height: 44)
                         .background(Color(.kakao))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .padding(.bottom, 10)
                         
                         SignInWithAppleButton(.continue) { request in
                             request.requestedScopes = [.fullName, .email]
@@ -53,9 +54,8 @@ struct LoginView: View {
                                 print("Auth Fail: \(error.localizedDescription)")
                             }
                         }
-                        .frame(height: 66)
+                        .frame(height: 44)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .padding(.bottom, 10)
                         
                         Button {
                             print("google loginBtn Tapped")
@@ -66,14 +66,14 @@ struct LoginView: View {
                                 Image("GoogleLogo")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 25, height: 25)
-                                Text("Google로 계속하기")
-                                    .font(.system(size: 28, weight: .medium))
+                                    .frame(width: 15, height: 15)
+                                Text("Continue with Google")
+                                    .font(.system(size: 19, weight: .regular))
                                     .foregroundColor(.black)
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .frame(height: 66)
+                        .frame(height: 44)
                         .background(Color(.white))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
@@ -98,7 +98,6 @@ struct LoginView: View {
                     .padding(.horizontal, 24)
                     .padding(.bottom, 20)
                 }
-                
             }
         }
     }
