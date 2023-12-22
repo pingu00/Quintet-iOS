@@ -9,11 +9,69 @@ import SwiftUI
 import GoogleSignIn
 import Moya
 import SwiftJWT
+import AuthenticationServices
 
 
 class LoginViewModel: ObservableObject{
     @Published var isLoggedIn = false
     private let key = "qu1nt3tJs0nS3cr3tV4lue"
+}
+
+// MARK: - apple login
+extension LoginViewModel {
+    func getAppleCredential(_ credential: ASAuthorizationAppleIDCredential) {
+        var fullName = credential.fullName
+        var fullNameString: String?
+        
+        if let firstName = fullName?.givenName {
+            if let lastName = fullName?.familyName {
+                fullNameString = "\(firstName) \(lastName)"
+            } else {
+                fullNameString = "\(firstName)"
+            }
+        } else {
+            if let lastName = fullName?.familyName {
+                fullNameString = "\(lastName)"
+            }
+        }
+        
+        getJWTTokenApple(
+            idToken: credential.identityToken,
+            name: fullNameString,
+            email: credential.email
+        ) { response in
+            //추후에 로직 추가
+        }
+    }
+    
+    func getJWTTokenApple(
+        idToken: Data?,
+        name: String?,
+        email: String?,
+        completion: @escaping (String?
+        ) -> Void) {
+        let provider = MoyaProvider<OAuthAPI>()
+        provider.request(.postAppleIdToken(token: idToken, name: name, email: email)) { result in
+            print(result)
+            switch result{
+            case .success(let response):
+                if let header = response.response?.allHeaderFields as? [String: String],
+                   let authorizationToken = header["Authorization"] {
+                    print("Received Authorization header: \(authorizationToken)")
+                }
+                let decoder = JSONDecoder()
+                print(response)
+            case .failure(let error):
+                print("네트워크 오류: \(error.localizedDescription)")
+                print(error.errorCode)
+                completion(nil)
+            }
+        }
+    }
+}
+
+// MARK: - google login
+extension LoginViewModel {
     
     func getGoogleIDToken(completion: @escaping (String?) -> Void){
         guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {

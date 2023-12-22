@@ -49,7 +49,9 @@ struct LoginView: View {
                         } onCompletion: { result in
                             switch result {
                             case .success(let authResults):
-                                print("Auth Success: \(authResults)")
+                                if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential {
+                                    loginViewModel.getAppleCredential(appleIDCredential)
+                                }
                             case .failure(let error):
                                 print("Auth Fail: \(error.localizedDescription)")
                             }
