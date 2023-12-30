@@ -6,71 +6,101 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct LoginView: View {
     @State private var isLoading = true
-
+    @EnvironmentObject private var loginViewModel: LoginViewModel
+    
     var body: some View {
         NavigationView{
             ZStack{
                 Color("Background").ignoresSafeArea(.all).transition(.opacity)
-                if isLoading {
-                    Image("QuintetLogo")
-                        .transition(.opacity)
-                }
-                else {
+                VStack{
+                    Spacer()
+                    Image("Quintet_main")
+                    
+                    Spacer()
+                    
+                    //MARK: 회원 로그인 버튼 모음
                     VStack{
-                        Spacer()
-                        Image("Quintet_main")
-                        
-                        Spacer()
-                        
-                        //MARK: 회원 로그인 버튼 모음
-                        VStack{
-                            Button {
-                                print("kakao loginBtn Tapped")
-                            } label: {
-                                Image("Kakao_login")
-                            }
+                        Button {
+                            print("카카오 로그인 버튼 눌림")
                             
-                            Button {
-                                print("apple loginBtn Tapped")
-                            } label: {
-                                Image("Apple_login")
-                            }
-                            
-                            Button {
-                                print("google loginBtn Tapped")
-                            } label: {
-                                Image("Google_login")
-                            }
-                        }.padding(.vertical, 30)
+                        } label: {
+                            HStack {
+                                Image("KakaoLogo")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 15, height: 15)
                         
-                        //MARK: 비회원 로그인 버튼
-                        NavigationLink(destination: {
-                            HomeView()
-                        }){
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color("DarkGray"))
-                                    .frame(width: 345, height: 52)
-                                    .overlay(Text("비회원으로 로그인 하기")
-                                        .fontWeight(.medium)
-                                        .foregroundColor(.white)
-                                    )
-                                
+                                Text("Continue with Kakao")
+                                    .font(.system(size: 19, weight: .regular))
+                                    .foregroundColor(.black)
                             }
-                        }.padding(.bottom, 20)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 44)
+                        .background(Color(.kakao))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        
+                        SignInWithAppleButton(.continue) { request in
+                            request.requestedScopes = [.fullName, .email]
+                        } onCompletion: { result in
+                            switch result {
+                            case .success(let authResults):
+                                if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential {
+                                    loginViewModel.getAppleCredential(appleIDCredential)
+                                }
+                            case .failure(let error):
+                                print("Auth Fail: \(error.localizedDescription)")
+                            }
+                        }
+                        .frame(height: 44)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        
+                        Button {
+                            print("google loginBtn Tapped")
+                            loginViewModel.googleSignIn()
+                            
+                        } label: {
+                            HStack {
+                                Image("GoogleLogo")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 15, height: 15)
+                                Text("Continue with Google")
+                                    .font(.system(size: 19, weight: .regular))
+                                    .foregroundColor(.black)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 44)
+                        .background(Color(.white))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 48)
+                    
+                    //MARK: 비회원 로그인 버튼
+                    NavigationLink(destination: {
+                        HomeView()
+                    }){
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color("DarkGray"))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 52)
+                                .overlay(Text("비회원으로 로그인 하기")
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.white)
+                                )
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 20)
                 }
             }
-        }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                withAnimation{
-                    isLoading.toggle()
-                }
-            })
         }
     }
 }
