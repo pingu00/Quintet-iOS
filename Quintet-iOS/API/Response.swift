@@ -14,7 +14,7 @@ struct WeeklyDataResponse: Codable {
     let result: WeeklyResult
 }
 struct WeeklyResult : Codable{
-    let user_id: String
+    let user_id: Int
     let startOfWeek: String
     let endOfWeek: String
     let weeklyData: [DailyData]
@@ -22,11 +22,11 @@ struct WeeklyResult : Codable{
 
 struct DailyData : Codable{
     let date: String
-    let work_deg: Int
-    let health_deg: Int
-    let family_deg: Int
-    let relationship_deg: Int
-    let money_deg: Int
+    let work_deg: String
+    let health_deg: String
+    let family_deg: String
+    let relationship_deg: String
+    let money_deg: String
 }
 
 //MARK: - Statistics
@@ -38,7 +38,7 @@ struct StatisticsDataResponse: Codable {
 }
 
 struct StatisticsResult : Codable {
-    let user_id : String
+    let user_id : Int
     let startDate : String?
     let endDate : String?
     let year : String?
