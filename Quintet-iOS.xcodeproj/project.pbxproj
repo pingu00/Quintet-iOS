@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2805FD7D2B4045BB008FB01A /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2805FD7C2B4045BB008FB01A /* secret.plist */; };
 		281E2FAD2A8F6FF700DEAAD8 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 281E2FAC2A8F6FF700DEAAD8 /* CombineMoya */; };
 		281E2FAF2A8F6FF700DEAAD8 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 281E2FAE2A8F6FF700DEAAD8 /* Moya */; };
 		281E2FB12A8F6FF700DEAAD8 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 281E2FB02A8F6FF700DEAAD8 /* ReactiveMoya */; };
@@ -52,6 +53,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2805FD7C2B4045BB008FB01A /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../Downloads/secret.plist; sourceTree = "<group>"; };
 		281E2FB52A8F74D600DEAAD8 /* QuintetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetAPI.swift; sourceTree = "<group>"; };
 		281E2FBB2A925DD800DEAAD8 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		281E2FBD2A93731300DEAAD8 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				28997E832A73FA4600ED676C /* ViewModel */,
 				31FDB2042A84F7080091A899 /* Model */,
 				281E2FB42A8F743200DEAAD8 /* API */,
+				2805FD7C2B4045BB008FB01A /* secret.plist */,
 				28C364502A5FD58F00847A88 /* Assets.xcassets */,
 				28C364522A5FD58F00847A88 /* Preview Content */,
 			);
@@ -295,7 +298,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31240B292B40583B0020727B /* secret.plist in Resources */,
+				2805FD7D2B4045BB008FB01A /* secret.plist in Resources */,
 				28C364542A5FD58F00847A88 /* Preview Assets.xcassets in Resources */,
 				AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */,
 				28C364512A5FD58F00847A88 /* Assets.xcassets in Resources */,

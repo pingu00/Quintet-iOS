@@ -98,6 +98,10 @@ extension QuintetAPI : TargetType {
     }
     
     var headers: [String: String]? {
-        return ["Content-Type": "application/json"]
+//        if let accessToken = KeychainSwift().get("AccessToken") {
+//                headers["x-access-token"] = accessToken
+//            }
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QG5hdmVyLmNvbSIsInByb3ZpZGVyIjoidGVzdCIsImlhdCI6MTcwMzkzOTcxMCwiZXhwIjoxNzAzOTQxNTEwfQ.P9EeV7ai6LC6k5RQHDm6a6V-paybsJFFvTq8mxVJh8w"
+                return ["Authorization": "Bearer \(token)", "Content-type": "application/json"]
     }
 }
