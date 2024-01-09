@@ -11,7 +11,6 @@ import Moya
 enum QuintetAPI {
     case getWeekCheck(user_id : Int)
     case postTodays (parameters: [String: Any])
-    case patchTodays(Data)
     case getWeekStatic(user_id : String, startDate : String, endDate: String)
     case getMonthStatic(user_id : String, year: Int, month: Int)
     case getYearStatic(user_id : String, year: Int)
@@ -44,7 +43,7 @@ extension QuintetAPI : TargetType {
         switch self {
         case .getWeekCheck:
             return "/home"
-        case .postTodays, .patchTodays:
+        case .postTodays:
             return "/record"
         case .getWeekStatic:
             return "/static/week"
@@ -65,8 +64,6 @@ extension QuintetAPI : TargetType {
             return .get
         case .postTodays:
             return .post
-        case .patchTodays:
-            return .patch
         }
     }
     
@@ -76,8 +73,6 @@ extension QuintetAPI : TargetType {
             return .requestParameters(parameters: ["user_id": userID], encoding: URLEncoding.default)
         case .postTodays(let parameters) :
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
-        case .patchTodays(let data) :
-            return .requestData(data)
 
         case .getWeekStatic(let user_id, let startDate, let endDate) :
             return .requestParameters(parameters:
@@ -98,10 +93,7 @@ extension QuintetAPI : TargetType {
     }
     
     var headers: [String: String]? {
-//        if let accessToken = KeychainSwift().get("AccessToken") {
-//                headers["x-access-token"] = accessToken
-//            }
-        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QG5hdmVyLmNvbSIsInByb3ZpZGVyIjoidGVzdCIsImlhdCI6MTcwMzkzOTcxMCwiZXhwIjoxNzAzOTQxNTEwfQ.P9EeV7ai6LC6k5RQHDm6a6V-paybsJFFvTq8mxVJh8w"
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QG5hdmVyLmNvbSIsInByb3ZpZGVyIjoidGVzdCIsImlhdCI6MTcwMzk0MTQ0NSwiZXhwIjoxNzAzOTQzMjQ1fQ.aJwMI9FcGbOz1HMIogh6SeAC8JVSnLd_B0Ux7oLAJ4Y"
                 return ["Authorization": "Bearer \(token)", "Content-type": "application/json"]
     }
 }
