@@ -10,10 +10,9 @@ import AuthenticationServices
 
 struct LoginView: View {
     @State private var isLoading = true
-    @StateObject private var loginViewModel = LoginViewModel()
+    @EnvironmentObject private var loginViewModel: LoginViewModel
     
     var body: some View {
-        NavigationView{
             ZStack{
                 Color("Background").ignoresSafeArea(.all).transition(.opacity)
                 VStack{
@@ -83,8 +82,9 @@ struct LoginView: View {
                     .padding(.bottom, 48)
                     
                     //MARK: 비회원 로그인 버튼
-                    NavigationLink(destination: {
-                        HomeView()
+                    Button(action: {
+                        KeyChainManager.save(forKey: .isNonMember, value: "true")
+                        loginViewModel.updateHasKeychain(state: true)
                     }){
                         ZStack {
                             RoundedRectangle(cornerRadius: 12)
@@ -101,7 +101,6 @@ struct LoginView: View {
                     .padding(.bottom, 20)
                 }
             }
-        }
     }
 }
 

@@ -91,15 +91,21 @@ struct QuintetCheckView: View {
                     Button(action: {
                         vm.updateQuintetData()
                         dismiss()
-                        //MARK: - 임시 API 방식. 추후 viewModel 에서 처리 할 예정
-                        NetworkManager.shared.postCheckData(parameters: [
-                            "user_id": 2,
-                            "work_deg": vm.workPoint,
-                            "health_deg": vm.healthPoint,
-                            "family_deg": vm.familyPoint,
-                            "relationship_deg": vm.relationshipPoint,
-                            "money_deg": vm.assetPoint
-                        ])
+                        //MARK: - if 로그인 토크 보유 -> API 통해서 post
+                            NetworkManager.shared.postCheckData(parameters: [
+                                "user_id": 2,
+                                "work_deg": vm.workPoint,
+                                "health_deg": vm.healthPoint,
+                                "family_deg": vm.familyPoint,
+                                "relationship_deg": vm.relationshipPoint,
+                                "money_deg": vm.assetPoint,
+                                "work_doc": vm.workNote,
+                                "health_doc": vm.healthNote,
+                                "family_doc": vm.familyNote,
+                                "relationship_doc": vm.relationshipNote,
+                                "money_doc": vm.assetNote,
+                            ])
+                    
                     }){
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color("DarkQ"))

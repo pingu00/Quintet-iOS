@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct MenuView: View {
+    @EnvironmentObject var loginViewModel: LoginViewModel
     @Environment(\.dismiss) private var dismiss
     @StateObject var vm = CoreDataViewModel()
     @State private var isNotiOn = false
     @State private var alarm = Date()
-    @State private var hasLogin = true
+    @State private var hasLogin = false
     var body: some View {
         ZStack{
             Color("Background").ignoresSafeArea(.all)
@@ -64,7 +66,12 @@ struct MenuView: View {
                             }
                         }
                         else { // 비회원 일때
-                            Button(action: {print("로그인 화면으로 이동")}){
+                            Button(action: {
+                                print("로그인 버튼 Tapped")
+                                KeyChainManager.removeAllKeychain()
+                                loginViewModel.updateHasKeychain(state: false)
+                                
+                            }){
                                 HStack{
                                     Text("로그인")
                                     Spacer()
@@ -80,22 +87,25 @@ struct MenuView: View {
                             .fontWeight(.medium)
                             .padding(.bottom,9)
                     }
-                    Section {
-                        Toggle("알림", isOn: $isNotiOn)
-                            .toggleStyle(SwitchToggleStyle(tint: Color("DarkQ")))
-                        DatePicker( "시간대 설정", selection: $alarm,
-                                    displayedComponents: .hourAndMinute)
-                        .environment(\.locale, Locale(identifier: "ko_KR"))
-                    } header: {
-                        Text("알림설정")
-                            .foregroundColor(.black)
-                            .font(.system(size: 18))
-                            .fontWeight(.medium)
-                            .padding(.bottom,9)
-                    }
+                    //MARK: - 알림
+//                    Section {
+//                        Toggle("알림", isOn: $isNotiOn)
+//                            .toggleStyle(SwitchToggleStyle(tint: Color("DarkQ")))
+//                        DatePicker( "시간대 설정", selection: $alarm,
+//                                    displayedComponents: .hourAndMinute)
+//                        .environment(\.locale, Locale(identifier: "ko_KR"))
+//                    } header: {
+//                        Text("알림설정")
+//                            .foregroundColor(.black)
+//                            .font(.system(size: 18))
+//                            .fontWeight(.medium)
+//                            .padding(.bottom,9)
+//                    }
                     
                     Section {
-                        Button(action: {}){
+                        Button(action: {
+                            SKStoreReviewController.requestReview()
+                        }){
                             HStack{
                                 Text("리뷰 남기러 가기")
                                 Spacer()

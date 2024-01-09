@@ -10,7 +10,9 @@ import SwiftUI
 @main
 struct Quintet_iOSApp: App{
     @State private var isLoading = true
-    private let hasKeychain = KeyChainManager.hasKeychain(forkey: .accessToken)
+    @StateObject private var loginViewModel = LoginViewModel()
+    private var hasToken = KeyChainManager.hasKeychain(forkey: .accessToken)
+    private var isNonMember = KeyChainManager.read(forkey: .isNonMember) == "true"
     
     var body: some Scene{
         WindowGroup{
@@ -26,11 +28,11 @@ struct Quintet_iOSApp: App{
                     }
             }
             else{
-                if hasKeychain {
-                    HomeView()
+                if loginViewModel.hasKeychain {
+                    HomeView().environmentObject(loginViewModel)
                 }
                 else{
-                    LoginView()
+                    LoginView().environmentObject(loginViewModel)
                 }
             }
         }
