@@ -13,7 +13,6 @@ struct LoginView: View {
     @EnvironmentObject private var loginViewModel: LoginViewModel
     
     var body: some View {
-        NavigationView{
             ZStack{
                 Color("Background").ignoresSafeArea(.all).transition(.opacity)
                 VStack{
@@ -83,8 +82,8 @@ struct LoginView: View {
                     .padding(.bottom, 48)
                     
                     //MARK: 비회원 로그인 버튼
-                    NavigationLink(destination: {
-                        HomeView()
+                    Button(action: {
+                        loginViewModel.isLoggedIn = true
                     }){
                         ZStack {
                             RoundedRectangle(cornerRadius: 12)
@@ -101,7 +100,6 @@ struct LoginView: View {
                     .padding(.bottom, 20)
                 }
             }
-        }
     }
 }
 
