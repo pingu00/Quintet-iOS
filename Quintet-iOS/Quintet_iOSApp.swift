@@ -9,8 +9,8 @@ import SwiftUI
 
 @main
 struct Quintet_iOSApp: App{
-    @StateObject private var loginViewModel = LoginViewModel()
     @State private var isLoading = true
+    private let hasKeychain = KeyChainManager.hasKeychain(forkey: .accessToken)
     
     var body: some Scene{
         WindowGroup{
@@ -26,13 +26,11 @@ struct Quintet_iOSApp: App{
                     }
             }
             else{
-                if loginViewModel.isLoggedIn{
+                if hasKeychain {
                     HomeView()
-                        .environmentObject(loginViewModel)
                 }
                 else{
                     LoginView()
-                        .environmentObject(loginViewModel)
                         .onAppear {
                             NetworkManager.shared.postCheckData(parameters: ["user_id" : 1, "work_deg" : 1, "health_deg" : 0, "family_deg" : 1, "relationship_deg" : 1, "money_deg" : 0 ])
                             NetworkManager.shared.fetchWeekCheckData(userID : 1)

@@ -12,8 +12,7 @@ import AuthenticationServices
 
 
 class LoginViewModel: ObservableObject{
-    @Published var isLoggedIn = false
-    
+   
 }
 
 // MARK: - apple login
@@ -38,32 +37,38 @@ extension LoginViewModel {
             idToken: credential.identityToken,
             name: fullNameString,
             email: credential.email
-        ) { response in
-            //추후에 로직 추가
-        }
+        )
     }
     
     func getJWTTokenApple(
         idToken: Data?,
         name: String?,
-        email: String?,
-        completion: @escaping (String?
-        ) -> Void) {
+        email: String?
+    ) {
         let provider = MoyaProvider<OAuthAPI>()
         provider.request(.postAppleIdToken(token: idToken, name: name, email: email)) { result in
-            print(result)
-            switch result{
+            switch result {
             case .success(let response):
-                if let header = response.response?.allHeaderFields as? [String: String],
-                   let authorizationToken = header["Authorization"] {
-                    print("Received Authorization header: \(authorizationToken)")
+                print("success")
+                do {
+                    if let header = response.response?.allHeaderFields as? [String: String],
+                       let accessToken = header["Authorization"] {
+                        KeyChainManager.save(forKey: .accessToken, value: accessToken)
+                    }
+                    
+                    let decoder = JSONDecoder()
+                    let tokenResponse = try decoder.decode(TokenResponse.self, from: response.data)
+                    
+                    if tokenResponse.isSuccess{
+                        let jwtToken = tokenResponse.result
+                    }else {
+                        print("id 토큰이 유효하지 않음")
+                    }
+                } catch {
+                    print("JSON decoding error: \(error.localizedDescription)")
                 }
-                let decoder = JSONDecoder()
-                print(response)
             case .failure(let error):
-                print("네트워크 오류: \(error.localizedDescription)")
-                print(error.errorCode)
-                completion(nil)
+                print("Network error: \(error.localizedDescription)")
             }
         }
     }
@@ -109,7 +114,7 @@ extension LoginViewModel {
     }
     
     // MARK: - getGoogleIDToken을 이용하여 얻은 idToken을 백엔드 서버에 전달
-    func getJWTTokenGoogle(idToken: String, completion: @escaping (String?) -> Void){
+    func getJWTTokenGoogle(idToken: String){
         let provider = MoyaProvider<OAuthAPI>()
         provider.request(.postGoogleIdToken(token: idToken)) { result in
             print(result)
@@ -117,27 +122,27 @@ extension LoginViewModel {
             case .success(let response):
                 do{
                     if let header = response.response?.allHeaderFields as? [String: String],
-                       let authorizationToken = header["Authorization"] {
-                        print("Received Authorization header: \(authorizationToken)")
+                       let accessToken = header["Authorization"] {
+                        KeyChainManager.save(forKey: .accessToken, value: accessToken)
                     }
                     
+                    print("===============")
                     let decoder = JSONDecoder()
-                    let apiResponse = try decoder.decode(GoogleIdTokenResponse.self, from: response.data)
-                    
-                    if apiResponse.isSuccess{
-                        let jwtToken = apiResponse.result
-                        completion(jwtToken)
+                    let tokenResponse = try decoder.decode(TokenResponse.self, from: response.data)
+                    print(tokenResponse)
+                    if tokenResponse.isSuccess{
+                        print("아래에 표시")
+                        let jwtToken = tokenResponse
                     }else {
                         print("id 토큰이 유효하지 않음")
-                        completion(nil)
                     }
-                }catch{
+                    
+                    print("===============")
+                } catch{
                     print("JSON 파싱 실패: \(error.localizedDescription)")
-                    completion(nil)
                 }
             case .failure(let error):
                 print("네트워크 오류: \(error.localizedDescription)")
-                completion(nil)
             }
         }
     }
@@ -151,13 +156,7 @@ extension LoginViewModel {
                 return
             }
             
-            self.getJWTTokenGoogle(idToken: idToken) { jwtToken in
-                guard let jwtToken = jwtToken else {
-                    print("JWT 토큰 얻기 실패")
-                    return
-                }
-                print(jwtToken)
-            }
+            self.getJWTTokenGoogle(idToken: idToken)
         }
         
         // MARK: - 서버 연결 없이 HomeView로 이동하고 싶으면 아래 주석을 해제
