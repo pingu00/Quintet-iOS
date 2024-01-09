@@ -10,7 +10,7 @@ import AuthenticationServices
 
 struct LoginView: View {
     @State private var isLoading = true
-    @EnvironmentObject private var loginViewModel: LoginViewModel
+    @StateObject private var loginViewModel = LoginViewModel()
     
     var body: some View {
         NavigationView{

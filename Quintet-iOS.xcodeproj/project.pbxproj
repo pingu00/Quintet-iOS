@@ -30,14 +30,16 @@
 		28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */; };
 		311198D72A74F8C900D92E91 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D62A74F8C900D92E91 /* DateManager.swift */; };
 		311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D82A74FAFE00D92E91 /* DummyDataManager.swift */; };
+		31240B242B4046590020727B /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31240B232B4046590020727B /* KeyChainManager.swift */; };
+		31240B262B4046870020727B /* KeyChainValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31240B252B4046870020727B /* KeyChainValue.swift */; };
 		31465BA02B403C0E00E2F197 /* OAuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31465B9F2B403C0E00E2F197 /* OAuthAPI.swift */; };
 		31465BA12B403C0E00E2F197 /* OAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31465B9E2B403C0E00E2F197 /* OAuthResponse.swift */; };
-		31465BA32B403C8D00E2F197 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31465BA22B403C8D00E2F197 /* secret.plist */; };
 		31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31692C8F2A84A73100BC12EF /* HomeViewModel.swift */; };
 		31BF652E2A7B7ECD0014EC90 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BF652D2A7B7ECD0014EC90 /* LoginView.swift */; };
 		31ECE9482B403AD6006F129A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ECE9472B403AD6006F129A /* LoginViewModel.swift */; };
 		31ECE94B2B403B1B006F129A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 31ECE94A2B403B1B006F129A /* GoogleSignIn */; };
 		31ECE94D2B403B1B006F129A /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 31ECE94C2B403B1B006F129A /* GoogleSignInSwift */; };
+		31F5BF8D2B4D6F1700449D4A /* HTTPHeaderFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F5BF8C2B4D6F1700449D4A /* HTTPHeaderFields.swift */; };
 		31FDB2062A84F7390091A899 /* DateProcessingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FDB2052A84F7390091A899 /* DateProcessingModel.swift */; };
 		4E2EB64C2AFE4A1600821A8F /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2EB64B2AFE4A1600821A8F /* CalendarView.swift */; };
 		4E2EB6502AFE4DCC00821A8F /* ElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2EB64F2AFE4DCC00821A8F /* ElementView.swift */; };
@@ -70,12 +72,15 @@
 		28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetPointPer.swift; sourceTree = "<group>"; };
 		311198D62A74F8C900D92E91 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		311198D82A74FAFE00D92E91 /* DummyDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDataManager.swift; sourceTree = "<group>"; };
+		31240B232B4046590020727B /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
+		31240B252B4046870020727B /* KeyChainValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainValue.swift; sourceTree = "<group>"; };
+		31240B272B4057580020727B /* Quintet-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Quintet-iOS.entitlements"; sourceTree = "<group>"; };
 		31465B9E2B403C0E00E2F197 /* OAuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthResponse.swift; sourceTree = "<group>"; };
 		31465B9F2B403C0E00E2F197 /* OAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthAPI.swift; sourceTree = "<group>"; };
-		31465BA22B403C8D00E2F197 /* secret.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = secret.plist; sourceTree = "<group>"; };
 		31692C8F2A84A73100BC12EF /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		31BF652D2A7B7ECD0014EC90 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		31ECE9472B403AD6006F129A /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		31F5BF8C2B4D6F1700449D4A /* HTTPHeaderFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPHeaderFields.swift; sourceTree = "<group>"; };
 		31FDB2052A84F7390091A899 /* DateProcessingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProcessingModel.swift; sourceTree = "<group>"; };
 		4E2EB64B2AFE4A1600821A8F /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		4E2EB64F2AFE4DCC00821A8F /* ElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementView.swift; sourceTree = "<group>"; };
@@ -109,6 +114,7 @@
 			children = (
 				281E2FBD2A93731300DEAAD8 /* NetworkManager.swift */,
 				31465B9F2B403C0E00E2F197 /* OAuthAPI.swift */,
+				31F5BF8C2B4D6F1700449D4A /* HTTPHeaderFields.swift */,
 				31465B9E2B403C0E00E2F197 /* OAuthResponse.swift */,
 				281E2FB52A8F74D600DEAAD8 /* QuintetAPI.swift */,
 				281E2FBB2A925DD800DEAAD8 /* Response.swift */,
@@ -158,8 +164,10 @@
 		28C3644B2A5FD58E00847A88 /* Quintet-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				31240B272B4057580020727B /* Quintet-iOS.entitlements */,
 				28C3644C2A5FD58E00847A88 /* Quintet_iOSApp.swift */,
-				31465BA22B403C8D00E2F197 /* secret.plist */,
+				31240B232B4046590020727B /* KeyChainManager.swift */,
+				31240B252B4046870020727B /* KeyChainValue.swift */,
 				311198D62A74F8C900D92E91 /* DateManager.swift */,
 				311198D82A74FAFE00D92E91 /* DummyDataManager.swift */,
 				28C3645E2A5FD63600847A88 /* View */,
@@ -290,7 +298,6 @@
 				2805FD7D2B4045BB008FB01A /* secret.plist in Resources */,
 				28C364542A5FD58F00847A88 /* Preview Assets.xcassets in Resources */,
 				AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */,
-				31465BA32B403C8D00E2F197 /* secret.plist in Resources */,
 				28C364512A5FD58F00847A88 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,10 +312,12 @@
 				281E2FBE2A93731300DEAAD8 /* NetworkManager.swift in Sources */,
 				AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */,
 				281E2FB62A8F74D600DEAAD8 /* QuintetAPI.swift in Sources */,
+				31240B262B4046870020727B /* KeyChainValue.swift in Sources */,
 				4E2EB64C2AFE4A1600821A8F /* CalendarView.swift in Sources */,
 				311198D72A74F8C900D92E91 /* DateManager.swift in Sources */,
 				31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */,
 				281E2FBC2A925DD800DEAAD8 /* Response.swift in Sources */,
+				31240B242B4046590020727B /* KeyChainManager.swift in Sources */,
 				28C3645B2A5FD5DB00847A88 /* HomeView.swift in Sources */,
 				31465BA02B403C0E00E2F197 /* OAuthAPI.swift in Sources */,
 				31ECE9482B403AD6006F129A /* LoginViewModel.swift in Sources */,
@@ -317,6 +326,7 @@
 				4E2EB6502AFE4DCC00821A8F /* ElementView.swift in Sources */,
 				28C364662A5FD63600847A88 /* MenuView.swift in Sources */,
 				28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */,
+				31F5BF8D2B4D6F1700449D4A /* HTTPHeaderFields.swift in Sources */,
 				28997E7B2A73F00300ED676C /* CoreDataModel.xcdatamodeld in Sources */,
 				AA086E3E2A875F6E0025F8A7 /* PickerView.swift in Sources */,
 				28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */,
@@ -456,9 +466,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = "Quintet-iOS/Quintet-iOS.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Quintet-iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HX9R9FM987;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Quintet-iOS/Info.plist";
@@ -474,6 +488,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Quintet.Quintet-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = QuintetDevelopProvisioning;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -485,9 +501,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = "Quintet-iOS/Quintet-iOS.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Quintet-iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HX9R9FM987;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Quintet-iOS/Info.plist";
@@ -503,6 +523,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Quintet.Quintet-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = QuintetDistributionProvisioning;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

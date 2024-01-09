@@ -16,7 +16,7 @@ enum OAuthAPI{
         email: String?
     )
     case postKakaoIdToken
-    case getRefreshToken(refreshToken: String)
+    case getRefreshToken
 }
 
 extension OAuthAPI: TargetType{
@@ -84,24 +84,25 @@ extension OAuthAPI: TargetType{
                 parameters.updateValue(email, forKey: "email")
             }
             
-            return .requestParameters(
-                parameters: parameters, encoding: JSONEncoding.default
-            )
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .postKakaoIdToken:
             return .requestPlain
-        case .getRefreshToken(let refreshToken):
-            return .requestParameters(
-                parameters: ["refreshToken" : refreshToken],
-                encoding: JSONEncoding.default
-            )
+        case .getRefreshToken:
+            var parameter: [String: Any] = [:]
+            parameter.updateValue(KeyChainManager.loadRefreshToken(), forKey: "refreshToken")
+            return .requestParameters(parameters: parameter, encoding: JSONEncoding.default)
         }
     }
     
     var headers: [String : String]? {
 
         switch self {
-        case .postGoogleIdToken, .postAppleIdToken, .postKakaoIdToken, .getRefreshToken:
-            return ["Content-Type": "application/json"]
+        case .postGoogleIdToken, .postAppleIdToken, .postKakaoIdToken:
+            return [HTTPHeaderFieldsKey.contentType: HTTPHeaderFieldsValue.json]
+        case .getRefreshToken:
+            return [HTTPHeaderFieldsKey.contentType: HTTPHeaderFieldsValue.json,
+                    HTTPHeaderFieldsKey.authorization: HTTPHeaderFieldsValue.accessToken
+            ]
         }
     }
     
