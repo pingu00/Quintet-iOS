@@ -9,6 +9,7 @@ import SwiftUI
 import StoreKit
 
 struct MenuView: View {
+    @EnvironmentObject var loginViewModel: LoginViewModel
     @Environment(\.dismiss) private var dismiss
     @StateObject var vm = CoreDataViewModel()
     @State private var isNotiOn = false
@@ -66,7 +67,10 @@ struct MenuView: View {
                         }
                         else { // 비회원 일때
                             Button(action: {
-                               //조건A -> false 로 바꿔주어서 로그인 뷰로 이동. 
+                                print("로그인 버튼 Tapped")
+                                KeyChainManager.removeAllKeychain()
+                                loginViewModel.updateHasKeychain(state: false)
+                                
                             }){
                                 HStack{
                                     Text("로그인")

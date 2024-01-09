@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject private var loginViewModel: LoginViewModel
     @StateObject private var viewModel = HomeViewModel()
     @StateObject private var dateViewModel = DateViewModel()
     var body: some View {
@@ -157,7 +158,7 @@ struct HomeView: View {
             .background(Color("Background"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: MenuView()) {
+                    NavigationLink(destination: MenuView().environmentObject(loginViewModel)) {
                         Image(systemName: "line.3.horizontal").padding()
                             .tint(.black)
                     }

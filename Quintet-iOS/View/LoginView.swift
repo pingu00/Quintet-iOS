@@ -10,7 +10,7 @@ import AuthenticationServices
 
 struct LoginView: View {
     @State private var isLoading = true
-    @StateObject private var loginViewModel = LoginViewModel()
+    @EnvironmentObject private var loginViewModel: LoginViewModel
     
     var body: some View {
             ZStack{
@@ -83,7 +83,8 @@ struct LoginView: View {
                     
                     //MARK: 비회원 로그인 버튼
                     Button(action: {
-                        //조건A 를 true 로 바꿔줘서 홈화면 진입. 
+                        KeyChainManager.save(forKey: .isNonMember, value: "true")
+                        loginViewModel.updateHasKeychain(state: true)
                     }){
                         ZStack {
                             RoundedRectangle(cornerRadius: 12)

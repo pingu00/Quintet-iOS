@@ -10,7 +10,9 @@ import SwiftUI
 @main
 struct Quintet_iOSApp: App{
     @State private var isLoading = true
-    private let hasKeychain = KeyChainManager.hasKeychain(forkey: .accessToken)
+    @StateObject private var loginViewModel = LoginViewModel()
+    private var hasToken = KeyChainManager.hasKeychain(forkey: .accessToken)
+    private var isNonMember = KeyChainManager.read(forkey: .isNonMember) == "true"
     
     var body: some Scene{
         WindowGroup{
@@ -26,20 +28,11 @@ struct Quintet_iOSApp: App{
                     }
             }
             else{
-                if hasKeychain {
-                    HomeView()
+                if loginViewModel.hasKeychain {
+                    HomeView().environmentObject(loginViewModel)
                 }
                 else{
-                    LoginView()
-                        .onAppear {
-                            NetworkManager.shared.postCheckData(parameters: ["user_id" : 1, "work_deg" : 1, "health_deg" : 0, "family_deg" : 1, "relationship_deg" : 1, "money_deg" : 0 ])
-                            NetworkManager.shared.fetchWeekCheckData(userID : 1)
-                            NetworkManager.shared.fetchWeekStatistics(userID : "1", startDate: "2023-11-06", endDate: "2023-11-12")
-                            NetworkManager.shared.fetchMonthStatistics(userID : "1", year: 2023, month: 11)
-                            NetworkManager.shared.fetchYearStatistics(userID : "1", year: 2023)
-                            NetworkManager.shared.fetchRecordsByDate(userID : "1", year: 2023, month: 11)
-                            NetworkManager.shared.fetchRecordsByElement(userID : "1", year: 2023, month: 11, element: "일")
-                        }
+                    LoginView().environmentObject(loginViewModel)
                 }
             }
         }

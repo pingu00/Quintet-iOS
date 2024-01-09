@@ -11,8 +11,20 @@ import Moya
 import AuthenticationServices
 
 
-class LoginViewModel: ObservableObject{
-   
+final class LoginViewModel: ObservableObject{
+
+    @Published private(set) var hasKeychain: Bool
+    
+    func updateHasKeychain(state: Bool) {
+        hasKeychain = state
+    }
+    
+    init() {
+        var hasAccessToken =  KeyChainManager.hasKeychain(forkey: .accessToken)
+        var isNonMember = KeyChainManager.read(forkey: .isNonMember) == "true"
+        
+        hasKeychain = hasAccessToken || isNonMember
+    }
 }
 
 // MARK: - apple login
