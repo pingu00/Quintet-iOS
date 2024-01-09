@@ -83,7 +83,7 @@ struct LoginView: View {
                     
                     //MARK: 비회원 로그인 버튼
                     Button(action: {
-                        loginViewModel.isLoggedIn = true
+                        //조건A 를 true 로 바꿔줘서 홈화면 진입. 
                     }){
                         ZStack {
                             RoundedRectangle(cornerRadius: 12)

@@ -10,7 +10,6 @@ import StoreKit
 
 struct MenuView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var loginViewModel: LoginViewModel
     @StateObject var vm = CoreDataViewModel()
     @State private var isNotiOn = false
     @State private var alarm = Date()
@@ -67,7 +66,7 @@ struct MenuView: View {
                         }
                         else { // 비회원 일때
                             Button(action: {
-                                loginViewModel.isLoggedIn = false
+                               //조건A -> false 로 바꿔주어서 로그인 뷰로 이동. 
                             }){
                                 HStack{
                                     Text("로그인")
