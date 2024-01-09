@@ -32,7 +32,6 @@
 		311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D82A74FAFE00D92E91 /* DummyDataManager.swift */; };
 		31240B242B4046590020727B /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31240B232B4046590020727B /* KeyChainManager.swift */; };
 		31240B262B4046870020727B /* KeyChainValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31240B252B4046870020727B /* KeyChainValue.swift */; };
-		31240B292B40583B0020727B /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31240B282B40583B0020727B /* secret.plist */; };
 		31465BA02B403C0E00E2F197 /* OAuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31465B9F2B403C0E00E2F197 /* OAuthAPI.swift */; };
 		31465BA12B403C0E00E2F197 /* OAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31465B9E2B403C0E00E2F197 /* OAuthResponse.swift */; };
 		31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31692C8F2A84A73100BC12EF /* HomeViewModel.swift */; };
@@ -76,7 +75,6 @@
 		31240B232B4046590020727B /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		31240B252B4046870020727B /* KeyChainValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainValue.swift; sourceTree = "<group>"; };
 		31240B272B4057580020727B /* Quintet-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Quintet-iOS.entitlements"; sourceTree = "<group>"; };
-		31240B282B40583B0020727B /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = secret.plist; sourceTree = "<group>"; };
 		31465B9E2B403C0E00E2F197 /* OAuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthResponse.swift; sourceTree = "<group>"; };
 		31465B9F2B403C0E00E2F197 /* OAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthAPI.swift; sourceTree = "<group>"; };
 		31692C8F2A84A73100BC12EF /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -166,7 +164,6 @@
 		28C3644B2A5FD58E00847A88 /* Quintet-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				31240B282B40583B0020727B /* secret.plist */,
 				31240B272B4057580020727B /* Quintet-iOS.entitlements */,
 				28C3644C2A5FD58E00847A88 /* Quintet_iOSApp.swift */,
 				31240B232B4046590020727B /* KeyChainManager.swift */,

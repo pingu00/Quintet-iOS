@@ -26,7 +26,7 @@ struct Quintet_iOSApp: App{
                     }
             }
             else{
-                if !hasKeychain {
+                if hasKeychain {
                     HomeView()
                 }
                 else{
