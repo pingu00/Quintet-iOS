@@ -84,9 +84,7 @@ extension OAuthAPI: TargetType{
                 parameters.updateValue(email, forKey: "email")
             }
             
-            return .requestParameters(
-                parameters: parameters, encoding: JSONEncoding.default
-            )
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .postKakaoIdToken:
             return .requestPlain
         case .getRefreshToken(let refreshToken):
