@@ -39,6 +39,7 @@
 		31ECE9482B403AD6006F129A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ECE9472B403AD6006F129A /* LoginViewModel.swift */; };
 		31ECE94B2B403B1B006F129A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 31ECE94A2B403B1B006F129A /* GoogleSignIn */; };
 		31ECE94D2B403B1B006F129A /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 31ECE94C2B403B1B006F129A /* GoogleSignInSwift */; };
+		31F5BF8D2B4D6F1700449D4A /* HTTPHeaderFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F5BF8C2B4D6F1700449D4A /* HTTPHeaderFields.swift */; };
 		31FDB2062A84F7390091A899 /* DateProcessingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FDB2052A84F7390091A899 /* DateProcessingModel.swift */; };
 		4E2EB64C2AFE4A1600821A8F /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2EB64B2AFE4A1600821A8F /* CalendarView.swift */; };
 		4E2EB6502AFE4DCC00821A8F /* ElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2EB64F2AFE4DCC00821A8F /* ElementView.swift */; };
@@ -79,6 +80,7 @@
 		31692C8F2A84A73100BC12EF /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		31BF652D2A7B7ECD0014EC90 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		31ECE9472B403AD6006F129A /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		31F5BF8C2B4D6F1700449D4A /* HTTPHeaderFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPHeaderFields.swift; sourceTree = "<group>"; };
 		31FDB2052A84F7390091A899 /* DateProcessingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProcessingModel.swift; sourceTree = "<group>"; };
 		4E2EB64B2AFE4A1600821A8F /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		4E2EB64F2AFE4DCC00821A8F /* ElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementView.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 			children = (
 				281E2FBD2A93731300DEAAD8 /* NetworkManager.swift */,
 				31465B9F2B403C0E00E2F197 /* OAuthAPI.swift */,
+				31F5BF8C2B4D6F1700449D4A /* HTTPHeaderFields.swift */,
 				31465B9E2B403C0E00E2F197 /* OAuthResponse.swift */,
 				281E2FB52A8F74D600DEAAD8 /* QuintetAPI.swift */,
 				281E2FBB2A925DD800DEAAD8 /* Response.swift */,
@@ -323,6 +326,7 @@
 				4E2EB6502AFE4DCC00821A8F /* ElementView.swift in Sources */,
 				28C364662A5FD63600847A88 /* MenuView.swift in Sources */,
 				28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */,
+				31F5BF8D2B4D6F1700449D4A /* HTTPHeaderFields.swift in Sources */,
 				28997E7B2A73F00300ED676C /* CoreDataModel.xcdatamodeld in Sources */,
 				AA086E3E2A875F6E0025F8A7 /* PickerView.swift in Sources */,
 				28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */,

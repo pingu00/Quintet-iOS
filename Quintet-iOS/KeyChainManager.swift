@@ -142,4 +142,8 @@ extension KeyChainManager {
     static func loadAccessToken() -> String {
         Self.read(forkey: .accessToken) ?? ""
     }
+    
+    static func loadRefreshToken() -> String {
+        Self.read(forkey: .refreshToken) ?? ""
+    }
 }
