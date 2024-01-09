@@ -49,7 +49,7 @@ struct LoginView: View {
                             switch result {
                             case .success(let authResults):
                                 if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential {
-                                    loginViewModel.getAppleCredential(appleIDCredential)
+                                    loginViewModel.getToken(appleIDCredential)
                                 }
                             case .failure(let error):
                                 print("Auth Fail: \(error.localizedDescription)")

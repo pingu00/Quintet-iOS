@@ -15,8 +15,8 @@ enum OAuthAPI{
         name: String?,
         email: String?
     )
-    case postKakaoIdToken
-    case getRefreshToken
+    case postKakaoIdToken(token: String)
+    case updateAccessToken
 }
 
 extension OAuthAPI: TargetType{
@@ -48,21 +48,21 @@ extension OAuthAPI: TargetType{
             return "/auth/apple"
         case .postKakaoIdToken:
             return "/auth/kakao"
-        case .getRefreshToken:
+        case .updateAccessToken:
             return "/auth/refresh"
         }
     }
     
     var method: Moya.Method {
         switch self{
-        case .postKakaoIdToken, .postAppleIdToken, .postGoogleIdToken, .getRefreshToken:
+        case .postKakaoIdToken, .postAppleIdToken, .postGoogleIdToken, .updateAccessToken:
             return .post
         }
     }
     
     var task: Task {
         switch self{
-        case.postGoogleIdToken(let token):
+        case .postGoogleIdToken(let token), .postKakaoIdToken(token: let token):
             return .requestParameters(parameters: ["token" : token], encoding: JSONEncoding.default)
             
         case.postAppleIdToken(
@@ -87,7 +87,7 @@ extension OAuthAPI: TargetType{
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .postKakaoIdToken:
             return .requestPlain
-        case .getRefreshToken:
+        case .updateAccessToken:
             var parameter: [String: Any] = [:]
             parameter.updateValue(KeyChainManager.loadRefreshToken(), forKey: "refreshToken")
             return .requestParameters(parameters: parameter, encoding: JSONEncoding.default)
@@ -99,11 +99,10 @@ extension OAuthAPI: TargetType{
         switch self {
         case .postGoogleIdToken, .postAppleIdToken, .postKakaoIdToken:
             return [HTTPHeaderFieldsKey.contentType: HTTPHeaderFieldsValue.json]
-        case .getRefreshToken:
+        case .updateAccessToken:
             return [HTTPHeaderFieldsKey.contentType: HTTPHeaderFieldsValue.json,
                     HTTPHeaderFieldsKey.authorization: HTTPHeaderFieldsValue.accessToken
             ]
         }
     }
-    
 }
