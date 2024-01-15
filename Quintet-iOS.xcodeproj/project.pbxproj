@@ -29,7 +29,6 @@
 		28C364662A5FD63600847A88 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C364622A5FD63600847A88 /* MenuView.swift */; };
 		28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */; };
 		311198D72A74F8C900D92E91 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D62A74F8C900D92E91 /* DateManager.swift */; };
-		311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D82A74FAFE00D92E91 /* DummyDataManager.swift */; };
 		31240B242B4046590020727B /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31240B232B4046590020727B /* KeyChainManager.swift */; };
 		31240B262B4046870020727B /* KeyChainValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31240B252B4046870020727B /* KeyChainValue.swift */; };
 		31465BA02B403C0E00E2F197 /* OAuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31465B9F2B403C0E00E2F197 /* OAuthAPI.swift */; };
@@ -77,7 +76,6 @@
 		28C364622A5FD63600847A88 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetPointPer.swift; sourceTree = "<group>"; };
 		311198D62A74F8C900D92E91 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
-		311198D82A74FAFE00D92E91 /* DummyDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDataManager.swift; sourceTree = "<group>"; };
 		31240B232B4046590020727B /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		31240B252B4046870020727B /* KeyChainValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainValue.swift; sourceTree = "<group>"; };
 		31240B272B4057580020727B /* Quintet-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Quintet-iOS.entitlements"; sourceTree = "<group>"; };
@@ -180,7 +178,6 @@
 				31240B232B4046590020727B /* KeyChainManager.swift */,
 				31240B252B4046870020727B /* KeyChainValue.swift */,
 				311198D62A74F8C900D92E91 /* DateManager.swift */,
-				311198D82A74FAFE00D92E91 /* DummyDataManager.swift */,
 				31F5BF922B4D8E3000449D4A /* LoginManager.swift */,
 				28C3645E2A5FD63600847A88 /* View */,
 				28997E832A73FA4600ED676C /* ViewModel */,
@@ -349,7 +346,6 @@
 				31465BA02B403C0E00E2F197 /* OAuthAPI.swift in Sources */,
 				31ECE9482B403AD6006F129A /* LoginViewModel.swift in Sources */,
 				31FDB2062A84F7390091A899 /* DateProcessingModel.swift in Sources */,
-				311198D92A74FAFE00D92E91 /* DummyDataManager.swift in Sources */,
 				4E2EB6502AFE4DCC00821A8F /* ElementView.swift in Sources */,
 				28C364662A5FD63600847A88 /* MenuView.swift in Sources */,
 				28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */,

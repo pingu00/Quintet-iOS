@@ -137,7 +137,7 @@ struct QuintetCheckView: View {
         }
         .onAppear{
             vm.loadCurrentData()
-            vm.checkAllCoreData()
+//            vm.checkAllCoreData()
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
