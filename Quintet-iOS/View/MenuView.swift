@@ -14,7 +14,10 @@ struct MenuView: View {
     @StateObject var vm = CoreDataViewModel()
     @State private var isNotiOn = false
     @State private var alarm = Date()
-    @State private var hasLogin = false
+    @State private var showingLogoutAlert = false
+    @State private var isShowingMailView = false
+        @State private var alertNoMail = false
+    private let hasLogin = true /*KeyChainManager.hasKeychain(forkey: .accessToken)*/
     var body: some View {
         ZStack{
             Color("Background").ignoresSafeArea(.all)
