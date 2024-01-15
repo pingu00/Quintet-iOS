@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class HomeViewModel: ObservableObject {
+class HomeViewModel: CoreDataViewModel { //CoreDataViewModel 상속
     @Published var isNeedUpdate: Bool
     @Published var selectDay: Date
     @Published var quintetDataArray: [QuintetData] = []
@@ -18,12 +18,9 @@ class HomeViewModel: ObservableObject {
     let previousStartDate: Date
     let previousEndDate: Date
 
-    private let coreDataViewModel: CoreDataViewModel
     private let dateProcessingModel: DateProcessingModel
     
-    init(){
-        print("init work")
-        self.coreDataViewModel = CoreDataViewModel()
+    override init(){
         self.dateProcessingModel = DateProcessingModel()
         isNeedUpdate = false
         startDate = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
@@ -32,11 +29,12 @@ class HomeViewModel: ObservableObject {
         previousStartDate = calendar.date(byAdding: .day, value: -7, to: startDate)!
         previousEndDate = calendar.date(byAdding: .day, value: -1, to: startDate)!
         
-        quintetDataArray = coreDataViewModel.getQuintetData(from: startDate, to: endDate)
+        super.init()
+        quintetDataArray = getQuintetData(from: startDate, to: endDate)
     }
 
     func updateValuesFromCoreData(startDate: Date, endDate: Date) {
-        quintetDataArray = coreDataViewModel.getQuintetData(from: startDate, to: endDate)
+        quintetDataArray = getQuintetData(from: startDate, to: endDate)
         for data in quintetDataArray{
             print(data)
         }

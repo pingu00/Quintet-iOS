@@ -42,7 +42,6 @@ class CoreDataViewModel: ObservableObject {
         }
         
         fetchCurrentQuintetData()
-        loadUserName()
         //addDummyData()
     }
     
