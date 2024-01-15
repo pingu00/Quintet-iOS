@@ -19,7 +19,7 @@ struct MenuView: View {
     @State private var isShowingMailView = false
         @State private var alertNoMail = false
     private let hasLogin = KeyChainManager.hasKeychain(forkey: .accessToken)
-    
+  
     var body: some View {
         ZStack{
             Color("Background").ignoresSafeArea(.all)

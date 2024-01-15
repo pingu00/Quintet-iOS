@@ -12,10 +12,24 @@
 				<string>com.googleusercontent.apps.57072604372-atronfd68sgo0l369sd215l4veu05rtb</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakao6ebf4551a587213ca4441027c493ef69</string>
+			</array>
+		</dict>
 	</array>
 	<key>GIDClientID</key>
 	<string>57072604372-atronfd68sgo0l369sd215l4veu05rtb.apps.googleusercontent.com</string>
 	<key>GIDServerClientID</key>
 	<string>57072604372-mp0psmdo18mme37oan2u72aff4iqeqod.apps.googleusercontent.com</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaokompassauth</string>
+		<string>kakaolink</string>
+		<string>kakaoplus</string>
+	</array>
 </dict>
 </plist>
