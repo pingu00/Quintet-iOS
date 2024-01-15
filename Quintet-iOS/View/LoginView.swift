@@ -24,8 +24,7 @@ struct LoginView: View {
                     //MARK: 회원 로그인 버튼 모음
                     VStack{
                         Button {
-                            print("카카오 로그인 버튼 눌림")
-                            
+                            print("카카오 로그인 버튼 눌림")                            
                         } label: {
                             HStack {
                                 Image("KakaoLogo")
@@ -49,7 +48,7 @@ struct LoginView: View {
                             switch result {
                             case .success(let authResults):
                                 if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential {
-                                    loginViewModel.getAppleCredential(appleIDCredential)
+                                    loginViewModel.getToken(appleIDCredential)
                                 }
                             case .failure(let error):
                                 print("Auth Fail: \(error.localizedDescription)")
