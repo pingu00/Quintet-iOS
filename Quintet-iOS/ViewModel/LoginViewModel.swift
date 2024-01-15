@@ -59,7 +59,7 @@ extension LoginViewModel {
 // MARK: - google login
 extension LoginViewModel {
     
-    func getGoogleIDToken(completion: @escaping (String?) -> Void){
+    func postGoogleIDToken(completion: @escaping (String?) -> Void){
         guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
             completion(nil)
             return
@@ -97,7 +97,7 @@ extension LoginViewModel {
     
     func googleSignIn() {
         print("구글 로그인 시도 시작")
-        getGoogleIDToken{ idToken in
+        postGoogleIDToken{ idToken in
             guard let idToken = idToken else {
                 print("Google ID 토큰 얻기 실패")
                 return
