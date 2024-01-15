@@ -282,11 +282,22 @@ class CoreDataViewModel: ObservableObject {
     func saveUserName(name : String) {
         userName = name
         UserDefaults.standard.set(userName, forKey: "userName")
+        NetworkManager.shared.EditProfileName(newNickname: userName)
     }
     
     func loadUserName() {
-        userName = UserDefaults.standard.string(forKey: "userName") ?? "사용자"
+        NetworkManager.shared.fetchProfileName { result in
+            switch result {
+            case .success(let nickname):
+                self.userName = nickname
+                // 필요한 경우 UI 업데이트 등 추가 작업 수행
+            case .failure(let error):
+                self.userName = UserDefaults.standard.string(forKey: "userName") ?? "사용자"
+                print("Error fetching user name: \(error)")
+            }
+        }
     }
+
     
 //    날짜별
     func getRecordMetaData(selectedYear: Int, selectedMonth: Int) -> [CalendarMetaData] {

@@ -28,7 +28,6 @@ struct MenuView: View {
                 Spacer(minLength: 20)
                 Group{
                     if hasLogin {
-                        //                        vm.loadUserName()
                         Text(vm.userName)
                             .fontWeight(.bold)
                         + Text("님")
