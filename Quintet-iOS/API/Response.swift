@@ -7,6 +7,21 @@
 
 import Foundation
 
+struct ProfileDataResponse : Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: ProfileResult
+}
+struct ProfileResult : Codable{
+    let id: Int?
+    let nickname: String
+    let email: String?
+    let provider: String?
+}
+
+
+//MARK: -Weeklydata
 struct WeeklyDataResponse: Codable {
     let isSuccess: Bool
     let code: Int
