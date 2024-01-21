@@ -53,6 +53,9 @@
 		AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E372A727B020025F8A7 /* DateViewModel.swift */; };
 		AA086E3C2A72E1C20025F8A7 /* StatisticsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */; };
 		AA086E3E2A875F6E0025F8A7 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3D2A875F6E0025F8A7 /* PickerView.swift */; };
+		AAAAC9AF2B5564D70026C8D9 /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9AE2B5564D70026C8D9 /* OnboardingPageView.swift */; };
+		AAAAC9B12B5564EE0026C8D9 /* OnboardingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9B02B5564EE0026C8D9 /* OnboardingTabView.swift */; };
+		AAAAC9B32B5566200026C8D9 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAAAC9B22B5566200026C8D9 /* secret.plist */; };
 		AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */; };
 		AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */ = {isa = PBXBuildFile; fileRef = AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */; };
 /* End PBXBuildFile section */
@@ -95,6 +98,9 @@
 		AA086E372A727B020025F8A7 /* DateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewModel.swift; sourceTree = "<group>"; };
 		AA086E3B2A72E1C20025F8A7 /* StatisticsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCellViewModel.swift; sourceTree = "<group>"; };
 		AA086E3D2A875F6E0025F8A7 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
+		AAAAC9AE2B5564D70026C8D9 /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
+		AAAAC9B02B5564EE0026C8D9 /* OnboardingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTabView.swift; sourceTree = "<group>"; };
+		AAAAC9B22B5566200026C8D9 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = secret.plist; sourceTree = "<group>"; };
 		AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsStruct.swift; sourceTree = "<group>"; };
 		AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = QuintetAdvice.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -188,6 +194,7 @@
 				281E2FB42A8F743200DEAAD8 /* API */,
 				31F5BF942B4D902900449D4A /* Response */,
 				2805FD7C2B4045BB008FB01A /* secret.plist */,
+				AAAAC9B22B5566200026C8D9 /* secret.plist */,
 				28C364502A5FD58F00847A88 /* Assets.xcassets */,
 				28C364522A5FD58F00847A88 /* Preview Content */,
 			);
@@ -209,6 +216,7 @@
 				4E2EB64B2AFE4A1600821A8F /* CalendarView.swift */,
 				31BF652D2A7B7ECD0014EC90 /* LoginView.swift */,
 				28C3645A2A5FD5DB00847A88 /* HomeView.swift */,
+				AAAAC9AD2B5564650026C8D9 /* Onboradings */,
 				28C3645F2A5FD63600847A88 /* RecordView.swift */,
 				28C364602A5FD63600847A88 /* StatisticsView.swift */,
 				28C364622A5FD63600847A88 /* MenuView.swift */,
@@ -244,6 +252,15 @@
 				28997E792A73F00300ED676C /* CoreDataModel.xcdatamodeld */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		AAAAC9AD2B5564650026C8D9 /* Onboradings */ = {
+			isa = PBXGroup;
+			children = (
+				AAAAC9AE2B5564D70026C8D9 /* OnboardingPageView.swift */,
+				AAAAC9B02B5564EE0026C8D9 /* OnboardingTabView.swift */,
+			);
+			path = Onboradings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,6 +342,7 @@
 				2805FD7D2B4045BB008FB01A /* secret.plist in Resources */,
 				28C364542A5FD58F00847A88 /* Preview Assets.xcassets in Resources */,
 				AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */,
+				AAAAC9B32B5566200026C8D9 /* secret.plist in Resources */,
 				28C364512A5FD58F00847A88 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,7 +379,9 @@
 				28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */,
 				286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */,
 				28997E822A73F76A00ED676C /* CoreDataViewModel.swift in Sources */,
+				AAAAC9B12B5564EE0026C8D9 /* OnboardingTabView.swift in Sources */,
 				AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */,
+				AAAAC9AF2B5564D70026C8D9 /* OnboardingPageView.swift in Sources */,
 				28C364632A5FD63600847A88 /* RecordView.swift in Sources */,
 				31465BA12B403C0E00E2F197 /* OAuthResponse.swift in Sources */,
 				286E48AB2A76DE1600D109E9 /* AddNoteCellView.swift in Sources */,

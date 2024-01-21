@@ -11,6 +11,8 @@ struct HomeView: View {
     @EnvironmentObject private var loginViewModel: LoginViewModel
     @StateObject private var viewModel = HomeViewModel()
     @StateObject private var dateViewModel = DateViewModel()
+    
+    @AppStorage("_isFirstLaunching") var isFirstLaunching: Bool = true
     var body: some View {
         NavigationView{
             VStack{
@@ -164,6 +166,9 @@ struct HomeView: View {
                     }
                 }
             }
+        }
+        .fullScreenCover(isPresented: $isFirstLaunching) {
+            OnboardingTabView(isFirstLaunching: $isFirstLaunching)
         }
     }
 }

@@ -10,10 +10,11 @@ import SwiftUI
 struct StatisticsView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @StateObject private var dateViewModel = DateViewModel()
+    @State var isLogin = false
     
-    //강한결합
+    @StateObject private var dateViewModel = DateViewModel()
     @StateObject private var statisticsCellViewModel = StatisticsCellViewModel(coreDataViewModel: CoreDataViewModel())
+    @StateObject private var statisticsCellViewModel_login = StatisticsCellViewModel_login(netWorkManager: NetworkManager())
     
     @State private var selectedOption = "주간"
     @State private var isShowPopup = false
@@ -142,8 +143,16 @@ struct StatisticsView: View {
                 
                 VStack {
                     HStack(spacing: 0) {
-                        ForEach(statisticsCellViewModel.noteArray, id: \.1) { (point, note) in
-                            StatisticsCellView(selectedOption: $selectedOption, note: note, point: point, maxPoint: statisticsCellViewModel.maxPoint, totalPoint: statisticsCellViewModel.totalPoint)
+                        if !isLogin {
+                            ForEach(statisticsCellViewModel.noteArray, id: \.1) { (point, note) in
+                                StatisticsCellView(selectedOption: $selectedOption, note: note, point: point, maxPoint: statisticsCellViewModel.maxPoint, totalPoint: statisticsCellViewModel.totalPoint)
+                            }
+                        }
+                        //MARK: - 로그인 됐을 경우
+                        else {
+                            ForEach(statisticsCellViewModel_login.noteArray, id: \.1) { (point, note) in
+                                StatisticsCellView(selectedOption: $selectedOption, note: note, point: point, maxPoint: statisticsCellViewModel_login.maxPoint, totalPoint: 100)
+                            }
                         }
                     }
                     Divider()
@@ -238,17 +247,29 @@ struct StatisticsView: View {
     
     func cellWeekUpdate() {
         let endDate = Calendar.current.date(byAdding: .day, value: 6, to: dateViewModel.startOfWeek)!
-        statisticsCellViewModel.updateValuesFromCoreData(startDate: dateViewModel.startOfWeek, endDate: endDate)
+        if !isLogin {
+            statisticsCellViewModel.updateValuesFromCoreData(startDate: dateViewModel.startOfWeek, endDate: endDate)
+        } else {
+            statisticsCellViewModel_login.updateValuesFromAPI_Week(startDate: dateViewModel.startOfWeek, endDate: endDate)
+        }
     }
 
     func cellMonthUpdate() {
         let endDate = Calendar.current.date(byAdding: .month, value: 1, to: dateViewModel.selectedMonthFirstDay)!
+        if !isLogin {
         statisticsCellViewModel.updateValuesFromCoreData(startDate: dateViewModel.selectedMonthFirstDay, endDate: endDate)
+        } else {
+            statisticsCellViewModel_login.updateValuesFromAPI_Month(year:dateViewModel.selectedYearFirstDay, month: dateViewModel.selectedMonthFirstDay)
+        }
     }
 
     func cellYearUpdate() {
         let endDate = Calendar.current.date(byAdding: .year, value: 1, to: dateViewModel.selectedYearFirstDay)!
+        if !isLogin {
         statisticsCellViewModel.updateValuesFromCoreData(startDate: dateViewModel.selectedYearFirstDay, endDate: endDate)
+        } else {
+            statisticsCellViewModel_login.updateValuesFromAPI_Year(year: dateViewModel.selectedYearFirstDay)
+        }
     }
 
     func updateStatistics() {
