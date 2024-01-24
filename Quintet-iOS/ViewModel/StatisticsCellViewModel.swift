@@ -123,11 +123,11 @@ class StatisticsCellViewModel: ObservableObject {
 }
 
 class StatisticsCellViewModel_login: ObservableObject {
-    @Published private var workPointPer = 0
-    @Published private var healthPointPer = 0
-    @Published private var familyPointPer = 0
-    @Published private var relationshipPointPer = 0
-    @Published private var assetPointPer = 0
+    @Published var workPointPer: String = ""
+    @Published var healthPointPer: String = ""
+    @Published var familyPointPer: String = ""
+    @Published var relationshipPointPer: String = ""
+    @Published var assetPointPer: String = ""
     
     private let netWorkManager: NetworkManager
     
@@ -142,12 +142,12 @@ class StatisticsCellViewModel_login: ObservableObject {
     
     init(netWorkManager: NetworkManager) {
         self.netWorkManager = netWorkManager
-        updateValuesFromAPI_Week(startDate: startDate, endDate: endDate)
     }
     
     func updateValuesFromAPI_Week(startDate: Date, endDate: Date) {
         netWorkManager.fetchWeekStatistics(userID: "id", startDate: Utilities.formatDate(date: startDate), endDate: Utilities.formatDate(date: endDate))
     }
+
     func updateValuesFromAPI_Month(year: Date, month: Date) {
         netWorkManager.fetchMonthStatistics(userID: "id", year: Int(Utilities.formatDate_Year(date: year))!, month: Int(Utilities.formatDate_Month(date: month))!)
     }
@@ -157,16 +157,16 @@ class StatisticsCellViewModel_login: ObservableObject {
     
     var noteArray: [(Int, String)] {
         [
-            (workPointPer, "일"),
-            (healthPointPer, "건강"),
-            (familyPointPer, "가족"),
-            (relationshipPointPer, "관계"),
-            (assetPointPer, "자산")
+            (Int(workPointPer) ?? 0, "일"),
+            (Int(healthPointPer) ?? 0, "건강"),
+            (Int(familyPointPer) ?? 0, "가족"),
+            (Int(relationshipPointPer) ?? 0, "관계"),
+            (Int(assetPointPer) ?? 0, "자산")
         ]
     }
 
     var maxPoint: Int {
-        max(workPointPer, healthPointPer, familyPointPer, relationshipPointPer, assetPointPer)
+        max(Int(workPointPer) ?? 0, Int(healthPointPer) ?? 0, Int(familyPointPer) ?? 0, Int(relationshipPointPer) ?? 0, Int(assetPointPer) ?? 0)
     }
     
     var maxNoteArray: [String]{
@@ -183,7 +183,7 @@ class StatisticsCellViewModel_login: ObservableObject {
     }
     
     var minPoint: Int {
-        min(workPointPer, healthPointPer, familyPointPer, relationshipPointPer, assetPointPer)
+        min(Int(workPointPer) ?? 0, Int(healthPointPer) ?? 0, Int(familyPointPer) ?? 0, Int(relationshipPointPer) ?? 0, Int(assetPointPer) ?? 0)
     }
     
     var minNoteArray: [String]{

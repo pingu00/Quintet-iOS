@@ -64,6 +64,14 @@ class NetworkManager {
             case .success(let response):
                 do {
                     let decodedResponse = try JSONDecoder().decode(StatisticsDataResponse.self, from: response.data)
+                    DispatchQueue.main.async {
+                        let viewModel = StatisticsCellViewModel_login(netWorkManager: NetworkManager.shared)
+                        viewModel.workPointPer = decodedResponse.result.workPointPer
+                        viewModel.healthPointPer = decodedResponse.result.healthPointPer
+                        viewModel.familyPointPer = decodedResponse.result.familyPointPer
+                        viewModel.relationshipPointPer = decodedResponse.result.relationshipPointPer
+                        viewModel.assetPointPer = decodedResponse.result.assetPointPer
+                    }
                     print (decodedResponse.result)
                 } catch let err {
                     print(err)
