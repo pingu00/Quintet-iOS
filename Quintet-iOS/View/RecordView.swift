@@ -15,7 +15,7 @@ struct RecordView: View {
     @State var currentDate: Date = Date()
     @State private var selectedDate = Date()
     @ObservedObject private var viewModel = DateViewModel()
-    @ObservedObject private var coreDataViewModel = CoreDataViewModel()
+    @EnvironmentObject private var coreDataViewModel : CoreDataViewModel
     @State private var isShowingBtn = false
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
     @State private var selectedMonth = Calendar.current.component(.month, from: Date())
@@ -90,17 +90,9 @@ struct RecordView: View {
                 }
             
             }
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button (action:
-                                {dismiss()}){
-                        Image(systemName: "chevron.backward")
-                            .bold()
-                            .foregroundColor(Color(.black))
-                    }
-                }
-            }
+            .modifier(CustomBackButton {
+                        dismiss()
+                    })
             .onAppear {
                 viewModel.updateCalendar()
             }

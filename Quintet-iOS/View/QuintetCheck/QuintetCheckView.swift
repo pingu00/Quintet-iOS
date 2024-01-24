@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct QuintetCheckView: View {
-    @StateObject private var vm = CoreDataViewModel()
+    @EnvironmentObject private var vm : CoreDataViewModel
     
     @Environment(\.dismiss) private var dismiss
     @State private var hasAddNote = false
@@ -137,20 +137,11 @@ struct QuintetCheckView: View {
         }
         .onAppear{
             vm.loadCurrentData()
-            vm.checkAllCoreData()
+//            vm.checkAllCoreData()
         }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            if !isComplete {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button (action:{dismiss()}){
-                        Image(systemName: "chevron.backward")
-                            .bold()
-                            .foregroundColor(Color(.black))
-                    }
-                }
-            }
-        }
+        .modifier(CustomBackButton {
+            dismiss()
+        })
     }
 }
 

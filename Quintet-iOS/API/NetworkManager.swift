@@ -126,6 +126,44 @@ class NetworkManager {
             }
         }
     }
-    
+    func fetchProfileName(completion: @escaping (Result<String, Error>) -> Void) {
+        provider.request(.getProfileName) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decodedResponse = try JSONDecoder().decode(ProfileDataResponse.self, from: response.data)
+                    print(decodedResponse.result)
+                    completion(.success(decodedResponse.result.nickname)) // 클로저를 통해 닉네임 전달
+                } catch {
+                    print(error)
+                    completion(.failure(error))
+                }
+            case .failure(let moyaError):
+                print("There's an error, \(moyaError)")
+                completion(.failure(moyaError))
+            }
+        }
+    }
+
+    func EditProfileName(newNickname : String) {
+        provider.request(.patchProfileName(newNickname: newNickname)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decodedResponse = try JSONDecoder().decode(ProfileDataResponse.self, from: response.data)
+                    
+                    if response.statusCode == 400 {
+                        print(decodedResponse.message)
+                    } else {
+                        print("\(decodedResponse.result.nickname)으로프로필 이름 변경완료")
+                    }
+                } catch let err {
+                    print(err)
+                }
+            case .failure(let moyaError):
+                print("There's an error, \(moyaError)")
+            }
+        }
+    }
 }
 

@@ -7,14 +7,19 @@
 
 import SwiftUI
 import StoreKit
+import MessageUI
 
 struct MenuView: View {
-    @EnvironmentObject var loginViewModel: LoginViewModel
     @Environment(\.dismiss) private var dismiss
-    @StateObject var vm = CoreDataViewModel()
+    @EnvironmentObject var loginViewModel: LoginViewModel
+    @EnvironmentObject var vm : CoreDataViewModel
     @State private var isNotiOn = false
     @State private var alarm = Date()
-    @State private var hasLogin = false
+    @State private var showingLogoutAlert = false
+    @State private var isShowingMailView = false
+        @State private var alertNoMail = false
+    private let hasLogin = KeyChainManager.hasKeychain(forkey: .accessToken)
+  
     var body: some View {
         ZStack{
             Color("Background").ignoresSafeArea(.all)
@@ -23,7 +28,6 @@ struct MenuView: View {
                 Spacer(minLength: 20)
                 Group{
                     if hasLogin {
-                        //                        vm.loadUserName()
                         Text(vm.userName)
                             .fontWeight(.bold)
                         + Text("님")
@@ -48,13 +52,26 @@ struct MenuView: View {
                                 NavigationLink(destination:{ProfileEditView(nameText: vm.userName, vm : vm)})
                                 {EmptyView()}
                             )
-                            Button(action: {}){
+                            Button(action: {
+                                showingLogoutAlert = true
+                            }){
                                 HStack{
                                     Text("로그아웃")
                                     Spacer()
                                     Image(systemName: "chevron.right")
                                         .foregroundColor(Color("DarkGray"))
                                 }
+                            }.alert(isPresented: $showingLogoutAlert){
+                                Alert(
+                                    title: Text("로그아웃"),
+                                    message: Text("정말 로그아웃 하시겠습니까?"),
+                                    primaryButton: .destructive(Text("네")) {
+                                        KeyChainManager.removeAllKeychain()
+                                        loginViewModel.updateHasKeychain(state: false)
+                                    },
+                                    secondaryButton: .cancel(Text("아니오"))
+                                )
+                                
                             }
                             Button(action: {}){
                                 HStack{
@@ -113,7 +130,13 @@ struct MenuView: View {
                                     .foregroundColor(Color("DarkGray"))
                             }
                         }
-                        Button(action: {}){
+                        Button(action: {
+                            if MFMailComposeViewController.canSendMail() {
+                                self.isShowingMailView = true
+                            } else {
+                                self.alertNoMail = true
+                            }
+                        }) {
                             HStack{
                                 Text("문의하기")
                                 Spacer()
@@ -121,6 +144,13 @@ struct MenuView: View {
                                     .foregroundColor(Color("DarkGray"))
                             }
                         }
+                        .sheet(isPresented: $isShowingMailView) {
+                                    MailView(isShowing: self.$isShowingMailView)
+                                        .edgesIgnoringSafeArea(.all)
+                                }
+                                .alert(isPresented: $alertNoMail) {
+                                    Alert(title: Text("오류"), message: Text("이메일을 보낼 수 없습니다. 메일 앱을 확인하세요."), dismissButton: .default(Text("확인")))
+                                }
                         Button(action: {}){
                             HStack{
                                 Text("이용 약관")
@@ -138,18 +168,12 @@ struct MenuView: View {
                 .scrollContentBackground(.hidden)
             }
         }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button (action:
-                            {dismiss()}){
-                    Image(systemName: "chevron.backward")
-                        .bold()
-                        .foregroundColor(Color(.black))
-                    
-                }
-            }
+        .onAppear {
+            vm.loadUserName()
         }
+        .modifier(CustomBackButton {
+                    dismiss()
+                })
     }
 }
 
@@ -224,6 +248,37 @@ struct ProfileEditView: View {
     }
     private func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+struct MailView: UIViewControllerRepresentable {
+    @Binding var isShowing: Bool
+
+    class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
+        @Binding var isShowing: Bool
+
+        init(isShowing: Binding<Bool>) {
+            _isShowing = isShowing
+        }
+
+        func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+            isShowing = false
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(isShowing: $isShowing)
+    }
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
+        let mailVC = MFMailComposeViewController()
+        mailVC.mailComposeDelegate = context.coordinator
+        mailVC.setToRecipients(["rlavlfrb0119@gmail.com"]) // 개발자 이메일 주소 설정
+        mailVC.setSubject("문의하기") // 이메일 제목 설정
+        mailVC.setMessageBody("", isHTML: false) // 이메일 본문 설정
+        return mailVC
+    }
+
+    func updateUIViewController(_ uiViewController: MFMailComposeViewController, context: UIViewControllerRepresentableContext<MailView>) {
     }
 }
 

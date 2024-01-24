@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var loginViewModel: LoginViewModel
+    @EnvironmentObject private var coreDataViewModel: CoreDataViewModel
     @StateObject private var viewModel = HomeViewModel()
     @StateObject private var dateViewModel = DateViewModel()
     
