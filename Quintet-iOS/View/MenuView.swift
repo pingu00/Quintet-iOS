@@ -10,9 +10,9 @@ import StoreKit
 import MessageUI
 
 struct MenuView: View {
-    @EnvironmentObject var loginViewModel: LoginViewModel
     @Environment(\.dismiss) private var dismiss
-    @StateObject var vm = CoreDataViewModel()
+    @EnvironmentObject var loginViewModel: LoginViewModel
+    @EnvironmentObject var vm : CoreDataViewModel
     @State private var isNotiOn = false
     @State private var alarm = Date()
     @State private var showingLogoutAlert = false
@@ -167,6 +167,9 @@ struct MenuView: View {
                 .background(Color("Background"))
                 .scrollContentBackground(.hidden)
             }
+        }
+        .onAppear {
+            vm.loadUserName()
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {

@@ -12,8 +12,8 @@ struct StatisticsView: View {
     
     @StateObject private var dateViewModel = DateViewModel()
     
-    //강한결합
-    @StateObject private var statisticsCellViewModel = StatisticsCellViewModel(coreDataViewModel: CoreDataViewModel())
+    //강한결합 -> 상속
+    @StateObject private var statisticsCellViewModel = StatisticsCellViewModel()
     
     @State private var selectedOption = "주간"
     @State private var isShowPopup = false

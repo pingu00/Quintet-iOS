@@ -43,7 +43,9 @@ struct Quintet_iOSApp: App{
             }
             else{
                 if loginViewModel.hasKeychain {
-                    HomeView().environmentObject(loginViewModel)
+                    HomeView()
+                        .environmentObject(loginViewModel)
+                        .environmentObject(CoreDataViewModel())
                 }
                 else{
                     LoginView().onOpenURL(perform: { url in
