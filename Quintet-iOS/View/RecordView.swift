@@ -90,17 +90,9 @@ struct RecordView: View {
                 }
             
             }
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button (action:
-                                {dismiss()}){
-                        Image(systemName: "chevron.backward")
-                            .bold()
-                            .foregroundColor(Color(.black))
-                    }
-                }
-            }
+            .modifier(CustomBackButton {
+                        dismiss()
+                    })
             .onAppear {
                 viewModel.updateCalendar()
             }

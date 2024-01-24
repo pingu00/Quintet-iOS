@@ -171,18 +171,9 @@ struct MenuView: View {
         .onAppear {
             vm.loadUserName()
         }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button (action:
-                            {dismiss()}){
-                    Image(systemName: "chevron.backward")
-                        .bold()
-                        .foregroundColor(Color(.black))
-                    
-                }
-            }
-        }
+        .modifier(CustomBackButton {
+                    dismiss()
+                })
     }
 }
 
