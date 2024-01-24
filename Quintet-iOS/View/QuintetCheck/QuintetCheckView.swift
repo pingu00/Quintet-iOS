@@ -139,18 +139,9 @@ struct QuintetCheckView: View {
             vm.loadCurrentData()
 //            vm.checkAllCoreData()
         }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            if !isComplete {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button (action:{dismiss()}){
-                        Image(systemName: "chevron.backward")
-                            .bold()
-                            .foregroundColor(Color(.black))
-                    }
-                }
-            }
-        }
+        .modifier(CustomBackButton {
+            dismiss()
+        })
     }
 }
 

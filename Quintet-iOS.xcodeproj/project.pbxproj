@@ -15,6 +15,7 @@
 		281E2FB62A8F74D600DEAAD8 /* QuintetAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281E2FB52A8F74D600DEAAD8 /* QuintetAPI.swift */; };
 		281E2FBC2A925DD800DEAAD8 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281E2FBB2A925DD800DEAAD8 /* Response.swift */; };
 		281E2FBE2A93731300DEAAD8 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281E2FBD2A93731300DEAAD8 /* NetworkManager.swift */; };
+		2837E2322B61366800BEB53D /* BackButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2837E2312B61366800BEB53D /* BackButtonModifier.swift */; };
 		286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286E48A82A76DD6B00D109E9 /* CheckCellView.swift */; };
 		286E48AB2A76DE1600D109E9 /* AddNoteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286E48AA2A76DE1600D109E9 /* AddNoteCellView.swift */; };
 		28997E7B2A73F00300ED676C /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 28997E792A73F00300ED676C /* CoreDataModel.xcdatamodeld */; };
@@ -57,10 +58,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2805FD7C2B4045BB008FB01A /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = secret.plist; sourceTree = "<group>"; };
+		2805FD7C2B4045BB008FB01A /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../Downloads/secret.plist; sourceTree = "<group>"; };
 		281E2FB52A8F74D600DEAAD8 /* QuintetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetAPI.swift; sourceTree = "<group>"; };
 		281E2FBB2A925DD800DEAAD8 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		281E2FBD2A93731300DEAAD8 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		2837E2312B61366800BEB53D /* BackButtonModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonModifier.swift; sourceTree = "<group>"; };
 		286E48A82A76DD6B00D109E9 /* CheckCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCellView.swift; sourceTree = "<group>"; };
 		286E48AA2A76DE1600D109E9 /* AddNoteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteCellView.swift; sourceTree = "<group>"; };
 		28997E7A2A73F00300ED676C /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				31FDB2042A84F7080091A899 /* Model */,
 				281E2FB42A8F743200DEAAD8 /* API */,
 				31F5BF942B4D902900449D4A /* Response */,
+				2837E2312B61366800BEB53D /* BackButtonModifier.swift */,
 				2805FD7C2B4045BB008FB01A /* secret.plist */,
 				28C364502A5FD58F00847A88 /* Assets.xcassets */,
 				28C364522A5FD58F00847A88 /* Preview Content */,
@@ -342,6 +345,7 @@
 				31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */,
 				281E2FBC2A925DD800DEAAD8 /* Response.swift in Sources */,
 				31240B242B4046590020727B /* KeyChainManager.swift in Sources */,
+				2837E2322B61366800BEB53D /* BackButtonModifier.swift in Sources */,
 				28C3645B2A5FD5DB00847A88 /* HomeView.swift in Sources */,
 				31465BA02B403C0E00E2F197 /* OAuthAPI.swift in Sources */,
 				31ECE9482B403AD6006F129A /* LoginViewModel.swift in Sources */,
