@@ -12,6 +12,7 @@ struct RecordElementView : View {
     @State var recordIndex: recordElement
     @State private var isShowPopup = false
     @StateObject private var viewModel = DateViewModel()
+    
     @ObservedObject private var coreDataViewModel = CoreDataViewModel()
     
     var healthRecords: [RecordMetaData] {

@@ -88,36 +88,38 @@ class NetworkManager {
             }
         }
     }
-    func fetchRecordsByDate(userID: String, year: Int, month: Int) {
+    func fetchRecordsByDate(userID: String, year: Int, month: Int, completion: @escaping (Result<[RecordResult], Error>) -> Void) {
         provider.request(.getRecordsByDate(user_id: userID, year: year, month: month)) { result in
             switch result {
             case .success(let response):
                 do {
                     let decodedResponse = try JSONDecoder().decode(RecordDataResponse.self, from: response.data)
-                    print (decodedResponse.result)
-                } catch let err {
-                    print(err)
+                    completion(.success(decodedResponse.result))
+                } catch let error {
+                    completion(.failure(error))
                 }
             case .failure(let moyaError):
-                print("There's an error, \(moyaError)")
+                completion(.failure(moyaError))
             }
         }
     }
-    func fetchRecordsByElement(userID: String, year: Int, month: Int, element : String) {
+
+    func fetchRecordsByElement(userID: String, year: Int, month: Int, element: String, completion: @escaping (Result<[RecordResult], Error>) -> Void) {
         provider.request(.getRecordsByElement(user_id: userID, year: year, month: month, element: element)) { result in
             switch result {
             case .success(let response):
                 do {
                     let decodedResponse = try JSONDecoder().decode(RecordDataResponse.self, from: response.data)
-                    print (decodedResponse.result)
-                } catch let err {
-                    print(err)
+                    completion(.success(decodedResponse.result))
+                } catch let error {
+                    completion(.failure(error))
                 }
             case .failure(let moyaError):
-                print("There's an error, \(moyaError)")
+                completion(.failure(moyaError))
             }
         }
     }
+
     func fetchProfileName(completion: @escaping (Result<String, Error>) -> Void) {
         provider.request(.getProfileName) { result in
             switch result {
