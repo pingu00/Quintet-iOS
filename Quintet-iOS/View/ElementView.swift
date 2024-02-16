@@ -12,23 +12,119 @@ struct RecordElementView : View {
     @State var recordIndex: recordElement
     @State private var isShowPopup = false
     @StateObject private var viewModel = DateViewModel()
-    
     @ObservedObject private var coreDataViewModel = CoreDataViewModel()
-    
+    @ObservedObject private var recordLoginViewModel = RecordLoginViewModel()
+    private let hasLogin = KeyChainManager.hasKeychain(forkey: .accessToken)
     var healthRecords: [RecordMetaData] {
-        return coreDataViewModel.getHealthRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+        var records: [RecordMetaData] = []
+        let dispatchGroup = DispatchGroup()
+
+        if hasLogin {
+            dispatchGroup.enter()
+            recordLoginViewModel.getRecord(for: "health") { processedData in
+                records = processedData
+                dispatchGroup.leave()
+            }
+        } else {
+            dispatchGroup.enter()
+            coreDataViewModel.getHealthRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                records = processedData
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.wait()
+
+        return records
     }
+
     var workRecords: [RecordMetaData] {
-        return coreDataViewModel.getWorkRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+        var records: [RecordMetaData] = []
+        let dispatchGroup = DispatchGroup()
+
+        if hasLogin {
+            dispatchGroup.enter()
+            recordLoginViewModel.getRecord(for: "work") { processedData in
+                records = processedData
+                dispatchGroup.leave()
+            }
+        } else {
+            dispatchGroup.enter()
+            coreDataViewModel.getWorkRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                records = processedData
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.wait()
+
+        return records
     }
     var relationshipRecords: [RecordMetaData] {
-        return coreDataViewModel.getRelationshipRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+        var records: [RecordMetaData] = []
+        let dispatchGroup = DispatchGroup()
+
+        if hasLogin {
+            dispatchGroup.enter()
+            recordLoginViewModel.getRecord(for: "relation") { processedData in
+                records = processedData
+                dispatchGroup.leave()
+            }
+        } else {
+            dispatchGroup.enter()
+            coreDataViewModel.getRelationshipRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                records = processedData
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.wait()
+
+        return records
     }
     var assetRecords: [RecordMetaData] {
-        return coreDataViewModel.getAssetRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+        var records: [RecordMetaData] = []
+        let dispatchGroup = DispatchGroup()
+
+        if hasLogin {
+            dispatchGroup.enter()
+            recordLoginViewModel.getRecord(for: "money") { processedData in
+                records = processedData
+                dispatchGroup.leave()
+            }
+        } else {
+            dispatchGroup.enter()
+            coreDataViewModel.getAssetRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                records = processedData
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.wait()
+
+        return records
     }
     var familyRecords: [RecordMetaData] {
-        return coreDataViewModel.getFamilyRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
+        var records: [RecordMetaData] = []
+        let dispatchGroup = DispatchGroup()
+
+        if hasLogin {
+            dispatchGroup.enter()
+            recordLoginViewModel.getRecord(for: "family") { processedData in
+                records = processedData
+                dispatchGroup.leave()
+            }
+        } else {
+            dispatchGroup.enter()
+            coreDataViewModel.getFamilyRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                records = processedData
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.wait()
+
+        return records
     }
     
     func displayRecords(for recordElement: recordElement, records: [RecordMetaData]) -> some View {

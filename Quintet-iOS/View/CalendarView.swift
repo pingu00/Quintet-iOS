@@ -11,11 +11,13 @@ struct CalendarView: View {
     @Binding var currentDate: Date
     @StateObject private var viewModel = DateViewModel()
     @ObservedObject private var coreDataViewModel = CoreDataViewModel()
+    @ObservedObject private var recordLoginViewModel = RecordLoginViewModel()
     @State private var selectedDate = Date()
     @State private var isShowPopup = false
     @State var currentMonth: Int = 0
     let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
     let invalidDayValue = -1
+    private let hasLogin = KeyChainManager.hasKeychain(forkey: .accessToken)
     
     var body: some View {
         
@@ -78,7 +80,7 @@ struct CalendarView: View {
             }
             .fontWeight(.light)
         }
-    
+        
         if let task = coreDataViewModel
             .getRecordMetaData(
                 selectedYear: viewModel.selectedYear,
@@ -86,7 +88,8 @@ struct CalendarView: View {
             )
             .first(where: { task in
                 return isSameDay(date1: task.date, date2: currentDate)
-            }) {
+            }) 
+            {
                 VStack {
                     Text("오늘의 5요소")
                         .font(.system(size: 23))

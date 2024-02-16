@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2805FD7D2B4045BB008FB01A /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2805FD7C2B4045BB008FB01A /* secret.plist */; };
 		281E2FAD2A8F6FF700DEAAD8 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 281E2FAC2A8F6FF700DEAAD8 /* CombineMoya */; };
 		281E2FAF2A8F6FF700DEAAD8 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 281E2FAE2A8F6FF700DEAAD8 /* Moya */; };
 		281E2FB12A8F6FF700DEAAD8 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 281E2FB02A8F6FF700DEAAD8 /* ReactiveMoya */; };
@@ -55,11 +54,11 @@
 		AA086E3E2A875F6E0025F8A7 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA086E3D2A875F6E0025F8A7 /* PickerView.swift */; };
 		AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */; };
 		AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */ = {isa = PBXBuildFile; fileRef = AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */; };
+		CF2F0E922B73BA9C000986EB /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF2F0E912B73BA9C000986EB /* secret.plist */; };
 		CFE359102B69F34E00410BAE /* RecordLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE3590F2B69F34E00410BAE /* RecordLoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2805FD7C2B4045BB008FB01A /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../Downloads/secret.plist; sourceTree = "<group>"; };
 		281E2FB52A8F74D600DEAAD8 /* QuintetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetAPI.swift; sourceTree = "<group>"; };
 		281E2FBB2A925DD800DEAAD8 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		281E2FBD2A93731300DEAAD8 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -98,6 +97,7 @@
 		AA086E3D2A875F6E0025F8A7 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsStruct.swift; sourceTree = "<group>"; };
 		AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = QuintetAdvice.json; sourceTree = "<group>"; };
+		CF2F0E912B73BA9C000986EB /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../Downloads/secret.plist; sourceTree = "<group>"; };
 		CFE3590F2B69F34E00410BAE /* RecordLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordLoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -190,7 +190,7 @@
 				281E2FB42A8F743200DEAAD8 /* API */,
 				31F5BF942B4D902900449D4A /* Response */,
 				2837E2312B61366800BEB53D /* BackButtonModifier.swift */,
-				2805FD7C2B4045BB008FB01A /* secret.plist */,
+				CF2F0E912B73BA9C000986EB /* secret.plist */,
 				28C364502A5FD58F00847A88 /* Assets.xcassets */,
 				28C364522A5FD58F00847A88 /* Preview Content */,
 			);
@@ -325,9 +325,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2805FD7D2B4045BB008FB01A /* secret.plist in Resources */,
 				28C364542A5FD58F00847A88 /* Preview Assets.xcassets in Resources */,
 				AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */,
+				CF2F0E922B73BA9C000986EB /* secret.plist in Resources */,
 				28C364512A5FD58F00847A88 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -307,16 +307,16 @@ class CoreDataViewModel: ObservableObject {
         return calendarMetaDataArray
     }
 
-    
-    //요소별 뷰
-    func getRecords(for year: Int, month: Int, filterKeyPath: KeyPath<QuintetData, Int64>, iconClosure: (Int64) -> String, noteKeyPath: KeyPath<QuintetData, String?>) -> [RecordMetaData] {
+    //요소별 함수
+    func getRecords(for year: Int, month: Int, filterKeyPath: KeyPath<QuintetData, Int64>, iconClosure: @escaping (Int64) -> String, noteKeyPath: KeyPath<QuintetData, String?>, completion: @escaping ([RecordMetaData]) -> Void) {
         let calendar = Calendar.current
         let startDateComponents = DateComponents(year: year, month: month, day: 1)
         let endDateComponents = DateComponents(year: year, month: month + 1, day: 0)
         
         guard let startDate = calendar.date(from: startDateComponents),
               let endDate = calendar.date(from: endDateComponents) else {
-            return []
+            completion([])
+            return
         }
         
         let quintetData = getQuintetData(from: startDate, to: endDate)
@@ -324,7 +324,7 @@ class CoreDataViewModel: ObservableObject {
         
         let sortedRecords = filteredData.sorted(by: { ($0.date ?? Date()) > ($1.date ?? Date()) }).prefix(5).reversed()
         
-        return sortedRecords.map { data in
+        let recordMetaData = sortedRecords.map { data in
             let icon = iconClosure(data[keyPath: filterKeyPath])
             let date = data.date ?? Date()
             let formattedDate = formatDate(date: date)
@@ -333,37 +333,51 @@ class CoreDataViewModel: ObservableObject {
                 Record(icon: icon, title: formattedDate, subtitle: subtitle)
             ])
         }
+        
+        completion(recordMetaData)
     }
 
-    func getHealthRecords(for year: Int, month: Int) -> [RecordMetaData] {
-        return getRecords(for: year, month: month, filterKeyPath: \.healthPoint, iconClosure: { healthPoint in
+    func getHealthRecords(for year: Int, month: Int, completion: @escaping ([RecordMetaData]) -> Void) {
+        let iconClosure: (Int64) -> String = { healthPoint in
             return healthPoint == 0 ? "XOn" : (healthPoint == 1 ? "TriangleOn" : "CircleOn")
-        }, noteKeyPath: \.healthNote)
+        }
+        
+        getRecords(for: year, month: month, filterKeyPath: \.healthPoint, iconClosure: iconClosure, noteKeyPath: \.healthNote, completion: completion)
     }
 
-    func getAssetRecords(for year: Int, month: Int) -> [RecordMetaData] {
-        return getRecords(for: year, month: month, filterKeyPath: \.assetPoint, iconClosure: { assetPoint in
+
+    func getAssetRecords(for year: Int, month: Int, completion: @escaping ([RecordMetaData]) -> Void) {
+        let iconClosure: (Int64) -> String = { assetPoint in
             return assetPoint == 0 ? "XOn" : (assetPoint == 1 ? "TriangleOn" : "CircleOn")
-        }, noteKeyPath: \.assetNote)
+        }
+        
+        getRecords(for: year, month: month, filterKeyPath: \.assetPoint, iconClosure: iconClosure, noteKeyPath: \.assetNote, completion: completion)
     }
 
-    func getFamilyRecords(for year: Int, month: Int) -> [RecordMetaData] {
-        return getRecords(for: year, month: month, filterKeyPath: \.familyPoint, iconClosure: { familyPoint in
+    func getFamilyRecords(for year: Int, month: Int, completion: @escaping ([RecordMetaData]) -> Void) {
+        let iconClosure: (Int64) -> String = { familyPoint in
             return familyPoint == 0 ? "XOn" : (familyPoint == 1 ? "TriangleOn" : "CircleOn")
-        }, noteKeyPath: \.familyNote)
+        }
+        
+        getRecords(for: year, month: month, filterKeyPath: \.familyPoint, iconClosure: iconClosure, noteKeyPath: \.familyNote, completion: completion)
     }
 
-    func getRelationshipRecords(for year: Int, month: Int) -> [RecordMetaData] {
-        return getRecords(for: year, month: month, filterKeyPath: \.relationshipPoint, iconClosure: { relationshipPoint in
+    func getRelationshipRecords(for year: Int, month: Int, completion: @escaping ([RecordMetaData]) -> Void) {
+        let iconClosure: (Int64) -> String = { relationshipPoint in
             return relationshipPoint == 0 ? "XOn" : (relationshipPoint == 1 ? "TriangleOn" : "CircleOn")
-        }, noteKeyPath: \.relationshipNote)
+        }
+        
+        getRecords(for: year, month: month, filterKeyPath: \.relationshipPoint, iconClosure: iconClosure, noteKeyPath: \.relationshipNote, completion: completion)
     }
 
-    func getWorkRecords(for year: Int, month: Int) -> [RecordMetaData] {
-        return getRecords(for: year, month: month, filterKeyPath: \.workPoint, iconClosure: { workPoint in
+    func getWorkRecords(for year: Int, month: Int, completion: @escaping ([RecordMetaData]) -> Void)  {
+        let iconClosure: (Int64) -> String = { workPoint in
             return workPoint == 0 ? "XOn" : (workPoint == 1 ? "TriangleOn" : "CircleOn")
-        }, noteKeyPath: \.workNote)
+        }
+        
+        getRecords(for: year, month: month, filterKeyPath: \.workPoint, iconClosure: iconClosure, noteKeyPath: \.workNote, completion: completion)
     }
+
 
     //날짜를 2023.08.10 처럼 바꿔주는 함수
     func formatDate(date: Date) -> String {

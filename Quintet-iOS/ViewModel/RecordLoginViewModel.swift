@@ -72,9 +72,9 @@ class RecordLoginViewModel: ObservableObject {
 
     
 
-    func getRecord(for element: String, completion: @escaping (RecordMetaData) -> Void) {
+    func getRecord(for element: String, completion: @escaping ([RecordMetaData]) -> Void) {
         var fetchedRecords: [RecordResult] = []
-        var processedData = RecordMetaData(records: [])
+        var processedData: [RecordMetaData] = []
 
         netWorkManager.fetchRecordsByElement(userID: "id", year: viewModel.selectedYear, month: viewModel.selectedMonth, element: element) { result in
             switch result {
@@ -91,13 +91,14 @@ class RecordLoginViewModel: ObservableObject {
 
             case .failure(let error):
                 print("Error fetching records for element:", error)
-                completion(processedData)
+                completion([])
             }
         }
     }
 
-    private func processRecords(_ records: [RecordResult], for element: String) -> RecordMetaData {
-        var processedData = RecordMetaData(records: [])
+
+    private func processRecords(_ records: [RecordResult], for element: String) -> [RecordMetaData] {
+        var processedData: [RecordMetaData] = []
         let dateFormatter = DateFormatter()
 
         for record in records {
@@ -106,12 +107,13 @@ class RecordLoginViewModel: ObservableObject {
             let docValue = record[keyPath: docKeyPath] ?? ""
             let icon = getIcon(for: degValue)
             if let title = formatDateFromString(dateString: record.date) {
-                processedData.records.append(Record(id: "id", icon: icon, title: title, subtitle: docValue))
+                processedData.append(RecordMetaData(records: [Record(id: "id", icon: icon, title: title, subtitle: docValue)]))
             }
         }
 
         return processedData
     }
+
 
     private func getKeyPaths(for element: String) -> (KeyPath<RecordResult, Int?>, KeyPath<RecordResult, String?>) {
         var degKeyPath: KeyPath<RecordResult, Int?> = \RecordResult.workDeg
@@ -124,7 +126,7 @@ class RecordLoginViewModel: ObservableObject {
         case "family":
             degKeyPath = \RecordResult.familyDeg
             docKeyPath = \RecordResult.familyDoc
-        case "relationship":
+        case "relation":
             degKeyPath = \RecordResult.relationshipDeg
             docKeyPath = \RecordResult.relationshipDoc
         case "money":
@@ -136,6 +138,7 @@ class RecordLoginViewModel: ObservableObject {
 
         return (degKeyPath, docKeyPath)
     }
+
     
     func iconForDeg(_ deg: Int?) -> String {
         guard let deg = deg else {
