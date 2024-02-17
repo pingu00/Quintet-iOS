@@ -11,6 +11,8 @@ class RecordLoginViewModel: ObservableObject {
 
     @Published private var viewModel = DateViewModel()
     private let netWorkManager: NetworkManager = NetworkManager()
+        
+
     
     func getCalendar(completion: @escaping ([CalendarMetaData]) -> Void) {
         var fetchedCalendar: [RecordResult] = []
@@ -120,16 +122,19 @@ class RecordLoginViewModel: ObservableObject {
         var docKeyPath: KeyPath<RecordResult, String?> = \RecordResult.workDoc
 
         switch element {
-        case "health":
+        case "일":
+            degKeyPath = \RecordResult.workDeg
+            docKeyPath = \RecordResult.workDoc
+        case "건강":
             degKeyPath = \RecordResult.healthDeg
             docKeyPath = \RecordResult.healthDoc
-        case "family":
+        case "가족":
             degKeyPath = \RecordResult.familyDeg
             docKeyPath = \RecordResult.familyDoc
-        case "relation":
+        case "관계":
             degKeyPath = \RecordResult.relationshipDeg
             docKeyPath = \RecordResult.relationshipDoc
-        case "money":
+        case "자산":
             degKeyPath = \RecordResult.moneyDeg
             docKeyPath = \RecordResult.moneyDoc
         default:
@@ -159,7 +164,7 @@ class RecordLoginViewModel: ObservableObject {
     private func getIcon(for degValue: Int) -> String {
         switch degValue {
         case 0:
-            return "Xon"
+            return "XOn"
         case 1:
             return "TriangleOn"
         case 2:
