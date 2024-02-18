@@ -8,29 +8,30 @@
 import Foundation
 
 class RecordLoginViewModel: ObservableObject {
-
-    @Published private var viewModel = DateViewModel()
     private let netWorkManager: NetworkManager = NetworkManager()
         
 
     
-    func getCalendar(completion: @escaping ([CalendarMetaData]) -> Void) {
+    func getCalendar(year: Int, month: Int, completion: @escaping ([CalendarMetaData]) -> Void) {
         var fetchedCalendar: [RecordResult] = []
-        var processedCalendar: [CalendarMetaData] = []
         
         // 현재 날짜
         let today = Date()
         
-        netWorkManager.fetchRecordsByDate(userID: "id", year: viewModel.selectedYear, month: viewModel.selectedMonth) { result in
+        // 네트워크 요청을 통해 데이터를 가져옴
+        netWorkManager.fetchRecordsByDate(userID: "id", year: year, month: month) { result in
             switch result {
             case .success(let records):
                 fetchedCalendar = records
+                print(fetchedCalendar)
                 
                 // 날짜를 Date 형식으로 변환하여 CalendarMetaData에 추가
+                var processedCalendar: [CalendarMetaData] = []
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
+                dateFormatter.locale = Locale(identifier: "ko_KR")
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                
                 for record in fetchedCalendar {
-                    // RecordResult에서 날짜를 추출하여 Date로 변환
                     guard let recordDate = dateFormatter.date(from: record.date) else {
                         continue
                     }
@@ -46,39 +47,42 @@ class RecordLoginViewModel: ObservableObject {
                     let relationshipIcon = self.iconForDeg(record.relationshipDeg ?? 0)
                     let moneyIcon = self.iconForDeg(record.moneyDeg ?? 0)
                     
-                    // Record 객체들을 생성하고 records 배열에 추가
-                    var recordsForDate: [Record] = []
-                    recordsForDate.append(Record(icon: workIcon, title: "일", subtitle: record.workDoc ?? ""))
-                    recordsForDate.append(Record(icon: healthIcon, title: "건강", subtitle: record.healthDoc ?? ""))
-                    recordsForDate.append(Record(icon: familyIcon, title: "가족", subtitle: record.familyDoc ?? ""))
-                    recordsForDate.append(Record(icon: relationshipIcon, title: "관계", subtitle: record.relationshipDoc ?? ""))
-                    recordsForDate.append(Record(icon: moneyIcon, title: "자산", subtitle: record.moneyDoc ?? ""))
+                    // Record 객체들을 생성하고 tasks 배열에 추가
+                    let tasks = [
+                        Record(icon: workIcon, title: "일", subtitle: record.workDoc ?? ""),
+                        Record(icon: healthIcon, title: "건강", subtitle: record.healthDoc ?? ""),
+                        Record(icon: familyIcon, title: "가족", subtitle: record.familyDoc ?? ""),
+                        Record(icon: relationshipIcon, title: "관계", subtitle: record.relationshipDoc ?? ""),
+                        Record(icon: moneyIcon, title: "자산", subtitle: record.moneyDoc ?? "")
+                    ]
                     
                     // CalendarMetaData를 생성
                     let metaData = CalendarMetaData(id: UUID().uuidString,
-                                                    records: recordsForDate,
+                                                    records: tasks,
                                                     date: recordDate,
                                                     offset: daysFromToday)
                     processedCalendar.append(metaData)
                 }
                 
-                // 처리된 데이터를 반환
+                // 완료 처리 클로저 호출
                 completion(processedCalendar)
                 
             case .failure(let error):
-                print(error)
+                print("실패!!!!")
                 completion([])
             }
         }
     }
 
+
+
     
 
-    func getRecord(for element: String, completion: @escaping ([RecordMetaData]) -> Void) {
+    func getRecord(for element: String, year: Int, month: Int, completion: @escaping ([RecordMetaData]) -> Void) {
         var fetchedRecords: [RecordResult] = []
         var processedData: [RecordMetaData] = []
 
-        netWorkManager.fetchRecordsByElement(userID: "id", year: viewModel.selectedYear, month: viewModel.selectedMonth, element: element) { result in
+        netWorkManager.fetchRecordsByElement(userID: "id", year: year, month: month, element: element) { result in
             switch result {
             case .success(let records):
                 fetchedRecords = records
@@ -88,7 +92,6 @@ class RecordLoginViewModel: ObservableObject {
                 let sortedRecords = top5Records.sorted { $0.date < $1.date }
 
                 processedData = self.processRecords(sortedRecords, for: element)
-                print("Fetched records for element:", processedData)
                 completion(processedData)
 
             case .failure(let error):
@@ -101,7 +104,6 @@ class RecordLoginViewModel: ObservableObject {
 
     private func processRecords(_ records: [RecordResult], for element: String) -> [RecordMetaData] {
         var processedData: [RecordMetaData] = []
-        let dateFormatter = DateFormatter()
 
         for record in records {
             let (degKeyPath, docKeyPath) = getKeyPaths(for: element)
@@ -177,7 +179,7 @@ class RecordLoginViewModel: ObservableObject {
     func formatDateFromString(dateString: String) -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.locale = Locale(identifier: "ko_KR")
 
         if let date = dateFormatter.date(from: dateString) {
             dateFormatter.dateFormat = "yyyy. MM. dd"

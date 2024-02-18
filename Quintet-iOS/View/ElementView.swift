@@ -14,7 +14,7 @@ struct RecordElementView : View {
     @StateObject private var viewModel = DateViewModel()
     @ObservedObject private var coreDataViewModel = CoreDataViewModel()
     @ObservedObject private var recordLoginViewModel = RecordLoginViewModel()
-    private let hasLogin = /*KeyChainManager.hasKeychain(forkey: .accessToken)*/ true
+    private let hasLogin = /*KeyChainManager.hasKeychain(forkey: .accessToken)*/true
     @State private var healthRecords: [RecordMetaData] = []
     @State private var workRecords: [RecordMetaData] = []
     @State private var relationshipRecords: [RecordMetaData] = []
@@ -123,29 +123,30 @@ struct RecordElementView : View {
                 EmptyView()
             }
     }
+    
     func loadRecords() {
         if hasLogin {
-            recordLoginViewModel.getRecord(for: "건강") { processedData in
+            recordLoginViewModel.getRecord(for: "건강", year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
                 DispatchQueue.main.async {
                     self.healthRecords = processedData
                 }
             }
-            recordLoginViewModel.getRecord(for: "일") { processedData in
+            recordLoginViewModel.getRecord(for: "일", year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
                 DispatchQueue.main.async {
                     self.workRecords = processedData
                 }
             }
-            recordLoginViewModel.getRecord(for: "관계") { processedData in
+            recordLoginViewModel.getRecord(for: "관계", year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
                 DispatchQueue.main.async {
                     self.relationshipRecords = processedData
                 }
             }
-            recordLoginViewModel.getRecord(for: "자산") { processedData in
+            recordLoginViewModel.getRecord(for: "자산", year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
                 DispatchQueue.main.async {
                     self.assetRecords = processedData
                 }
             }
-            recordLoginViewModel.getRecord(for: "가족") { processedData in
+            recordLoginViewModel.getRecord(for: "가족", year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
                 DispatchQueue.main.async {
                     self.familyRecords = processedData
                 }

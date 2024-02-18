@@ -253,15 +253,15 @@ class CoreDataViewModel: ObservableObject {
     }
 
     
-//    날짜별
-    func getRecordMetaData(selectedYear: Int, selectedMonth: Int) -> [CalendarMetaData] {
+    func getRecordMetaData(selectedYear: Int, selectedMonth: Int, completion: @escaping ([CalendarMetaData]) -> Void) {
         let calendar = Calendar.current
         var calendarMetaDataArray: [CalendarMetaData] = []
 
         guard let startDate = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 2)),
               let endDate = calendar.date(byAdding: .month, value: 1, to: startDate),
               let lastDayOfMonth = calendar.date(byAdding: .day, value: -1, to: endDate) else {
-            return []
+            completion([])
+            return
         }
 
         let today = calendar.startOfDay(for: startDate)
@@ -304,8 +304,10 @@ class CoreDataViewModel: ObservableObject {
             currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
         }
 
-        return calendarMetaDataArray
+        completion(calendarMetaDataArray)
     }
+
+
 
     //요소별 함수
     func getRecords(for year: Int, month: Int, filterKeyPath: KeyPath<QuintetData, Int64>, iconClosure: @escaping (Int64) -> String, noteKeyPath: KeyPath<QuintetData, String?>, completion: @escaping ([RecordMetaData]) -> Void) {

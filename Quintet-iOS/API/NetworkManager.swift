@@ -94,6 +94,7 @@ class NetworkManager {
             case .success(let response):
                 do {
                     let decodedResponse = try JSONDecoder().decode(RecordDataResponse.self, from: response.data)
+                    print(decodedResponse.result)
                     completion(.success(decodedResponse.result))
                 } catch let error {
                     completion(.failure(error))
@@ -110,7 +111,7 @@ class NetworkManager {
             case .success(let response):
                 do {
                     let decodedResponse = try JSONDecoder().decode(RecordDataResponse.self, from: response.data)
-                    print(decodedResponse.result)
+                    print("요소별",decodedResponse.result)
                     completion(.success(decodedResponse.result))
                 } catch let error {
                     completion(.failure(error))
