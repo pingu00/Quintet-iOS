@@ -36,18 +36,18 @@ class StatisticsCellViewModel: CoreDataViewModel {
         workPoint + healthPoint + familyPoint + relationshipPoint + assetPoint
     }
     
-    var noteArray: [(Int, String)] {
+    var noteArray: [(Double, String)] {
         [
-            (workPoint, "일"),
-            (healthPoint, "건강"),
-            (familyPoint, "가족"),
-            (relationshipPoint, "관계"),
-            (assetPoint, "자산")
+            (Double(workPoint), "일"),
+            (Double(healthPoint), "건강"),
+            (Double(familyPoint), "가족"),
+            (Double(relationshipPoint), "관계"),
+            (Double(assetPoint), "자산")
         ]
     }
 
-    var maxPoint: Int {
-        max(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint)
+    var maxPoint: Double {
+        Double(max(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint))
     }
     
     var maxNoteArray: [String]{
@@ -63,8 +63,8 @@ class StatisticsCellViewModel: CoreDataViewModel {
         return maxNotes
     }
     
-    var minPoint: Int {
-        min(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint)
+    var minPoint: Double {
+        Double(min(workPoint, healthPoint, familyPoint, relationshipPoint, assetPoint))
     }
     
     var minNoteArray: [String]{
@@ -115,13 +115,27 @@ class StatisticsCellViewModel: CoreDataViewModel {
 }
 
 class StatisticsCellViewModel_login: ObservableObject {
-    @Published var workPointPer: String = ""
-    @Published var healthPointPer: String = ""
-    @Published var familyPointPer: String = ""
-    @Published var relationshipPointPer: String = ""
-    @Published var assetPointPer: String = ""
+    static let shared = StatisticsCellViewModel_login()
+    @Published var result: StatisticsResult = StatisticsResult(userID: 5, workPer: "0", healthPer: "0", familyPer: "0", relationshipPer: "0", moneyPer: "0"){
+        didSet {
+            updateNoteArray()
+        }
+    }
+    @Published var noteArray: [(Double, String)] = []
     
-    private let netWorkManager: NetworkManager
+    init() {
+        updateNoteArray()
+    }
+    
+    func updateNoteArray() {
+        noteArray = [
+            (Double(result.workPer) ?? 0.0, "일"),
+            (Double(result.healthPer) ?? 0.0, "건강"),
+            (Double(result.familyPer) ?? 0.0, "가족"),
+            (Double(result.relationshipPer) ?? 0.0, "관계"),
+            (Double(result.moneyPer) ?? 0.0, "자산")
+        ]
+    }
     
     lazy var startDate: Date = {
         let startDateComponents = Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
@@ -132,36 +146,56 @@ class StatisticsCellViewModel_login: ObservableObject {
         return Calendar.current.date(byAdding: .day, value: 6, to: startDate)!
     }()
     
-    init(netWorkManager: NetworkManager) {
-        self.netWorkManager = netWorkManager
-    }
-    
     func updateValuesFromAPI_Week(startDate: Date, endDate: Date) {
-        netWorkManager.fetchWeekStatistics(userID: "id", startDate: Utilities.formatDate(date: startDate), endDate: Utilities.formatDate(date: endDate))
+        NetworkManager.shared.fetchWeekStatistics(userID: "id", startDate: Utilities.formatDate(date: startDate), endDate: Utilities.formatDate(date: endDate)) { result in
+            switch result {
+            case let .success(response):
+                DispatchQueue.main.async {
+                    self.result = response.result
+                }
+                   
+            case let .failure(error):
+                print("Network request failed: \(error)")
+            }
+        }
     }
 
     func updateValuesFromAPI_Month(year: Date, month: Date) {
-        netWorkManager.fetchMonthStatistics(userID: "id", year: Int(Utilities.formatDate_Year(date: year))!, month: Int(Utilities.formatDate_Month(date: month))!)
+        NetworkManager.shared.fetchMonthStatistics(userID: "id", year: Int(Utilities.formatDate_Year(date: year))!, month: Int(Utilities.formatDate_Month(date: month))!) { result in
+            switch result {
+            case let .success(response):
+                DispatchQueue.main.async {
+                    self.result = response.result
+                }
+                   
+            case let .failure(error):
+                print("Network request failed: \(error)")
+            }
+        }
     }
     func updateValuesFromAPI_Year(year: Date) {
-        netWorkManager.fetchYearStatistics(userID: "id", year: Int(Utilities.formatDate_Year(date: year))!)
-    }
-    
-    var noteArray: [(Int, String)] {
-        [
-            (Int(workPointPer) ?? 0, "일"),
-            (Int(healthPointPer) ?? 0, "건강"),
-            (Int(familyPointPer) ?? 0, "가족"),
-            (Int(relationshipPointPer) ?? 0, "관계"),
-            (Int(assetPointPer) ?? 0, "자산")
-        ]
+        NetworkManager.shared.fetchYearStatistics(userID: "id", year: Int(Utilities.formatDate_Year(date: year))!) { result in
+            switch result {
+            case let .success(response):
+                DispatchQueue.main.async {
+                    self.result = response.result
+                }
+                   
+            case let .failure(error):
+                print("Network request failed: \(error)")
+            }
+        }
     }
 
-    var maxPoint: Int {
-        max(Int(workPointPer) ?? 0, Int(healthPointPer) ?? 0, Int(familyPointPer) ?? 0, Int(relationshipPointPer) ?? 0, Int(assetPointPer) ?? 0)
+    var maxPoint: Double {
+        Double(max(result.workPer, result.healthPer, result.familyPer, result.relationshipPer, result.moneyPer)) ?? 0
     }
     
-    var maxNoteArray: [String]{
+    var minPoint: Double {
+        Double(min(result.workPer, result.healthPer, result.familyPer, result.relationshipPer, result.moneyPer)) ?? 0
+    }
+    
+    var maxNoteArray: [String] {
         var maxNotes: [String] = []
         let maxPoint = self.maxPoint
         
@@ -169,13 +203,8 @@ class StatisticsCellViewModel_login: ObservableObject {
             if maxPoint == point{
                 maxNotes.append(note)
             }
-                
         }
         return maxNotes
-    }
-    
-    var minPoint: Int {
-        min(Int(workPointPer) ?? 0, Int(healthPointPer) ?? 0, Int(familyPointPer) ?? 0, Int(relationshipPointPer) ?? 0, Int(assetPointPer) ?? 0)
     }
     
     var minNoteArray: [String]{

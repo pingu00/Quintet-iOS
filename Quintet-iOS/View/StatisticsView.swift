@@ -10,11 +10,12 @@ import SwiftUI
 struct StatisticsView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @State var isLogin = false
+//    @State private var isLogin = KeyChainManager.read(forkey: .isNonMember) == "true"
+    @State private var isLogin = true
     
     @StateObject private var dateViewModel = DateViewModel()
     @StateObject private var statisticsCellViewModel = StatisticsCellViewModel()
-    @StateObject private var statisticsCellViewModel_login = StatisticsCellViewModel_login(netWorkManager: NetworkManager())
+    @StateObject private var statisticsCellViewModel_login = StatisticsCellViewModel_login.shared
     
     @State private var selectedOption = "주간"
     @State private var isShowPopup = false
@@ -134,7 +135,7 @@ struct StatisticsView: View {
                 }
                 .onChange(of: selectedOption) { newValue in
                     updateStatistics()
-                    if(dateViewModel.selectedMonthFirstDay > Date()) {
+                    if (dateViewModel.selectedMonthFirstDay > Date()) {
                         dateViewModel.selectedYear = Calendar.current.component(.year, from: Date())
                         dateViewModel.selectedMonth = Calendar.current.component(.month, from: Date())
                     }
@@ -143,15 +144,18 @@ struct StatisticsView: View {
                 
                 VStack {
                     HStack(spacing: 0) {
-                        if !isLogin {
-                            ForEach(statisticsCellViewModel.noteArray, id: \.1) { (point, note) in
-                                StatisticsCellView(selectedOption: $selectedOption, note: note, point: point, maxPoint: statisticsCellViewModel.maxPoint, totalPoint: statisticsCellViewModel.totalPoint)
-                            }
-                        }
-                        //MARK: - 로그인 됐을 경우
-                        else {
-                            ForEach(statisticsCellViewModel_login.noteArray, id: \.1) { (point, note) in
-                                StatisticsCellView(selectedOption: $selectedOption, note: note, point: point, maxPoint: statisticsCellViewModel_login.maxPoint, totalPoint: 100)
+                        ForEach(isLogin ? statisticsCellViewModel_login.noteArray : statisticsCellViewModel.noteArray, id: \.1) { (point, note) in
+                            StatisticsCellView(
+                                selectedOption: $selectedOption,
+                                note: note,
+                                point: point,
+                                maxPoint: Double(isLogin ? statisticsCellViewModel_login.maxPoint : statisticsCellViewModel.maxPoint),
+                                totalPoint: Double(isLogin ? 100 : statisticsCellViewModel.totalPoint)
+                            )
+                            .onAppear {
+                                if isLogin {
+                                    statisticsCellViewModel_login.updateNoteArray()
+                                }
                             }
                         }
                     }
@@ -161,7 +165,7 @@ struct StatisticsView: View {
                         .padding(.top, 40)
                 }
                 .padding(20)
-                if statisticsCellViewModel.maxPoint == 0{
+                if isLogin ? statisticsCellViewModel_login.maxPoint == 0 : statisticsCellViewModel.maxPoint == 0 {
                     VStack{
                         Text("기록된 데이터가 없어요...")
                             .padding(.top, 20)
@@ -188,7 +192,7 @@ struct StatisticsView: View {
                                     Text("")
                                 }
                             }
-                            Text(statisticsCellViewModel.maxNoteArray.joined(separator: ", "))
+                            Text(isLogin ? statisticsCellViewModel.maxNoteArray.joined(separator: ", ") : statisticsCellViewModel_login.maxNoteArray.joined(separator: ", "))
                                 .bold()
                                 .font(.system(size: 26))
                                 .multilineTextAlignment(.center)
@@ -209,7 +213,7 @@ struct StatisticsView: View {
                                 .frame(width: 330, height: nil)
                             HStack {
                                 Spacer()
-                                if let selectedText = statisticsCellViewModel.selectedText {
+                                if let selectedText = isLogin ? statisticsCellViewModel_login.selectedText : statisticsCellViewModel.selectedText {
                                     Text(selectedText)
                                         .font(.system(size: 16))
                                         .multilineTextAlignment(.leading)
@@ -228,6 +232,12 @@ struct StatisticsView: View {
         .modifier(CustomBackButton {
                     dismiss()
                 })
+        .onAppear {
+            print("로그인 여부: \(isLogin)")
+            if isLogin {
+                cellWeekUpdate()
+            }
+        }
         .sheet(isPresented: $isShowPopup) {
             YearMonthPickerPopup(viewModel: dateViewModel, isShowPopup: $isShowPopup, selectedOption: $selectedOption)
                 .frame(width: 300, height: 400)
@@ -349,9 +359,9 @@ struct StatisticsCellView: View {
     @Binding var selectedOption: String
     
     let note: String
-    let point: Int
-    let maxPoint: Int
-    let totalPoint: Int
+    let point: Double
+    let maxPoint: Double
+    let totalPoint: Double
     
     let barWidth: CGFloat = 60
     let barHeight: CGFloat = 200

@@ -52,29 +52,26 @@ struct StatisticsDataResponse: Codable {
     let result: StatisticsResult
 }
 
-struct StatisticsResult : Codable {
-    let user_id : Int
-    let startDate : String?
-    let endDate : String?
-    let year : String?
-    let month : String?
-    let workPointPer : String
-    let healthPointPer : String
-    let familyPointPer : String
-    let assetPointPer : String
-    let relationshipPointPer : String
-    let maxValue : [String]
+struct StatisticsResult: Codable {
+    let userID: Int
+    let year: String = ""
+    let month: String = ""
+    let startDate = ""
+    let endDate = ""
+    let workPer, healthPer: String
+    let familyPer, relationshipPer, moneyPer: String
     
     enum CodingKeys: String, CodingKey {
-        case user_id,year,month
+        case userID = "user_id"
+        case year
+        case month
         case startDate = "start_date"
         case endDate = "end_date"
-        case workPointPer = "work_per"
-        case healthPointPer = "health_per"
-        case familyPointPer = "family_per"
-        case assetPointPer = "money_per"
-        case relationshipPointPer = "relationship_per"
-        case maxValue = "maxVals"
+        case workPer = "work_per"
+        case healthPer = "health_per"
+        case familyPer = "family_per"
+        case relationshipPer = "relationship_per"
+        case moneyPer = "money_per"
     }
 }
 
