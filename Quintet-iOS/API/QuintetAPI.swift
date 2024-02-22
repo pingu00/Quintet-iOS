@@ -105,7 +105,7 @@ extension QuintetAPI : TargetType {
     }
     
     var headers: [String: String]? {
-        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJ0ZXN0QG5hdmVyLmNvbSIsInByb3ZpZGVyIjoidGVzdCIsImlhdCI6MTcwNTMyODE3NCwiZXhwIjoxNzA1OTMyOTc0fQ.vzBQb6DKuU0pomfU5HI3REP4G68jB6a8PZIwCJn-YEY"
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmlja25hbWUiOiJQaGlsIiwiZW1haWwiOiJ0ZXN0QG5hdmVyLmNvbSIsInByb3ZpZGVyIjoidGVzdCIsImlhdCI6MTcwODA4NTA4NywiZXhwIjoxNzA4Njg5ODg3fQ.JoMmMPtzE7ZVnAl7ZTNqi5zeBLwx291HvOKKYR3kdao"
                 return ["Authorization": "Bearer \(token)", "Content-type": "application/json"]
     }
 }
