@@ -18,7 +18,7 @@ struct MenuView: View {
     @State private var showingLogoutAlert = false
     @State private var isShowingMailView = false
         @State private var alertNoMail = false
-    private let hasLogin = KeyChainManager.hasKeychain(forkey: .accessToken)
+    private let isMember = KeyChainManager.read(forkey: .isNonMember) != "true"
   
     var body: some View {
         ZStack{
@@ -27,7 +27,7 @@ struct MenuView: View {
             VStack {
                 Spacer(minLength: 20)
                 Group{
-                    if hasLogin {
+                    if !isMember {
                         Text(vm.userName)
                             .fontWeight(.bold)
                         + Text("님")
@@ -42,7 +42,7 @@ struct MenuView: View {
                 .font(.system(size: 24))
                 Form {
                     Section {
-                        if hasLogin { // 회원 일때
+                        if !isMember { // 회원 일때
                             HStack{
                                 Text("프로필 편집")
                                 Spacer()

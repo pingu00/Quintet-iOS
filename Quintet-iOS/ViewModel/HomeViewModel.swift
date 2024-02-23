@@ -36,14 +36,14 @@ class HomeViewModel: CoreDataViewModel { //CoreDataViewModel 상속
     func updateValuesFromCoreData(startDate: Date, endDate: Date) {
         quintetDataArray = getQuintetData(from: startDate, to: endDate)
         for data in quintetDataArray{
-            print(data)
+//            print(data)
         }
     }
 
     func getSelectDayData(date: Date) -> QuintetData?{
         for data in quintetDataArray{
             if dateProcessingModel.isSameDay(date1: date, date2: data.date!){
-                print(data)
+//                print(data)
                 return data }
         }
         return nil
