@@ -65,6 +65,7 @@ extension LoginViewModel {
                     if let header = response.response?.allHeaderFields as? [String: String],
                        let accessToken = header["Authorization"] {
                         KeyChainManager.save(forKey: .accessToken, value: accessToken)
+                        self.updateHasKeychain(state: true)
                     }
 
                     let decoder = JSONDecoder()
@@ -135,6 +136,7 @@ extension LoginViewModel {
                     if let header = response.response?.allHeaderFields as? [String: String],
                        let accessToken = header["Authorization"] {
                         KeyChainManager.save(forKey: .accessToken, value: accessToken)
+                        self.updateHasKeychain(state: true)
                     }
 
                     let decoder = JSONDecoder()
@@ -197,6 +199,7 @@ extension LoginViewModel {
                     if let header = response.response?.allHeaderFields as? [String: String],
                        let accessToken = header["Authorization"] {
                         KeyChainManager.save(forKey: .accessToken, value: accessToken)
+                        self.updateHasKeychain(state: true)
                     }
 
                     let decoder = JSONDecoder()
