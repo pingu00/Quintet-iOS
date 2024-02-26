@@ -12,4 +12,5 @@ enum KeyChainValue: String {
     case accessToken = "accessToken"
     case refreshToken = "refreshToken"
     case isNonMember = "isNonMember"
+    case socialProvider = "socialProvider"
 }

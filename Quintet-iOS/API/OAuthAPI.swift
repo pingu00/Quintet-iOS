@@ -17,6 +17,8 @@ enum OAuthAPI{
     )
     case postKakaoIdToken(token: String)
     case updateAccessToken
+    case logout
+    case withdraw(social: SocialProvider)
 }
 
 extension OAuthAPI: TargetType{
@@ -50,13 +52,19 @@ extension OAuthAPI: TargetType{
             return "/auth/kakao"
         case .updateAccessToken:
             return "/auth/refresh"
+        case .logout:
+            return "/v1/user/logout"
+        case .withdraw:
+            return "/v1/user/delete"
         }
     }
     
     var method: Moya.Method {
         switch self{
-        case .postKakaoIdToken, .postAppleIdToken, .postGoogleIdToken, .updateAccessToken:
+        case .postKakaoIdToken, .postAppleIdToken, .postGoogleIdToken, .updateAccessToken, .withdraw:
             return .post
+        case .logout:
+            return .get
         }
     }
     
@@ -89,6 +97,21 @@ extension OAuthAPI: TargetType{
             var parameter: [String: Any] = [:]
             parameter.updateValue(KeyChainManager.loadRefreshToken(), forKey: "refreshToken")
             return .requestParameters(parameters: parameter, encoding: JSONEncoding.default)
+        case .logout:
+            return .requestPlain
+        case .withdraw(let social):
+            if social == .APPLE {
+                let parameter: [String: Any] = [
+                    "provider": "apple",
+                    "code": ""
+                ]
+                return .requestParameters(parameters: parameter, encoding: JSONEncoding.default)
+            } else {
+                let parameter: [String: Any] = [
+                    "provider": "nonApple"
+                ]
+                return .requestParameters(parameters: parameter, encoding: JSONEncoding.default)
+            }
         }
     }
     
@@ -97,7 +120,7 @@ extension OAuthAPI: TargetType{
         switch self {
         case .postGoogleIdToken, .postAppleIdToken, .postKakaoIdToken:
             return [HTTPHeaderFieldsKey.contentType: HTTPHeaderFieldsValue.json]
-        case .updateAccessToken:
+        case .updateAccessToken, .logout, .withdraw:
             return [HTTPHeaderFieldsKey.contentType: HTTPHeaderFieldsValue.json,
                     HTTPHeaderFieldsKey.authorization: HTTPHeaderFieldsValue.accessToken
             ]

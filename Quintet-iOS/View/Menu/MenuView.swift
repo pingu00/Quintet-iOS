@@ -16,6 +16,7 @@ struct MenuView: View {
     @State private var isNotiOn = false
     @State private var alarm = Date()
     @State private var showingLogoutAlert = false
+    @State private var showingWithdrawAlert = false
     @State private var isShowingMailView = false
         @State private var alertNoMail = false
     private let isMember = KeyChainManager.read(forkey: .isNonMember) != "true"
@@ -66,20 +67,39 @@ struct MenuView: View {
                                     title: Text("로그아웃"),
                                     message: Text("정말 로그아웃 하시겠습니까?"),
                                     primaryButton: .destructive(Text("네")) {
-                                        KeyChainManager.removeAllKeychain()
-                                        loginViewModel.updateHasKeychain(state: false)
+                                        loginViewModel.action(.logout)
                                     },
                                     secondaryButton: .cancel(Text("아니오"))
                                 )
-                                
                             }
-                            Button(action: {}){
+                            Button(action: {
+                                showingWithdrawAlert = true
+                            }){
                                 HStack{
                                     Text("계정 탈퇴")
                                     Spacer()
                                     Image(systemName: "chevron.right")
                                         .foregroundColor(Color("DarkGray"))
                                 }
+                            }
+                            .alert(isPresented: $showingWithdrawAlert){
+                                Alert(
+                                    title: Text("계정 탈퇴"),
+                                    message: Text("정말 계정을 삭제 하시겠습니까?"),
+                                    primaryButton: .destructive(Text("네")) {
+                                        guard let socialProvider = KeyChainManager.read(forkey: .socialProvider) else { return }
+                                        
+                                        switch socialProvider {
+                                        case SocialProvider.APPLE.rawValue:
+                                            loginViewModel.action(.withdrawApple)
+                                        case SocialProvider.KAKAO.rawValue:
+                                            loginViewModel.action(.withdrawKakao)
+                                        default:
+                                            loginViewModel.action(.withdrawGoogle)
+                                        }
+                                    },
+                                    secondaryButton: .cancel(Text("아니오"))
+                                )
                             }
                         }
                         else { // 비회원 일때
