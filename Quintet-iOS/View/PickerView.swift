@@ -267,4 +267,20 @@ struct Utilities {
         formatter.dateFormat = "MM.dd"
         return formatter.string(from: date)
     }
+    
+    static func formatDate(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd" // 날짜 포맷을 설정할 수 있습니다.
+        return dateFormatter.string(from: date)
+    }
+    static func formatDate_Year(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy" // 날짜 포맷을 설정할 수 있습니다.
+        return dateFormatter.string(from: date)
+    }
+    static func formatDate_Month(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "M" // 날짜 포맷을 설정할 수 있습니다.
+        return dateFormatter.string(from: date)
+    }
 }

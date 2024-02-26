@@ -43,48 +43,54 @@ class NetworkManager {
             }
         }
     }
-    func fetchWeekStatistics(userID: String, startDate: String, endDate : String) {
+    func fetchWeekStatistics(userID: String, startDate: String, endDate : String, completion: @escaping (Result<StatisticsDataResponse, Error>) -> Void) {
         provider.request(.getWeekStatic(user_id: userID, startDate: startDate, endDate: endDate)) { result in
             switch result {
             case .success(let response):
                 do {
-                    let decodedResponse = try JSONDecoder().decode(StatisticsDataResponse.self, from: response.data)
-                    print (decodedResponse.result)
-                } catch let err {
-                    print(err)
+                    let result = try JSONDecoder().decode(StatisticsDataResponse.self, from: response.data)
+                    completion(.success(result))
+                } catch {
+                    print("fetchWeekStatistics Error decoding JSON: \(error)")
+                    completion(.failure(error))
                 }
-            case .failure(let moyaError):
-                print("There's an error, \(moyaError)")
+            case let .failure(error):
+                print("fetchWeekStatistics Network request failed: \(error)")
+                completion(.failure(error))
             }
         }
     }
-    func fetchMonthStatistics(userID: String, year: Int, month: Int) {
+    func fetchMonthStatistics(userID: String, year: Int, month: Int, completion: @escaping (Result<StatisticsDataResponse, Error>) -> Void) {
         provider.request(.getMonthStatic(user_id: userID, year: year, month: month)) { result in
             switch result {
             case .success(let response):
                 do {
-                    let decodedResponse = try JSONDecoder().decode(StatisticsDataResponse.self, from: response.data)
-                    print (decodedResponse.result)
-                } catch let err {
-                    print(err)
+                    let result = try JSONDecoder().decode(StatisticsDataResponse.self, from: response.data)
+                    completion(.success(result))
+                } catch {
+                    print("Error decoding JSON: \(error)")
+                    completion(.failure(error))
                 }
-            case .failure(let moyaError):
-                print("There's an error, \(moyaError)")
+            case let .failure(error):
+                print("Network request failed: \(error)")
+                completion(.failure(error))
             }
         }
     }
-    func fetchYearStatistics(userID: String, year: Int) {
+    func fetchYearStatistics(userID: String, year: Int, completion: @escaping (Result<StatisticsDataResponse, Error>) -> Void) {
         provider.request(.getYearStatic(user_id: userID, year: year)) { result in
             switch result {
             case .success(let response):
                 do {
-                    let decodedResponse = try JSONDecoder().decode(StatisticsDataResponse.self, from: response.data)
-                    print (decodedResponse.result)
-                } catch let err {
-                    print(err)
+                    let result = try JSONDecoder().decode(StatisticsDataResponse.self, from: response.data)
+                    completion(.success(result))
+                } catch {
+                    print("Error decoding JSON: \(error)")
+                    completion(.failure(error))
                 }
-            case .failure(let moyaError):
-                print("There's an error, \(moyaError)")
+            case let .failure(error):
+                print("Network request failed: \(error)")
+                completion(.failure(error))
             }
         }
     }
