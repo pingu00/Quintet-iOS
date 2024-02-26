@@ -19,7 +19,7 @@ struct QuintetCheckView: View {
         ZStack{
             Color("Background").ignoresSafeArea(.all)
             if !isComplete { //완료 아님
-                ScrollView{
+                ScrollView(showsIndicators: false){
                     VStack{
                         Group {
                             if hasAddNote {
