@@ -10,8 +10,8 @@ import SwiftUI
 struct StatisticsView: View {
     @Environment(\.dismiss) private var dismiss
     
-//    @State private var isLogin = KeyChainManager.read(forkey: .isNonMember) == "true"
-    @State private var isLogin = true
+    @State private var isLogin = KeyChainManager.read(forkey: .isNonMember) == "true"
+//    @State private var isLogin = true
     
     @StateObject private var dateViewModel = DateViewModel()
     @StateObject private var statisticsCellViewModel = StatisticsCellViewModel()
@@ -192,7 +192,6 @@ struct StatisticsView: View {
                                     Text("")
                                 }
                             }
-                            //MARK: - maxNote 없을 때 아래 텍스트 없어지면 다른거 출력해야해
                             Text(isLogin ? statisticsCellViewModel_login.maxNoteArray.joined(separator: ", ") : statisticsCellViewModel.maxNoteArray.joined(separator: ", "))
                                 .bold()
                                 .font(.system(size: 26))
