@@ -43,7 +43,9 @@ struct Quintet_iOSApp: App{
             }
             else{
                 if hasToken || isNonMember {
-                    HomeView().environmentObject(loginViewModel)
+                    HomeView()
+                        .environmentObject(loginViewModel)
+                        .environmentObject(CoreDataViewModel())
                 }
                 else{
                     LoginView()
