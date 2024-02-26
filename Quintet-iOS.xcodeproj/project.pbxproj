@@ -28,6 +28,9 @@
 		28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C364602A5FD63600847A88 /* StatisticsView.swift */; };
 		28C364652A5FD63600847A88 /* QuintetCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C364612A5FD63600847A88 /* QuintetCheckView.swift */; };
 		28C364662A5FD63600847A88 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C364622A5FD63600847A88 /* MenuView.swift */; };
+		28E4F6B82B871678007F7C84 /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E4F6B72B871678007F7C84 /* TermsView.swift */; };
+		28E4F6BB2B879170007F7C84 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E4F6BA2B879170007F7C84 /* ProfileEditView.swift */; };
+		28E4F6BD2B87919B007F7C84 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E4F6BC2B87919B007F7C84 /* MailView.swift */; };
 		28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */; };
 		311198D72A74F8C900D92E91 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D62A74F8C900D92E91 /* DateManager.swift */; };
 		31240B242B4046590020727B /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31240B232B4046590020727B /* KeyChainManager.swift */; };
@@ -76,6 +79,9 @@
 		28C364602A5FD63600847A88 /* StatisticsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		28C364612A5FD63600847A88 /* QuintetCheckView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuintetCheckView.swift; sourceTree = "<group>"; };
 		28C364622A5FD63600847A88 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		28E4F6B72B871678007F7C84 /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
+		28E4F6BA2B879170007F7C84 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
+		28E4F6BC2B87919B007F7C84 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetPointPer.swift; sourceTree = "<group>"; };
 		311198D62A74F8C900D92E91 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		31240B232B4046590020727B /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
@@ -211,11 +217,22 @@
 				28C3645A2A5FD5DB00847A88 /* HomeView.swift */,
 				28C3645F2A5FD63600847A88 /* RecordView.swift */,
 				28C364602A5FD63600847A88 /* StatisticsView.swift */,
-				28C364622A5FD63600847A88 /* MenuView.swift */,
 				AA086E3D2A875F6E0025F8A7 /* PickerView.swift */,
+				28E4F6B92B879151007F7C84 /* Menu */,
 				286E48A72A76DD1100D109E9 /* QuintetCheck */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		28E4F6B92B879151007F7C84 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				28C364622A5FD63600847A88 /* MenuView.swift */,
+				28E4F6BA2B879170007F7C84 /* ProfileEditView.swift */,
+				28E4F6BC2B87919B007F7C84 /* MailView.swift */,
+				28E4F6B72B871678007F7C84 /* TermsView.swift */,
+			);
+			path = Menu;
 			sourceTree = "<group>";
 		};
 		31ECE94E2B403B3F006F129A /* Frameworks */ = {
@@ -338,10 +355,12 @@
 			files = (
 				281E2FBE2A93731300DEAAD8 /* NetworkManager.swift in Sources */,
 				AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */,
+				28E4F6BB2B879170007F7C84 /* ProfileEditView.swift in Sources */,
 				281E2FB62A8F74D600DEAAD8 /* QuintetAPI.swift in Sources */,
 				31240B262B4046870020727B /* KeyChainValue.swift in Sources */,
 				4E2EB64C2AFE4A1600821A8F /* CalendarView.swift in Sources */,
 				311198D72A74F8C900D92E91 /* DateManager.swift in Sources */,
+				28E4F6BD2B87919B007F7C84 /* MailView.swift in Sources */,
 				31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */,
 				281E2FBC2A925DD800DEAAD8 /* Response.swift in Sources */,
 				31240B242B4046590020727B /* KeyChainManager.swift in Sources */,
@@ -368,6 +387,7 @@
 				31F5BF932B4D8E3000449D4A /* LoginManager.swift in Sources */,
 				28C3644D2A5FD58E00847A88 /* Quintet_iOSApp.swift in Sources */,
 				31BF652E2A7B7ECD0014EC90 /* LoginView.swift in Sources */,
+				28E4F6B82B871678007F7C84 /* TermsView.swift in Sources */,
 				AA086E3C2A72E1C20025F8A7 /* StatisticsCellViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
