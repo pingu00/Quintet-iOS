@@ -10,8 +10,8 @@ import SwiftUI
 struct StatisticsView: View {
     @Environment(\.dismiss) private var dismiss
     
-//    @State private var isLogin = KeyChainManager.read(forkey: .isNonMember) == "true"
-    @State private var isLogin = true
+    @State private var isLogin = KeyChainManager.read(forkey: .isNonMember) == "true"
+//    @State private var isLogin = true
     
     @StateObject private var dateViewModel = DateViewModel()
     @StateObject private var statisticsCellViewModel = StatisticsCellViewModel()
@@ -165,7 +165,7 @@ struct StatisticsView: View {
                         .padding(.top, 40)
                 }
                 .padding(20)
-                if isLogin ? statisticsCellViewModel_login.maxPoint == 0 : statisticsCellViewModel.maxPoint == 0 {
+                if isLogin ? statisticsCellViewModel_login.maxPoint.isNaN || statisticsCellViewModel_login.maxPoint == 0 : statisticsCellViewModel.maxPoint == 0 {
                     VStack{
                         Text("기록된 데이터가 없어요...")
                             .padding(.top, 20)
@@ -192,7 +192,7 @@ struct StatisticsView: View {
                                     Text("")
                                 }
                             }
-                            Text(isLogin ? statisticsCellViewModel.maxNoteArray.joined(separator: ", ") : statisticsCellViewModel_login.maxNoteArray.joined(separator: ", "))
+                            Text(isLogin ? statisticsCellViewModel_login.maxNoteArray.joined(separator: ", ") : statisticsCellViewModel.maxNoteArray.joined(separator: ", "))
                                 .bold()
                                 .font(.system(size: 26))
                                 .multilineTextAlignment(.center)
@@ -387,7 +387,7 @@ struct StatisticsCellView: View {
             }
             VStack(spacing: 4) {
                 Text(note).font(.system(size: 15))
-                Text(String(format: "%.1f", heightRatio * 100) + "%")
+                Text(heightRatio.isNaN ? "0.0%" : String(format: "%.1f", heightRatio * 100) + "%")
                     .font(.system(size: 11))
                     .foregroundColor(.gray)
             }
