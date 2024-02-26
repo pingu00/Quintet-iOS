@@ -30,7 +30,7 @@ struct Quintet_iOSApp: App{
     
     var body: some Scene{
         WindowGroup{
-            if isLoading{
+            if isLoading {
                 Image("QuintetLogo")
                     .transition(.opacity)
                     .onAppear{
@@ -42,18 +42,17 @@ struct Quintet_iOSApp: App{
                     }
             }
             else{
-                if loginViewModel.hasKeychain {
-                    HomeView()
-                        .environmentObject(loginViewModel)
-                        .environmentObject(CoreDataViewModel())
+                if hasToken || isNonMember {
+                    HomeView().environmentObject(loginViewModel)
                 }
                 else{
-                    LoginView().onOpenURL(perform: { url in
-                        if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                            AuthController.handleOpenUrl(url: url)
-                        }
-                    })
-                    LoginView().environmentObject(loginViewModel)
+                    LoginView()
+                        .onOpenURL(perform: { url in
+                            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                                AuthController.handleOpenUrl(url: url)
+                            }
+                        })
+                        .environmentObject(loginViewModel)
                 }
             }
         }
