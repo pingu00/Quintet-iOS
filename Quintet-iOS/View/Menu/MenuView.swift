@@ -27,7 +27,7 @@ struct MenuView: View {
             VStack {
                 Spacer(minLength: 20)
                 Group{
-                    if !isMember {
+                    if isMember {
                         Text(vm.userName)
                             .fontWeight(.bold)
                         + Text("님")
@@ -42,7 +42,7 @@ struct MenuView: View {
                 .font(.system(size: 24))
                 Form {
                     Section {
-                        if !isMember { // 회원 일때
+                        if isMember { // 회원 일때
                             HStack{
                                 Text("프로필 편집")
                                 Spacer()

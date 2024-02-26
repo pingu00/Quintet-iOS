@@ -105,7 +105,7 @@ extension QuintetAPI : TargetType {
     }
     
     var headers: [String: String]? {
-        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmlja25hbWUiOiJQaGlsIiwiZW1haWwiOiJ0ZXN0QG5hdmVyLmNvbSIsInByb3ZpZGVyIjoidGVzdCIsImlhdCI6MTcwODA4NTA4NywiZXhwIjoxNzA4Njg5ODg3fQ.JoMmMPtzE7ZVnAl7ZTNqi5zeBLwx291HvOKKYR3kdao"
+        let token = KeyChainManager.read(forkey: .accessToken)
                 return ["Authorization": "Bearer \(token)", "Content-type": "application/json"]
     }
 }
