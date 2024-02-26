@@ -12,8 +12,8 @@ struct StatisticsView: View {
     
     @StateObject private var dateViewModel = DateViewModel()
     
-    //강한결합
-    @StateObject private var statisticsCellViewModel = StatisticsCellViewModel(coreDataViewModel: CoreDataViewModel())
+    //강한결합 -> 상속
+    @StateObject private var statisticsCellViewModel = StatisticsCellViewModel()
     
     @State private var selectedOption = "주간"
     @State private var isShowPopup = false
@@ -216,18 +216,9 @@ struct StatisticsView: View {
                 }
             }
         }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button (action:
-                            {dismiss()}){
-                    Image(systemName: "chevron.backward")
-                        .bold()
-                        .foregroundColor(Color(.black))
-                    
-                }
-            }
-        }
+        .modifier(CustomBackButton {
+                    dismiss()
+                })
         .sheet(isPresented: $isShowPopup) {
             YearMonthPickerPopup(viewModel: dateViewModel, isShowPopup: $isShowPopup, selectedOption: $selectedOption)
                 .frame(width: 300, height: 400)

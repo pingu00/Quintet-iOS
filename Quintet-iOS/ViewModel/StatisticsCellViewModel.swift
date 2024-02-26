@@ -7,13 +7,7 @@
 
 import SwiftUI
 
-class StatisticsCellViewModel: ObservableObject {
-    @Published private var workPoint = 0
-    @Published private var healthPoint = 0
-    @Published private var familyPoint = 0
-    @Published private var relationshipPoint = 0
-    @Published private var assetPoint = 0
-    
+class StatisticsCellViewModel: CoreDataViewModel {
     lazy var startDate: Date = {
         let startDateComponents = Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
         return Calendar.current.date(from: startDateComponents)!
@@ -22,16 +16,14 @@ class StatisticsCellViewModel: ObservableObject {
     lazy var endDate: Date = {
         return Calendar.current.date(byAdding: .day, value: 6, to: startDate)!
     }()
-
-    private let coreDataViewModel: CoreDataViewModel
     
-    init(coreDataViewModel: CoreDataViewModel) {
-        self.coreDataViewModel = coreDataViewModel
+    override init() {
+        super.init()
         updateValuesFromCoreData(startDate: startDate, endDate: endDate)
     }
     
     func updateValuesFromCoreData(startDate: Date, endDate: Date) {
-        let quintetDataArray = coreDataViewModel.getQuintetData(from: startDate, to: endDate)
+        let quintetDataArray = getQuintetData(from: startDate, to: endDate)
         
         workPoint = quintetDataArray.reduce(0) { $0 + Int($1.workPoint) }
         healthPoint = quintetDataArray.reduce(0) { $0 + Int($1.healthPoint) }

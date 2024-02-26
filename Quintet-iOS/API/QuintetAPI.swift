@@ -16,6 +16,8 @@ enum QuintetAPI {
     case getYearStatic(user_id : String, year: Int)
     case getRecordsByDate(user_id : String, year : Int, month : Int)
     case getRecordsByElement(user_id : String, year : Int, month : Int, element : String)
+    case getProfileName
+    case patchProfileName(newNickname : String)
 }
 
 extension QuintetAPI : TargetType {
@@ -55,15 +57,19 @@ extension QuintetAPI : TargetType {
             return "/records/date"
         case .getRecordsByElement:
             return "/records/element"
+        case .getProfileName, .patchProfileName:
+            return "/user"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getWeekCheck,.getWeekStatic, .getMonthStatic, .getYearStatic, .getRecordsByDate, .getRecordsByElement:
+        case .getWeekCheck,.getWeekStatic, .getMonthStatic, .getYearStatic, .getRecordsByDate, .getRecordsByElement, .getProfileName:
             return .get
         case .postTodays:
             return .post
+        case .patchProfileName:
+            return .patch
         }
     }
     
@@ -89,11 +95,17 @@ extension QuintetAPI : TargetType {
         case .getRecordsByElement(let user_id, let year, let month, let element) :
             return .requestParameters(parameters:
                                         ["user_id" : user_id, "year" : year, "month" : month, "element" : element], encoding: URLEncoding.default)
+        case .getProfileName:
+            return .requestPlain
+        
+        case .patchProfileName(let newNickname) :
+            return .requestParameters(parameters:
+                                        ["newNickname" : newNickname], encoding: JSONEncoding.default)
         }
     }
     
     var headers: [String: String]? {
-        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QG5hdmVyLmNvbSIsInByb3ZpZGVyIjoidGVzdCIsImlhdCI6MTcwMzk0MTQ0NSwiZXhwIjoxNzAzOTQzMjQ1fQ.aJwMI9FcGbOz1HMIogh6SeAC8JVSnLd_B0Ux7oLAJ4Y"
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmlja25hbWUiOiJQaGlsIiwiZW1haWwiOiJ0ZXN0QG5hdmVyLmNvbSIsInByb3ZpZGVyIjoidGVzdCIsImlhdCI6MTcwODA4NTA4NywiZXhwIjoxNzA4Njg5ODg3fQ.JoMmMPtzE7ZVnAl7ZTNqi5zeBLwx291HvOKKYR3kdao"
                 return ["Authorization": "Bearer \(token)", "Content-type": "application/json"]
     }
 }

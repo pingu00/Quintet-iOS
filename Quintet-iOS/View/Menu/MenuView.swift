@@ -7,14 +7,19 @@
 
 import SwiftUI
 import StoreKit
+import MessageUI
 
 struct MenuView: View {
-    @EnvironmentObject var loginViewModel: LoginViewModel
     @Environment(\.dismiss) private var dismiss
-    @StateObject var vm = CoreDataViewModel()
+    @EnvironmentObject var loginViewModel: LoginViewModel
+    @EnvironmentObject var vm : CoreDataViewModel
     @State private var isNotiOn = false
     @State private var alarm = Date()
-    @State private var hasLogin = false
+    @State private var showingLogoutAlert = false
+    @State private var isShowingMailView = false
+        @State private var alertNoMail = false
+    private let isMember = KeyChainManager.read(forkey: .isNonMember) != "true"
+  
     var body: some View {
         ZStack{
             Color("Background").ignoresSafeArea(.all)
@@ -22,8 +27,7 @@ struct MenuView: View {
             VStack {
                 Spacer(minLength: 20)
                 Group{
-                    if hasLogin {
-                        //                        vm.loadUserName()
+                    if !isMember {
                         Text(vm.userName)
                             .fontWeight(.bold)
                         + Text("님")
@@ -38,7 +42,7 @@ struct MenuView: View {
                 .font(.system(size: 24))
                 Form {
                     Section {
-                        if hasLogin { // 회원 일때
+                        if !isMember { // 회원 일때
                             HStack{
                                 Text("프로필 편집")
                                 Spacer()
@@ -48,13 +52,26 @@ struct MenuView: View {
                                 NavigationLink(destination:{ProfileEditView(nameText: vm.userName, vm : vm)})
                                 {EmptyView()}
                             )
-                            Button(action: {}){
+                            Button(action: {
+                                showingLogoutAlert = true
+                            }){
                                 HStack{
                                     Text("로그아웃")
                                     Spacer()
                                     Image(systemName: "chevron.right")
                                         .foregroundColor(Color("DarkGray"))
                                 }
+                            }.alert(isPresented: $showingLogoutAlert){
+                                Alert(
+                                    title: Text("로그아웃"),
+                                    message: Text("정말 로그아웃 하시겠습니까?"),
+                                    primaryButton: .destructive(Text("네")) {
+                                        KeyChainManager.removeAllKeychain()
+                                        loginViewModel.updateHasKeychain(state: false)
+                                    },
+                                    secondaryButton: .cancel(Text("아니오"))
+                                )
+                                
                             }
                             Button(action: {}){
                                 HStack{
@@ -113,7 +130,13 @@ struct MenuView: View {
                                     .foregroundColor(Color("DarkGray"))
                             }
                         }
-                        Button(action: {}){
+                        Button(action: {
+                            if MFMailComposeViewController.canSendMail() {
+                                self.isShowingMailView = true
+                            } else {
+                                self.alertNoMail = true
+                            }
+                        }) {
                             HStack{
                                 Text("문의하기")
                                 Spacer()
@@ -121,14 +144,21 @@ struct MenuView: View {
                                     .foregroundColor(Color("DarkGray"))
                             }
                         }
-                        Button(action: {}){
+                        .sheet(isPresented: $isShowingMailView) {
+                                    MailView(isShowing: self.$isShowingMailView)
+                                        .edgesIgnoringSafeArea(.all)
+                                }
+                                .alert(isPresented: $alertNoMail) {
+                                    Alert(title: Text("오류"), message: Text("이메일을 보낼 수 없습니다. 메일 앱을 확인하세요."), dismissButton: .default(Text("확인")))
+                                }
                             HStack{
                                 Text("이용 약관")
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(Color("DarkGray"))
+                            }.overlay{ NavigationLink(destination: {TermsView()}){
+                                EmptyView()}
                             }
-                        }
                     }
                 }
                 .font(.system(size: 16))
@@ -138,94 +168,17 @@ struct MenuView: View {
                 .scrollContentBackground(.hidden)
             }
         }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button (action:
-                            {dismiss()}){
-                    Image(systemName: "chevron.backward")
-                        .bold()
-                        .foregroundColor(Color(.black))
-                    
-                }
-            }
+        .onAppear {
+            vm.loadUserName()
         }
+        .modifier(CustomBackButton {
+                    dismiss()
+                })
     }
 }
 
-struct ProfileEditView: View {
-    
-    @Environment(\.dismiss) private var dismiss
-    @State var nameText : String
-    let vm : CoreDataViewModel
-    var body: some View {
-        ZStack{
-            Color("Background").ignoresSafeArea(.all)
-            VStack(spacing: 5){
-                HStack{
-                    Text("이름")
-                        .font(.system(size: 18, weight: .medium))
-                        .padding(.horizontal)
-                    Spacer()
-                    VStack{
-                        Text("\(nameText.count)/10자")
-                            .font(.system(size: 16))
-                            .padding(.top)
-                            .padding(.top)
-                    }
-                }
-                TextField(vm.userName, text: $nameText)
-                    .padding()
-                    .background(.white)
-                    .cornerRadius(7)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 7)
-                            .stroke(Color("LightGray2"))
-                        )
-                Spacer()
-                Button(action: {
-                    vm.saveUserName(name: nameText)
-                    dismiss()
-                }){
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(canSaveName() ?
-                              Color("DarkQ") : Color("DarkGray") )
-                        .frame(width: 345, height: 66)
-                        .overlay(
-                            Text("저장")
-                                .foregroundColor(.white)
-                                .font(.system(size: 20))
-                        )
-                }
-                .disabled(!canSaveName())
-            }
-            .padding()
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    HStack{
-                        Button (action:{dismiss()}){
-                            Image(systemName: "chevron.backward")
-                                .bold()
-                                .foregroundColor(Color(.black))
-                        }
-                        Spacer(minLength: 20)
-                        Text("프로필 편집")
-                    }
-                }
-            }
-        }
-        .onTapGesture {
-            dismissKeyboard()
-        }
-    }
-    private func canSaveName () -> Bool {
-        return nameText.count <= 10 && nameText.count != 0
-    }
-    private func dismissKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
+
+
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {

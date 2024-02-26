@@ -42,32 +42,7 @@ class CoreDataViewModel: ObservableObject {
         }
         
         fetchCurrentQuintetData()
-        loadUserName()
         //addDummyData()
-    }
-    
-    func addDummyData() {
-        let startDate = Calendar.current.date(from: DateComponents(year: 2022, month: 6, day: 26))!
-        let endDate = Calendar.current.date(from: DateComponents(year: 2022, month: 8, day: 4))!
-        
-        var currentDate = startDate
-        while currentDate <= endDate {
-            let workPoint = Int.random(in: 1...20)
-            let healthPoint = Int.random(in: 1...20)
-            let familyPoint = Int.random(in: 1...1)
-            let relationshipPoint = Int.random(in: 1...20)
-            let assetPoint = Int.random(in: 1...1)
-            let workNote = "일"
-            let healthNote = "건강"
-            let familyNote = "가족"
-            let assetNote = "자산"
-            let relationshipNote = "관계"
-            
-            addNewData2(date: currentDate, workPoint, healthPoint, familyPoint, assetPoint, relationshipPoint, workNote, healthNote, familyNote, assetNote, relationshipNote)
-            
-            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
-        }
-        
     }
     
     // 코어데이터에서의 영구 저장소에서 데이터를 비교하거나 가져올때 "일(day)" 을 필터링 하기위해 범위 설정하는 부분을 함수로 따로 구현
@@ -170,28 +145,7 @@ class CoreDataViewModel: ObservableObject {
                                relationshipPointPer: relationshipPointPer,
                                maxValue: maxValue)
     }
-    
-    
-    
-    
-    
-    // MARK: - 임시 더미데이터용 함수
-    private func addNewData2(date: Date, _ workPoint: Int, _ healthPoint: Int, _ familyPoint: Int, _ assetPoint: Int, _ relationshipPoint: Int, _ workNote: String, _ healthNote: String, _ familyNote: String, _ assetNote: String, _ relationshipNote: String) {
-        let quintetData = QuintetData(context: container.viewContext)
-        quintetData.date = date
-        quintetData.workPoint = Int64(workPoint)
-        quintetData.healthPoint = Int64(healthPoint)
-        quintetData.familyPoint = Int64(familyPoint)
-        quintetData.relationshipPoint = Int64(relationshipPoint)
-        quintetData.assetPoint = Int64(assetPoint)
-        quintetData.workNote = workNote
-        quintetData.healthNote = healthNote
-        quintetData.familyNote = familyNote
-        quintetData.relationshipNote = relationshipNote
-        quintetData.assetNote = assetNote
-        
-        saveContext()
-    }
+
     
     // 입력한 날의 퀸텟 데이터를 업데이트해주는 함수.
     func updateQuintetData() {
@@ -282,11 +236,22 @@ class CoreDataViewModel: ObservableObject {
     func saveUserName(name : String) {
         userName = name
         UserDefaults.standard.set(userName, forKey: "userName")
+        NetworkManager.shared.EditProfileName(newNickname: userName)
     }
     
     func loadUserName() {
-        userName = UserDefaults.standard.string(forKey: "userName") ?? "사용자"
+        NetworkManager.shared.fetchProfileName { result in
+            switch result {
+            case .success(let nickname):
+                self.userName = nickname
+                // 필요한 경우 UI 업데이트 등 추가 작업 수행
+            case .failure(let error):
+                self.userName = UserDefaults.standard.string(forKey: "userName") ?? "사용자"
+                print("Error fetching user name: \(error)")
+            }
+        }
     }
+
     
 //    날짜별
     func getRecordMetaData(selectedYear: Int, selectedMonth: Int) -> [CalendarMetaData] {
