@@ -17,7 +17,7 @@ struct CalendarView: View {
     @State var currentMonth: Int = 0
     let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
     let invalidDayValue = -1
-    private let hasLogin = /*KeyChainManager.hasKeychain(forkey: .accessToken)*/true
+    private let hasLogin = /*KeyChainManager.hasKeychain(forkey: .accessToken)*/false
     @State private var getCalendarData: [CalendarMetaData] = []
     
     var body: some View {
@@ -87,8 +87,10 @@ struct CalendarView: View {
         
         if let task = getCalendarData
             .first(where: { task in
-                return isSameDay(date1: task.date, date2: currentDate)
-            }) 
+                return isSameDay(date1: task.date, date2: currentDate) &&
+                       viewModel.selectedYear == Calendar.current.component(.year, from: currentDate) &&
+                       viewModel.selectedMonth == Calendar.current.component(.month, from: currentDate)
+            })
             {
                 VStack {
                     Text("오늘의 5요소")
@@ -108,10 +110,11 @@ struct CalendarView: View {
                     }
                 }
                 .onChange(of: currentMonth) { newValue in
-                    //updating Month
+                    viewModel.selectedYear = Calendar.current.component(.year, from: currentDate)
+                    viewModel.selectedMonth = Calendar.current.component(.month, from: currentDate)
                     currentDate = getCurrentMonth()
                 }
-            }
+        }
     }
         
     @ViewBuilder

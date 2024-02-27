@@ -9,12 +9,14 @@ import SwiftUI
 
 //요소별 위에 5개 카드
 struct RecordElementView : View {
+    @Binding var currentDate: Date
     @State var recordIndex: recordElement
     @State private var isShowPopup = false
     @StateObject private var viewModel = DateViewModel()
+    @State var currentMonth: Int = 0
     @ObservedObject private var coreDataViewModel = CoreDataViewModel()
     @ObservedObject private var recordLoginViewModel = RecordLoginViewModel()
-    private let hasLogin = /*KeyChainManager.hasKeychain(forkey: .accessToken)*/true
+    private let hasLogin = /*KeyChainManager.hasKeychain(forkey: .accessToken)*/false
     @State private var healthRecords: [RecordMetaData] = []
     @State private var workRecords: [RecordMetaData] = []
     @State private var relationshipRecords: [RecordMetaData] = []
@@ -45,11 +47,15 @@ struct RecordElementView : View {
                     .background(BackgroundClearView())
                     .ignoresSafeArea()
             }
-            ForEach(records) { metaData in
-                ForEach(metaData.records) { record in
-                    recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+            
+            if viewModel.selectedYear == Calendar.current.component(.year, from: currentDate) &&
+                viewModel.selectedMonth == Calendar.current.component(.month, from: currentDate) {
+                ForEach(records) { metaData in
+                    ForEach(metaData.records) { record in
+                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                    }
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
             }
         }
     }
@@ -104,9 +110,17 @@ struct RecordElementView : View {
             .padding(20)
             .background(recordIndex == .money ? Color("DarkQ") : Color.white)
             .cornerRadius(20)
-        }.onAppear {
+        }
+        .onAppear {
             loadRecords()
         }
+        .onChange(of: currentMonth) { newValue in
+            viewModel.selectedYear = Calendar.current.component(.year, from: currentDate)
+            viewModel.selectedMonth = Calendar.current.component(.month, from: currentDate)
+            currentDate = getCurrentMonth()
+            loadRecords()
+        }
+        
 
             switch recordIndex {
             case .health:
@@ -180,6 +194,13 @@ struct RecordElementView : View {
             
             
         }
+    }
+    func getCurrentMonth() -> Date {
+        let calendar = Calendar.current
+        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else {
+            return Date()
+        }
+        return currentMonth
     }
 }
 

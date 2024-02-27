@@ -77,7 +77,7 @@ struct RecordView: View {
                         
                         //요소별
                         if (isShowingBtn == true) {
-                                RecordElementView(recordIndex: .None)
+                            RecordElementView(currentDate: $currentDate, recordIndex: .None)
                                     .padding(.bottom, 21)
                         }
                         
