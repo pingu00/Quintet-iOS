@@ -63,7 +63,7 @@ extension OAuthAPI: TargetType{
     var task: Task {
         switch self{
         case .postGoogleIdToken(let token), .postKakaoIdToken(token: let token):
-            return .requestParameters(parameters: ["token" : token], encoding: JSONEncoding.default)
+            return .requestParameters(parameters: ["idToken" : token], encoding: JSONEncoding.default)
             
         case.postAppleIdToken(
             let token,
@@ -85,8 +85,6 @@ extension OAuthAPI: TargetType{
             }
             
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
-        case .postKakaoIdToken:
-            return .requestPlain
         case .updateAccessToken:
             var parameter: [String: Any] = [:]
             parameter.updateValue(KeyChainManager.loadRefreshToken(), forKey: "refreshToken")

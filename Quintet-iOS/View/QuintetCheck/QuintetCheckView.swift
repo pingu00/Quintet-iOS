@@ -13,12 +13,13 @@ struct QuintetCheckView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var hasAddNote = false
     @State private var isComplete = false
+    private let isMember = KeyChainManager.read(forkey: .isNonMember) != "true"
     
     var body: some View {
         ZStack{
             Color("Background").ignoresSafeArea(.all)
             if !isComplete { //완료 아님
-                ScrollView{
+                ScrollView(showsIndicators: false){
                     VStack{
                         Group {
                             if hasAddNote {
@@ -90,10 +91,9 @@ struct QuintetCheckView: View {
                     Spacer()
                     Button(action: {
                         vm.updateQuintetData()
-                        dismiss()
                         //MARK: - if 로그인 토크 보유 -> API 통해서 post
+                        if isMember {
                             NetworkManager.shared.postCheckData(parameters: [
-                                "user_id": 2,
                                 "work_deg": vm.workPoint,
                                 "health_deg": vm.healthPoint,
                                 "family_deg": vm.familyPoint,
@@ -105,7 +105,8 @@ struct QuintetCheckView: View {
                                 "relationship_doc": vm.relationshipNote,
                                 "money_doc": vm.assetNote,
                             ])
-                    
+                        }
+                        dismiss()
                     }){
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color("DarkQ"))

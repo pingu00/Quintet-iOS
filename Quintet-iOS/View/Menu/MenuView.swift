@@ -18,7 +18,7 @@ struct MenuView: View {
     @State private var showingLogoutAlert = false
     @State private var isShowingMailView = false
         @State private var alertNoMail = false
-    private let hasLogin = KeyChainManager.hasKeychain(forkey: .accessToken)
+    private let isMember = KeyChainManager.read(forkey: .isNonMember) != "true"
   
     var body: some View {
         ZStack{
@@ -27,7 +27,7 @@ struct MenuView: View {
             VStack {
                 Spacer(minLength: 20)
                 Group{
-                    if hasLogin {
+                    if isMember {
                         Text(vm.userName)
                             .fontWeight(.bold)
                         + Text("님")
@@ -42,7 +42,7 @@ struct MenuView: View {
                 .font(.system(size: 24))
                 Form {
                     Section {
-                        if hasLogin { // 회원 일때
+                        if isMember { // 회원 일때
                             HStack{
                                 Text("프로필 편집")
                                 Spacer()
@@ -151,14 +151,14 @@ struct MenuView: View {
                                 .alert(isPresented: $alertNoMail) {
                                     Alert(title: Text("오류"), message: Text("이메일을 보낼 수 없습니다. 메일 앱을 확인하세요."), dismissButton: .default(Text("확인")))
                                 }
-                        Button(action: {}){
                             HStack{
                                 Text("이용 약관")
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(Color("DarkGray"))
+                            }.overlay{ NavigationLink(destination: {TermsView()}){
+                                EmptyView()}
                             }
-                        }
                     }
                 }
                 .font(.system(size: 16))
@@ -177,110 +177,8 @@ struct MenuView: View {
     }
 }
 
-struct ProfileEditView: View {
-    
-    @Environment(\.dismiss) private var dismiss
-    @State var nameText : String
-    let vm : CoreDataViewModel
-    var body: some View {
-        ZStack{
-            Color("Background").ignoresSafeArea(.all)
-            VStack(spacing: 5){
-                HStack{
-                    Text("이름")
-                        .font(.system(size: 18, weight: .medium))
-                        .padding(.horizontal)
-                    Spacer()
-                    VStack{
-                        Text("\(nameText.count)/10자")
-                            .font(.system(size: 16))
-                            .padding(.top)
-                            .padding(.top)
-                    }
-                }
-                TextField(vm.userName, text: $nameText)
-                    .padding()
-                    .background(.white)
-                    .cornerRadius(7)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 7)
-                            .stroke(Color("LightGray2"))
-                        )
-                Spacer()
-                Button(action: {
-                    vm.saveUserName(name: nameText)
-                    dismiss()
-                }){
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(canSaveName() ?
-                              Color("DarkQ") : Color("DarkGray") )
-                        .frame(width: 345, height: 66)
-                        .overlay(
-                            Text("저장")
-                                .foregroundColor(.white)
-                                .font(.system(size: 20))
-                        )
-                }
-                .disabled(!canSaveName())
-            }
-            .padding()
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    HStack{
-                        Button (action:{dismiss()}){
-                            Image(systemName: "chevron.backward")
-                                .bold()
-                                .foregroundColor(Color(.black))
-                        }
-                        Spacer(minLength: 20)
-                        Text("프로필 편집")
-                    }
-                }
-            }
-        }
-        .onTapGesture {
-            dismissKeyboard()
-        }
-    }
-    private func canSaveName () -> Bool {
-        return nameText.count <= 10 && nameText.count != 0
-    }
-    private func dismissKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
-struct MailView: UIViewControllerRepresentable {
-    @Binding var isShowing: Bool
 
-    class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
-        @Binding var isShowing: Bool
 
-        init(isShowing: Binding<Bool>) {
-            _isShowing = isShowing
-        }
-
-        func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-            isShowing = false
-        }
-    }
-
-    func makeCoordinator() -> Coordinator {
-        return Coordinator(isShowing: $isShowing)
-    }
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
-        let mailVC = MFMailComposeViewController()
-        mailVC.mailComposeDelegate = context.coordinator
-        mailVC.setToRecipients(["rlavlfrb0119@gmail.com"]) // 개발자 이메일 주소 설정
-        mailVC.setSubject("문의하기") // 이메일 제목 설정
-        mailVC.setMessageBody("", isHTML: false) // 이메일 본문 설정
-        return mailVC
-    }
-
-    func updateUIViewController(_ uiViewController: MFMailComposeViewController, context: UIViewControllerRepresentableContext<MailView>) {
-    }
-}
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
