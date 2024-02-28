@@ -13,8 +13,8 @@ class NetworkManager {
     static let shared = NetworkManager()
     private let provider = MoyaProvider<QuintetAPI>()
     
-    func fetchWeekCheckData(userID: Int) {
-        provider.request(.getWeekCheck(user_id: userID)) { result in
+    func fetchWeekCheckData() {
+        provider.request(.getWeekCheck) { result in
             switch result {
             case .success(let response):
                 do {
