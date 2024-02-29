@@ -13,20 +13,52 @@ import KakaoSDKUser
 final class LoginViewModel: ObservableObject{
 
     @Published private(set) var hasKeychain: Bool
-    
+    private let oauthManager = LoginManager.shared
     func updateHasKeychain(state: Bool) {
         hasKeychain = state
     }
 
     init() {
-        var hasAccessToken =  KeyChainManager.hasKeychain(forkey: .accessToken)
-        var isNonMember = KeyChainManager.read(forkey: .isNonMember) == "true"
+        let hasAccessToken =  KeyChainManager.hasKeychain(forkey: .accessToken)
+        let isNonMember = KeyChainManager.read(forkey: .isNonMember) == "true"
 
         hasKeychain = hasAccessToken || isNonMember
     }
+    
+    enum Input {
+        case logout
+        case withdrawApple
+        case withdrawKakao
+        case withdrawGoogle
+    }
+    
+    func action(_ input: Input) {
+        switch input {
+        case .logout:
+            logout()
+        case .withdrawApple:
+            withdrawApple()
+        case .withdrawKakao:
+            withdrawKakao()
+        case .withdrawGoogle:
+            withdrawGoogle()
+        }
+    }
+    
+    private func logout() {
+        oauthManager.logout { [weak self] result in
+            switch result {
+            case .success(_):
+                KeyChainManager.removeAllKeychain()
+                self?.updateHasKeychain(state: false)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
 
-// MARK: - apple login
+// MARK: - APPLE
 extension LoginViewModel {
     func appleSignIn(_ credential: ASAuthorizationAppleIDCredential) {
         var fullName = credential.fullName
@@ -65,11 +97,12 @@ extension LoginViewModel {
                     if let header = response.response?.allHeaderFields as? [String: String],
                        let accessToken = header["Authorization"] {
                         KeyChainManager.save(forKey: .accessToken, value: accessToken)
+                        KeyChainManager.save(forKey: .socialProvider, value: SocialProvider.APPLE.rawValue)
                         self.updateHasKeychain(state: true)
                     }
 
                     let decoder = JSONDecoder()
-                    let tokenResponse = try decoder.decode(TokenResponse.self, from: response.data)
+                    let tokenResponse = try decoder.decode(OAuthResponse.self, from: response.data)
 
                     if tokenResponse.isSuccess{
                         let jwtToken = tokenResponse.result
@@ -85,8 +118,21 @@ extension LoginViewModel {
             }
         }
     }
+    
+    private func withdrawApple() {
+        oauthManager.withdraw(.APPLE) { [weak self] result in
+            switch result {
+            case .success(_):
+                KeyChainManager.removeAllKeychain()
+                self?.updateHasKeychain(state: false)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
-// MARK: - google login
+
+// MARK: - GOOGLE
 extension LoginViewModel {
     
     private func getGoogleIDToken(completion: @escaping (String?) -> Void){
@@ -136,11 +182,12 @@ extension LoginViewModel {
                     if let header = response.response?.allHeaderFields as? [String: String],
                        let accessToken = header["Authorization"] {
                         KeyChainManager.save(forKey: .accessToken, value: accessToken)
+                        KeyChainManager.save(forKey: .socialProvider, value: SocialProvider.GOOGLE.rawValue)
                         self.updateHasKeychain(state: true)
                     }
 
                     let decoder = JSONDecoder()
-                    let tokenResponse = try decoder.decode(TokenResponse.self, from: response.data)
+                    let tokenResponse = try decoder.decode(OAuthResponse.self, from: response.data)
                     print(tokenResponse)
                     if tokenResponse.isSuccess{
                         let jwtToken = tokenResponse
@@ -156,7 +203,6 @@ extension LoginViewModel {
         }
     }
     
-    // MARK: - 전체 로그인 과정을 처리
     func googleSignIn() {
         print("구글 로그인 시도 시작")
         getGoogleIDToken{ idToken in
@@ -170,8 +216,27 @@ extension LoginViewModel {
         
         print("구글 로그인 시도 마무리")
     }
+    
+    private func withdrawGoogle() {
+        oauthManager.withdraw(.GOOGLE) { [weak self] result in
+            switch result {
+            case .success(_):
+                GIDSignIn.sharedInstance.disconnect { error in
+                    if let error = error {
+                        // TODO: - 에러 처리
+                    } else {
+                        KeyChainManager.removeAllKeychain()
+                        self?.updateHasKeychain(state: false)
+                    }
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
 
+// MARK: - KAKAO
 extension LoginViewModel {
     func kakaoSignIn() {
         UserApi.shared.loginWithKakaoAccount {ouathToken, error in
@@ -199,14 +264,15 @@ extension LoginViewModel {
                     if let header = response.response?.allHeaderFields as? [String: String],
                        let accessToken = header["Authorization"] {
                         KeyChainManager.save(forKey: .accessToken, value: accessToken)
+                        KeyChainManager.save(forKey: .socialProvider, value: SocialProvider.KAKAO.rawValue)
                         self.updateHasKeychain(state: true)
                     }
 
                     let decoder = JSONDecoder()
-                    let tokenResponse = try decoder.decode(TokenResponse.self, from: response.data)
+                    let tokenResponse = try decoder.decode(OAuthResponse.self, from: response.data)
                     print(tokenResponse)
                     if tokenResponse.isSuccess{
-                        let jwtToken = tokenResponse
+                        _ = tokenResponse
                     }else {
                         print("id 토큰이 유효하지 않음")
                     }
@@ -215,6 +281,26 @@ extension LoginViewModel {
                 }
             case .failure(let error):
                 print("네트워크 오류: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func withdrawKakao() {
+        oauthManager.withdraw(.GOOGLE) { [weak self] result in
+            switch result {
+            case .success(_):
+                UserApi.shared.unlink { [weak self] error in
+                    if let error = error {
+                        // TODO: - 에러 처리
+                    } else {
+                        KeyChainManager.removeAllKeychain()
+                        self?.updateHasKeychain(state: false)
+                    }
+                }
+                KeyChainManager.removeAllKeychain()
+                self?.updateHasKeychain(state: false)
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

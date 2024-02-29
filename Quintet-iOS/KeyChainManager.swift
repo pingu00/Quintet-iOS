@@ -139,6 +139,7 @@ extension KeyChainManager {
         Self.delete(forKey: .accessToken)
         Self.delete(forKey: .isNonMember)
         Self.delete(forKey: .refreshToken)
+        Self.delete(forKey: .socialProvider)
     }
     
     static func loadAccessToken() -> String {

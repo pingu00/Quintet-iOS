@@ -9,7 +9,7 @@ import Foundation
 
 
 // MARK: - IDTokenResponse
-struct TokenResponse: Codable {
+struct OAuthResponse: Codable {
     let code: Int
     let message:String
     let result: String?

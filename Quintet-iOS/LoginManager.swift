@@ -94,7 +94,7 @@ struct LoginManager {
         return isSuccess
     }
     
-    private func getTokenResponse(response: Response) -> TokenResponse? {
+    private func getTokenResponse(response: Response) -> OAuthResponse? {
         let decoder = JSONDecoder()
         
         if let header = response.response?.allHeaderFields as? [String: String],
@@ -104,11 +104,36 @@ struct LoginManager {
         } else { return nil }
         
         do {
-            let tokenResponse = try decoder.decode(TokenResponse.self, from: response.data)
+            let tokenResponse = try decoder.decode(OAuthResponse.self, from: response.data)
             return tokenResponse
         } catch{
             print("JSON 파싱 실패: \(error.localizedDescription)")
         }
         return nil
+    }
+    
+    func logout(completion: @escaping (Result<Bool, MoyaError>) -> Void) {
+        provider.request(.logout) { result in
+            switch result {
+            case .success(_):
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func withdraw(
+        _ social: SocialProvider,
+        completion: @escaping (Result<Bool, MoyaError>) -> Void
+    ) {
+        provider.request(.withdraw(social: social)) { result in
+            switch result {
+            case .success(_):
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }

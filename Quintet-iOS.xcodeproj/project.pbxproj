@@ -38,6 +38,7 @@
 		31465BA12B403C0E00E2F197 /* OAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31465B9E2B403C0E00E2F197 /* OAuthResponse.swift */; };
 		31692C902A84A73100BC12EF /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31692C8F2A84A73100BC12EF /* HomeViewModel.swift */; };
 		31BF652E2A7B7ECD0014EC90 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BF652D2A7B7ECD0014EC90 /* LoginView.swift */; };
+		31D916E02B8CCC61008946AB /* SocialProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D916DF2B8CCC61008946AB /* SocialProvider.swift */; };
 		31ECE9482B403AD6006F129A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ECE9472B403AD6006F129A /* LoginViewModel.swift */; };
 		31ECE94B2B403B1B006F129A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 31ECE94A2B403B1B006F129A /* GoogleSignIn */; };
 		31ECE94D2B403B1B006F129A /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 31ECE94C2B403B1B006F129A /* GoogleSignInSwift */; };
@@ -92,6 +93,7 @@
 		31465B9F2B403C0E00E2F197 /* OAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthAPI.swift; sourceTree = "<group>"; };
 		31692C8F2A84A73100BC12EF /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		31BF652D2A7B7ECD0014EC90 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		31D916DF2B8CCC61008946AB /* SocialProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialProvider.swift; sourceTree = "<group>"; };
 		31ECE9472B403AD6006F129A /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		31F5BF8C2B4D6F1700449D4A /* HTTPHeaderFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPHeaderFields.swift; sourceTree = "<group>"; };
 		31F5BF922B4D8E3000449D4A /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 				AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */,
 				31FDB2052A84F7390091A899 /* DateProcessingModel.swift */,
 				28997E792A73F00300ED676C /* CoreDataModel.xcdatamodeld */,
+				31D916DF2B8CCC61008946AB /* SocialProvider.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -380,6 +383,7 @@
 				31240B242B4046590020727B /* KeyChainManager.swift in Sources */,
 				2837E2322B61366800BEB53D /* BackButtonModifier.swift in Sources */,
 				28C3645B2A5FD5DB00847A88 /* HomeView.swift in Sources */,
+				31D916E02B8CCC61008946AB /* SocialProvider.swift in Sources */,
 				31465BA02B403C0E00E2F197 /* OAuthAPI.swift in Sources */,
 				31ECE9482B403AD6006F129A /* LoginViewModel.swift in Sources */,
 				31FDB2062A84F7390091A899 /* DateProcessingModel.swift in Sources */,
