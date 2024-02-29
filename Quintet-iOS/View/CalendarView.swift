@@ -11,11 +11,14 @@ struct CalendarView: View {
     @Binding var currentDate: Date
     @StateObject private var viewModel = DateViewModel()
     @ObservedObject private var coreDataViewModel = CoreDataViewModel()
+    @ObservedObject private var recordLoginViewModel = RecordLoginViewModel()
     @State private var selectedDate = Date()
     @State private var isShowPopup = false
     @State var currentMonth: Int = 0
     let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
     let invalidDayValue = -1
+    private let hasLogin = /*KeyChainManager.hasKeychain(forkey: .accessToken)*/false
+    @State private var getCalendarData: [CalendarMetaData] = []
     
     var body: some View {
         
@@ -77,16 +80,18 @@ struct CalendarView: View {
                 }
             }
             .fontWeight(.light)
+            .onAppear {
+                    loadRecords()
+                }
         }
-    
-        if let task = coreDataViewModel
-            .getRecordMetaData(
-                selectedYear: viewModel.selectedYear,
-                selectedMonth: viewModel.selectedMonth
-            )
+        
+        if let task = getCalendarData
             .first(where: { task in
-                return isSameDay(date1: task.date, date2: currentDate)
-            }) {
+                return isSameDay(date1: task.date, date2: currentDate) &&
+                       viewModel.selectedYear == Calendar.current.component(.year, from: currentDate) &&
+                       viewModel.selectedMonth == Calendar.current.component(.month, from: currentDate)
+            })
+            {
                 VStack {
                     Text("오늘의 5요소")
                         .font(.system(size: 23))
@@ -105,17 +110,18 @@ struct CalendarView: View {
                     }
                 }
                 .onChange(of: currentMonth) { newValue in
-                    //updating Month
+                    viewModel.selectedYear = Calendar.current.component(.year, from: currentDate)
+                    viewModel.selectedMonth = Calendar.current.component(.month, from: currentDate)
                     currentDate = getCurrentMonth()
                 }
-            }
+        }
     }
         
     @ViewBuilder
     func CardView(value: DateValue) -> some View {
         ZStack {
             if value.day != -1 {
-                if let task = coreDataViewModel.getRecordMetaData(selectedYear: viewModel.selectedYear, selectedMonth: viewModel.selectedMonth).first (where: { task in
+                if let task = getCalendarData.first (where: { task in
                     return isSameDay(date1: task.date, date2: value.date)
                 }) {
                     Circle()
@@ -144,6 +150,23 @@ struct CalendarView: View {
         }
         .padding(.vertical, 4)
     }
+    
+    func loadRecords() {
+        if hasLogin {
+            recordLoginViewModel.getCalendar(year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.getCalendarData = processedData
+                }
+            }
+        } else {
+            coreDataViewModel.getRecordMetaData(selectedYear: viewModel.selectedYear, selectedMonth: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.getCalendarData = processedData
+                }
+            }
+        }
+    }
+
     
     func isSameDay(date1: Date, date2: Date) -> Bool {
         let calendar = Calendar.current

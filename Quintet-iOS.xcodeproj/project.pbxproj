@@ -61,6 +61,8 @@
 		AAAAC9B32B5566200026C8D9 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAAAC9B22B5566200026C8D9 /* secret.plist */; };
 		AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */; };
 		AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */ = {isa = PBXBuildFile; fileRef = AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */; };
+		CF2F0E922B73BA9C000986EB /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF2F0E912B73BA9C000986EB /* secret.plist */; };
+		CFE359102B69F34E00410BAE /* RecordLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE3590F2B69F34E00410BAE /* RecordLoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +111,8 @@
 		AAAAC9B22B5566200026C8D9 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = secret.plist; sourceTree = "<group>"; };
 		AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsStruct.swift; sourceTree = "<group>"; };
 		AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = QuintetAdvice.json; sourceTree = "<group>"; };
+		CF2F0E912B73BA9C000986EB /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../Downloads/secret.plist; sourceTree = "<group>"; };
+		CFE3590F2B69F34E00410BAE /* RecordLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordLoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +167,7 @@
 				AA086E372A727B020025F8A7 /* DateViewModel.swift */,
 				28997E812A73F76A00ED676C /* CoreDataViewModel.swift */,
 				31ECE9472B403AD6006F129A /* LoginViewModel.swift */,
+				CFE3590F2B69F34E00410BAE /* RecordLoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -206,6 +211,7 @@
 			path = "Quintet-iOS";
 			sourceTree = "<group>";
 		};
+
 		28C364522A5FD58F00847A88 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -398,6 +404,7 @@
 				28C364642A5FD63600847A88 /* StatisticsView.swift in Sources */,
 				286E48A92A76DD6B00D109E9 /* CheckCellView.swift in Sources */,
 				28997E822A73F76A00ED676C /* CoreDataViewModel.swift in Sources */,
+				CFE359102B69F34E00410BAE /* RecordLoginViewModel.swift in Sources */,
 				AAAAC9B12B5564EE0026C8D9 /* OnboardingTabView.swift in Sources */,
 				AA086E382A727B020025F8A7 /* DateViewModel.swift in Sources */,
 				AAAAC9AF2B5564D70026C8D9 /* OnboardingPageView.swift in Sources */,

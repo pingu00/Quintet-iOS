@@ -9,26 +9,20 @@ import SwiftUI
 
 //요소별 위에 5개 카드
 struct RecordElementView : View {
+    @Binding var currentDate: Date
     @State var recordIndex: recordElement
     @State private var isShowPopup = false
     @StateObject private var viewModel = DateViewModel()
+    @State var currentMonth: Int = 0
     @ObservedObject private var coreDataViewModel = CoreDataViewModel()
-    
-    var healthRecords: [RecordMetaData] {
-        return coreDataViewModel.getHealthRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
-    }
-    var workRecords: [RecordMetaData] {
-        return coreDataViewModel.getWorkRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
-    }
-    var relationshipRecords: [RecordMetaData] {
-        return coreDataViewModel.getRelationshipRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
-    }
-    var assetRecords: [RecordMetaData] {
-        return coreDataViewModel.getAssetRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
-    }
-    var familyRecords: [RecordMetaData] {
-        return coreDataViewModel.getFamilyRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth)
-    }
+    @ObservedObject private var recordLoginViewModel = RecordLoginViewModel()
+    private let hasLogin = /*KeyChainManager.hasKeychain(forkey: .accessToken)*/false
+    @State private var healthRecords: [RecordMetaData] = []
+    @State private var workRecords: [RecordMetaData] = []
+    @State private var relationshipRecords: [RecordMetaData] = []
+    @State private var assetRecords: [RecordMetaData] = []
+    @State private var familyRecords: [RecordMetaData] = []
+
     
     func displayRecords(for recordElement: recordElement, records: [RecordMetaData]) -> some View {
         VStack {
@@ -53,11 +47,15 @@ struct RecordElementView : View {
                     .background(BackgroundClearView())
                     .ignoresSafeArea()
             }
-            ForEach(records) { metaData in
-                ForEach(metaData.records) { record in
-                    recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+            
+            if viewModel.selectedYear == Calendar.current.component(.year, from: currentDate) &&
+                viewModel.selectedMonth == Calendar.current.component(.month, from: currentDate) {
+                ForEach(records) { metaData in
+                    ForEach(metaData.records) { record in
+                        recordCard(icon: record.icon, title: record.title, subtitle: record.subtitle)
+                    }
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
             }
         }
     }
@@ -113,6 +111,16 @@ struct RecordElementView : View {
             .background(recordIndex == .money ? Color("DarkQ") : Color.white)
             .cornerRadius(20)
         }
+        .onAppear {
+            loadRecords()
+        }
+        .onChange(of: currentMonth) { newValue in
+            viewModel.selectedYear = Calendar.current.component(.year, from: currentDate)
+            viewModel.selectedMonth = Calendar.current.component(.month, from: currentDate)
+            currentDate = getCurrentMonth()
+            loadRecords()
+        }
+        
 
             switch recordIndex {
             case .health:
@@ -128,7 +136,71 @@ struct RecordElementView : View {
             case .None:
                 EmptyView()
             }
-        
+    }
+    
+    func loadRecords() {
+        if hasLogin {
+            recordLoginViewModel.getRecord(for: "건강", year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.healthRecords = processedData
+                }
+            }
+            recordLoginViewModel.getRecord(for: "일", year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.workRecords = processedData
+                }
+            }
+            recordLoginViewModel.getRecord(for: "관계", year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.relationshipRecords = processedData
+                }
+            }
+            recordLoginViewModel.getRecord(for: "자산", year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.assetRecords = processedData
+                }
+            }
+            recordLoginViewModel.getRecord(for: "가족", year: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.familyRecords = processedData
+                }
+            }
+        } else {
+            coreDataViewModel.getHealthRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.healthRecords = processedData
+                }
+            }
+            coreDataViewModel.getWorkRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.workRecords = processedData
+                }
+            }
+            coreDataViewModel.getRelationshipRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.relationshipRecords = processedData
+                }
+            }
+            coreDataViewModel.getAssetRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.assetRecords = processedData
+                }
+            }
+            coreDataViewModel.getFamilyRecords(for: viewModel.selectedYear, month: viewModel.selectedMonth) { processedData in
+                DispatchQueue.main.async {
+                    self.familyRecords = processedData
+                }
+            }
+            
+            
+        }
+    }
+    func getCurrentMonth() -> Date {
+        let calendar = Calendar.current
+        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else {
+            return Date()
+        }
+        return currentMonth
     }
 }
 
