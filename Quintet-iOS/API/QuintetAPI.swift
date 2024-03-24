@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 enum QuintetAPI {
-    case getWeekCheck(user_id : Int)
+    case getWeekCheck
     case postTodays (parameters: [String: Any])
     case getWeekStatic(user_id : String, startDate : String, endDate: String)
     case getMonthStatic(user_id : String, year: Int, month: Int)
@@ -75,8 +75,8 @@ extension QuintetAPI : TargetType {
     
     var task: Task {
         switch self {
-        case .getWeekCheck(let userID) :
-            return .requestParameters(parameters: ["user_id": userID], encoding: URLEncoding.default)
+        case .getWeekCheck:
+            return .requestPlain
         case .postTodays(let parameters) :
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
 
@@ -105,7 +105,8 @@ extension QuintetAPI : TargetType {
     }
     
     var headers: [String: String]? {
-        let token = KeyChainManager.read(forkey: .accessToken)
+        let token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmlja25hbWUiOiJQaGlsYXNkIiwiZW1haWwiOiJ0ZXN0QG5hdmVyLmNvbSIsInByb3ZpZGVyIjoidGVzdCIsImlhdCI6MTcwODk1MTQ3MCwiZXhwIjoxNzA5NTU2MjcwfQ.zsx_6Hs-IsnqlpNu5V_PAgzF1q49VSp_WCHwuaJItk4"
+        //KeyChainManager.read(forkey: .accessToken)
                 return ["Authorization": "Bearer \(token)", "Content-type": "application/json"]
     }
 }
