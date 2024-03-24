@@ -41,19 +41,19 @@ class RecordLoginViewModel: ObservableObject {
                     let daysFromToday = calendar.dateComponents([.day], from: today, to: recordDate).day ?? 0
                     
                     // 각 요소의 deg 값을 확인하고 해당하는 아이콘을 설정
-                    let workIcon = self.iconForDeg(record.workDeg ?? 0)
-                    let healthIcon = self.iconForDeg(record.healthDeg ?? 0)
-                    let familyIcon = self.iconForDeg(record.familyDeg ?? 0)
-                    let relationshipIcon = self.iconForDeg(record.relationshipDeg ?? 0)
-                    let moneyIcon = self.iconForDeg(record.moneyDeg ?? 0)
+                    let workIcon = self.iconForDeg(record.work_deg ?? 0)
+                    let healthIcon = self.iconForDeg(record.health_deg ?? 0)
+                    let familyIcon = self.iconForDeg(record.family_deg ?? 0)
+                    let relationshipIcon = self.iconForDeg(record.relationship_deg ?? 0)
+                    let moneyIcon = self.iconForDeg(record.money_deg ?? 0)
                     
                     // Record 객체들을 생성하고 tasks 배열에 추가
                     let tasks = [
-                        Record(icon: workIcon, title: "일", subtitle: record.workDoc ?? ""),
-                        Record(icon: healthIcon, title: "건강", subtitle: record.healthDoc ?? ""),
-                        Record(icon: familyIcon, title: "가족", subtitle: record.familyDoc ?? ""),
-                        Record(icon: relationshipIcon, title: "관계", subtitle: record.relationshipDoc ?? ""),
-                        Record(icon: moneyIcon, title: "자산", subtitle: record.moneyDoc ?? "")
+                        Record(icon: workIcon, title: "일", subtitle: record.work_doc ?? ""),
+                        Record(icon: healthIcon, title: "건강", subtitle: record.health_doc ?? ""),
+                        Record(icon: familyIcon, title: "가족", subtitle: record.family_doc ?? ""),
+                        Record(icon: relationshipIcon, title: "관계", subtitle: record.relationship_doc ?? ""),
+                        Record(icon: moneyIcon, title: "자산", subtitle: record.money_doc ?? "")
                     ]
                     
                     // CalendarMetaData를 생성
@@ -120,25 +120,25 @@ class RecordLoginViewModel: ObservableObject {
 
 
     private func getKeyPaths(for element: String) -> (KeyPath<RecordResult, Int?>, KeyPath<RecordResult, String?>) {
-        var degKeyPath: KeyPath<RecordResult, Int?> = \RecordResult.workDeg
-        var docKeyPath: KeyPath<RecordResult, String?> = \RecordResult.workDoc
+        var degKeyPath: KeyPath<RecordResult, Int?> = \RecordResult.work_deg
+        var docKeyPath: KeyPath<RecordResult, String?> = \RecordResult.work_doc
 
         switch element {
         case "일":
-            degKeyPath = \RecordResult.workDeg
-            docKeyPath = \RecordResult.workDoc
+            degKeyPath = \RecordResult.work_deg
+            docKeyPath = \RecordResult.work_doc
         case "건강":
-            degKeyPath = \RecordResult.healthDeg
-            docKeyPath = \RecordResult.healthDoc
+            degKeyPath = \RecordResult.health_deg
+            docKeyPath = \RecordResult.health_doc
         case "가족":
-            degKeyPath = \RecordResult.familyDeg
-            docKeyPath = \RecordResult.familyDoc
+            degKeyPath = \RecordResult.family_deg
+            docKeyPath = \RecordResult.family_doc
         case "관계":
-            degKeyPath = \RecordResult.relationshipDeg
-            docKeyPath = \RecordResult.relationshipDoc
+            degKeyPath = \RecordResult.relationship_deg
+            docKeyPath = \RecordResult.relationship_doc
         case "자산":
-            degKeyPath = \RecordResult.moneyDeg
-            docKeyPath = \RecordResult.moneyDoc
+            degKeyPath = \RecordResult.money_deg
+            docKeyPath = \RecordResult.money_doc
         default:
             break
         }
