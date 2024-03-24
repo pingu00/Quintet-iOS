@@ -84,32 +84,16 @@ struct RecordDataResponse : Codable {
 struct RecordResult : Codable {
     var id: Int
     var date: String
-    var workDeg: Int?
-    var workDoc: String?
-    var healthDeg: Int?
-    var healthDoc: String?
-    var familyDeg: Int?
-    var familyDoc: String?
-    var relationshipDeg: Int?
-    var relationshipDoc: String?
-    var moneyDeg: Int?
-    var moneyDoc: String?
-    var userId: Int?
-    
-    enum CodingKeys: String, CodingKey {
-        case id, date
-        case workDeg = "work_deg"
-        case workDoc = "work_doc"
-        case healthDeg = "health_deg"
-        case healthDoc = "health_doc"
-        case familyDeg = "family_deg"
-        case familyDoc = "family_doc"
-        case relationshipDeg = "relationship_deg"
-        case relationshipDoc = "relationship_doc"
-        case moneyDeg = "money_deg"
-        case moneyDoc = "money_doc"
-        case userId = "user_id"
-    }
+    var work_deg: Int?
+    var work_doc: String?
+    var health_deg: Int?
+    var health_doc: String?
+    var family_deg: Int?
+    var family_doc: String?
+    var relationship_deg: Int?
+    var relationship_doc: String?
+    var money_deg: Int?
+    var money_doc: String?
 }
 
 

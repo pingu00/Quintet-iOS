@@ -9,8 +9,9 @@ import Foundation
 import Moya
 
 enum QuintetAPI {
-    case getWeekCheck(user_id : Int)
+    case postAllData (data: [RecordResult])
     case postTodays (parameters: [String: Any])
+    case getWeekCheck(user_id : Int)
     case getWeekStatic(user_id : String, startDate : String, endDate: String)
     case getMonthStatic(user_id : String, year: Int, month: Int)
     case getYearStatic(user_id : String, year: Int)
@@ -43,10 +44,12 @@ extension QuintetAPI : TargetType {
     
     var path: String {
         switch self {
-        case .getWeekCheck:
-            return "/home"
+        case .postAllData:
+            return "/user/data"
         case .postTodays:
             return "/record"
+        case .getWeekCheck:
+            return "/home"
         case .getWeekStatic:
             return "/static/week"
         case .getMonthStatic:
@@ -66,7 +69,7 @@ extension QuintetAPI : TargetType {
         switch self {
         case .getWeekCheck,.getWeekStatic, .getMonthStatic, .getYearStatic, .getRecordsByDate, .getRecordsByElement, .getProfileName:
             return .get
-        case .postTodays:
+        case .postTodays, .postAllData:
             return .post
         case .patchProfileName:
             return .patch
@@ -75,11 +78,12 @@ extension QuintetAPI : TargetType {
     
     var task: Task {
         switch self {
-        case .getWeekCheck(let userID) :
-            return .requestParameters(parameters: ["user_id": userID], encoding: URLEncoding.default)
+        case .postAllData(let data) :
+            return .requestParameters(parameters: ["data": data], encoding: JSONEncoding.default)
         case .postTodays(let parameters) :
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
-
+        case .getWeekCheck(let userID) :
+            return .requestParameters(parameters: ["user_id": userID], encoding: URLEncoding.default)
         case .getWeekStatic(let user_id, let startDate, let endDate) :
             return .requestParameters(parameters:
                                         ["user_id" : user_id, "startDate" : startDate, "endDate" : endDate], encoding: URLEncoding.default)
