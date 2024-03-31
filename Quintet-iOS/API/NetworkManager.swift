@@ -13,7 +13,6 @@ class NetworkManager {
     static let shared = NetworkManager()
     private let provider = MoyaProvider<QuintetAPI>()
     
- 
     func postCheckData(parameters: [String: Any]) {
         provider.request(.postTodays(parameters: parameters)) {result in
             switch result {

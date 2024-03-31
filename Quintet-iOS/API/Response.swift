@@ -37,11 +37,11 @@ struct WeeklyResult : Codable{
 
 struct DailyData : Codable{
     let date: String
-    let work_deg: String
-    let health_deg: String
-    let family_deg: String
-    let relationship_deg: String
-    let money_deg: String
+    let work_deg: Int
+    let health_deg: Int
+    let family_deg: Int
+    let relationship_deg: Int
+    let money_deg: Int
 }
 
 //MARK: - Statistics
