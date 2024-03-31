@@ -196,7 +196,8 @@ class CoreDataViewModel: ObservableObject {
     }
     
     
-    //MARK: - TEST : coreData 안의 모든 데이터를 확인하기 위한 테스팅 함수
+    //MARK: - 비회원 -> 회원 데이터 이전 관련 함수
+    // 모든 데이터 확인
     func fetchAllQuintetData() -> [QuintetData]? {
         let request: NSFetchRequest<QuintetData> = QuintetData.fetchRequest()
         
@@ -209,13 +210,32 @@ class CoreDataViewModel: ObservableObject {
             return nil
         }
     }
-    func checkAllCoreData() {
+    // 데이터 가공 및 api 함수 호출
+    func convertToMember() {
+        print("----------회원 전환 start---------")
         if let allQuintetData = fetchAllQuintetData()  {
-            print("------------------------")
-            print("All Data in CoreData store")
-            for quintetData in allQuintetData {
-                print("------------------------")
-                print("Date: \(quintetData.date ?? Date())")
+            var recordResultArray : [RecordResult] = []
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            
+            for (index, quintetData) in allQuintetData.enumerated() {
+                let dateString = dateFormatter.string(from: quintetData.date ?? Date())
+                let recordResult = RecordResult(
+                    id: index + 1,
+                    date: dateString,
+                    work_deg: Int(quintetData.workPoint),
+                    work_doc: quintetData.workNote,
+                    health_deg: Int(quintetData.healthPoint),
+                    health_doc: quintetData.workNote,
+                    family_deg: Int(quintetData.familyPoint),
+                    family_doc: quintetData.familyNote,
+                    relationship_deg: Int(quintetData.relationshipPoint),
+                    relationship_doc: quintetData.relationshipNote,
+                    money_deg: Int(quintetData.assetPoint),
+                    money_doc: quintetData.assetNote
+                )
+                print("----------확인 되고 있는 코어데이터 내부 데이터--------------")
+                print("Date: \(dateString)")
                 print("Work Point: \(quintetData.workPoint)")
                 print("Health Point: \(quintetData.healthPoint)")
                 print("Family Point: \(quintetData.familyPoint)")
@@ -226,11 +246,31 @@ class CoreDataViewModel: ObservableObject {
                 print("Family Note: \(quintetData.familyNote ?? "")")
                 print("Relationship Note: \(quintetData.relationshipNote ?? "")")
                 print("Asset Note: \(quintetData.assetNote ?? "")")
+                print("------------------------")
+                recordResultArray.append(recordResult)
             }
+            NetworkManager.shared.postNonMemberData(data: recordResultArray)
         } else {
-            print("No data found.")
+            print("회원으로 전환할 데이터가 없습니다.")
         }
     }
+
+    // 비회원 시 사용했던 "CoreDataModel" 엔티티 내부의 데이터 삭제
+    func resetCoreDataModel() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CoreDataModel") //
+
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+        do {
+            try container.viewContext.execute(deleteRequest) // 삭제 요청 실행
+            try container.viewContext.save() // 변경사항 저장
+            print("Core Data 내부의 데이터가 삭제되었습니다.")
+        } catch {
+            print("Core Data 데이터 삭제 실패: \(error.localizedDescription)")
+        }
+    }
+
+    
     
     //MARK: 로그인 이후 프로필 이름을 관리하는 함수
     func saveUserName(name : String) {
