@@ -8,8 +8,8 @@
 import UIKit
 import Moya
 
-struct LoginManager {
-    static let shared = LoginManager()
+struct AuthManager {
+    static let shared = AuthManager()
     private let provider = MoyaProvider<OAuthAPI>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
     private init() {}
     
@@ -98,7 +98,7 @@ struct LoginManager {
         let decoder = JSONDecoder()
         
         if let header = response.response?.allHeaderFields as? [String: String],
-           let accessToken = header["Authorization"] 
+           let accessToken = header["Authorization"]
         {
             KeyChainManager.save(forKey: .accessToken, value: accessToken)
         } else { return nil }
@@ -125,13 +125,18 @@ struct LoginManager {
     
     func withdraw(
         _ social: SocialProvider,
-        completion: @escaping (Result<Bool, MoyaError>) -> Void
+        code: String? = nil,
+        completion: @escaping (Result<Response, MoyaError>) -> Void
     ) {
-        provider.request(.withdraw(social: social)) { result in
+        provider.request(.withdraw(social: social, code: code)) { result in
+            print(result)
             switch result {
-            case .success(_):
-                completion(.success(true))
+            case .success(let success):
+                print(success.statusCode)
+                completion(.success(success))
             case .failure(let error):
+                print(String(decoding: error.response!.data, as: UTF8.self))
+                print(error.localizedDescription)
                 completion(.failure(error))
             }
         }
