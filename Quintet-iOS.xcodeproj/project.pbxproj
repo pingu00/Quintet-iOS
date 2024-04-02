@@ -43,7 +43,7 @@
 		31ECE94B2B403B1B006F129A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 31ECE94A2B403B1B006F129A /* GoogleSignIn */; };
 		31ECE94D2B403B1B006F129A /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 31ECE94C2B403B1B006F129A /* GoogleSignInSwift */; };
 		31F5BF8D2B4D6F1700449D4A /* HTTPHeaderFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F5BF8C2B4D6F1700449D4A /* HTTPHeaderFields.swift */; };
-		31F5BF932B4D8E3000449D4A /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F5BF922B4D8E3000449D4A /* LoginManager.swift */; };
+		31F5BF932B4D8E3000449D4A /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F5BF922B4D8E3000449D4A /* AuthManager.swift */; };
 		31F5BF972B4D9AD800449D4A /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 31F5BF962B4D9AD800449D4A /* KakaoSDK */; };
 		31F5BF992B4D9AD800449D4A /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 31F5BF982B4D9AD800449D4A /* KakaoSDKAuth */; };
 		31F5BF9B2B4D9AD800449D4A /* KakaoSDKCert in Frameworks */ = {isa = PBXBuildFile; productRef = 31F5BF9A2B4D9AD800449D4A /* KakaoSDKCert */; };
@@ -61,7 +61,6 @@
 		AAAAC9B32B5566200026C8D9 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAAAC9B22B5566200026C8D9 /* secret.plist */; };
 		AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */; };
 		AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */ = {isa = PBXBuildFile; fileRef = AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */; };
-		CF2F0E922B73BA9C000986EB /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF2F0E912B73BA9C000986EB /* secret.plist */; };
 		CFE359102B69F34E00410BAE /* RecordLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE3590F2B69F34E00410BAE /* RecordLoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -98,7 +97,7 @@
 		31D916DF2B8CCC61008946AB /* SocialProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialProvider.swift; sourceTree = "<group>"; };
 		31ECE9472B403AD6006F129A /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		31F5BF8C2B4D6F1700449D4A /* HTTPHeaderFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPHeaderFields.swift; sourceTree = "<group>"; };
-		31F5BF922B4D8E3000449D4A /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
+		31F5BF922B4D8E3000449D4A /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		31FDB2052A84F7390091A899 /* DateProcessingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProcessingModel.swift; sourceTree = "<group>"; };
 		4E2EB64B2AFE4A1600821A8F /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		4E2EB64F2AFE4DCC00821A8F /* ElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementView.swift; sourceTree = "<group>"; };
@@ -111,7 +110,6 @@
 		AAAAC9B22B5566200026C8D9 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../Downloads/secret.plist; sourceTree = "<group>"; };
 		AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsStruct.swift; sourceTree = "<group>"; };
 		AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = QuintetAdvice.json; sourceTree = "<group>"; };
-		CF2F0E912B73BA9C000986EB /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../Downloads/secret.plist; sourceTree = "<group>"; };
 		CFE3590F2B69F34E00410BAE /* RecordLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordLoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -197,7 +195,7 @@
 				31240B232B4046590020727B /* KeyChainManager.swift */,
 				31240B252B4046870020727B /* KeyChainValue.swift */,
 				311198D62A74F8C900D92E91 /* DateManager.swift */,
-				31F5BF922B4D8E3000449D4A /* LoginManager.swift */,
+				31F5BF922B4D8E3000449D4A /* AuthManager.swift */,
 				28C3645E2A5FD63600847A88 /* View */,
 				28997E832A73FA4600ED676C /* ViewModel */,
 				31FDB2042A84F7080091A899 /* Model */,
@@ -211,7 +209,6 @@
 			path = "Quintet-iOS";
 			sourceTree = "<group>";
 		};
-
 		28C364522A5FD58F00847A88 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -411,7 +408,7 @@
 				28C364632A5FD63600847A88 /* RecordView.swift in Sources */,
 				31465BA12B403C0E00E2F197 /* OAuthResponse.swift in Sources */,
 				286E48AB2A76DE1600D109E9 /* AddNoteCellView.swift in Sources */,
-				31F5BF932B4D8E3000449D4A /* LoginManager.swift in Sources */,
+				31F5BF932B4D8E3000449D4A /* AuthManager.swift in Sources */,
 				28C3644D2A5FD58E00847A88 /* Quintet_iOSApp.swift in Sources */,
 				31BF652E2A7B7ECD0014EC90 /* LoginView.swift in Sources */,
 				28E4F6B82B871678007F7C84 /* TermsView.swift in Sources */,

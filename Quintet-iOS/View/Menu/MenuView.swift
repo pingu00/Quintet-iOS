@@ -8,6 +8,7 @@
 import SwiftUI
 import StoreKit
 import MessageUI
+import AuthenticationServices
 
 struct MenuView: View {
     @Environment(\.dismiss) private var dismiss
@@ -18,7 +19,8 @@ struct MenuView: View {
     @State private var showingLogoutAlert = false
     @State private var showingWithdrawAlert = false
     @State private var isShowingMailView = false
-        @State private var alertNoMail = false
+    @State private var alertNoMail = false
+    @State private var withdrawText = ""
     private let isMember = KeyChainManager.read(forkey: .isNonMember) != "true"
   
     var body: some View {
@@ -74,6 +76,7 @@ struct MenuView: View {
                             }
                             Button(action: {
                                 showingWithdrawAlert = true
+                                print(showingWithdrawAlert)
                             }){
                                 HStack{
                                     Text("계정 탈퇴")
@@ -81,25 +84,6 @@ struct MenuView: View {
                                     Image(systemName: "chevron.right")
                                         .foregroundColor(Color("DarkGray"))
                                 }
-                            }
-                            .alert(isPresented: $showingWithdrawAlert){
-                                Alert(
-                                    title: Text("계정 탈퇴"),
-                                    message: Text("정말 계정을 삭제 하시겠습니까?"),
-                                    primaryButton: .destructive(Text("네")) {
-                                        guard let socialProvider = KeyChainManager.read(forkey: .socialProvider) else { return }
-                                        
-                                        switch socialProvider {
-                                        case SocialProvider.APPLE.rawValue:
-                                            loginViewModel.action(.withdrawApple)
-                                        case SocialProvider.KAKAO.rawValue:
-                                            loginViewModel.action(.withdrawKakao)
-                                        default:
-                                            loginViewModel.action(.withdrawGoogle)
-                                        }
-                                    },
-                                    secondaryButton: .cancel(Text("아니오"))
-                                )
                             }
                         }
                         else { // 비회원 일때
@@ -187,6 +171,98 @@ struct MenuView: View {
                 .background(Color("Background"))
                 .scrollContentBackground(.hidden)
             }
+            
+            if showingWithdrawAlert {
+                ZStack {
+                    Button {
+                        showingWithdrawAlert = false
+                    } label: {
+                        ZStack {
+                            Color(.black)
+                                .opacity(0.5)
+                        }
+                    }
+                    .ignoresSafeArea()
+                    
+                    ZStack {
+                        Color(.background)
+                        VStack {
+                            HStack {
+                                Spacer()
+                                Image(.quintetLogo)
+                                    .padding(.horizontal, 20)
+                                Spacer()
+                            }
+                            .padding(.vertical, 20)
+                            
+                            Text("정말 탈퇴하시겠습니까?")
+                                .font(.system(size: 17, weight: .semibold))
+                                .multilineTextAlignment(.center)
+                                .padding(.bottom, 10)
+                            Text("아래 '확인했습니다'를 입력해주세요.")
+                                .font(.system(size: 15, weight: .regular))
+                                .multilineTextAlignment(.center)
+                                .padding(.bottom, 10)
+                            TextField("확인했습니다", text: $withdrawText)
+                                .padding(.horizontal, 20)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                            
+                            if let socialProvider = KeyChainManager.read(forkey: .socialProvider) {
+                                switch socialProvider {
+                                case SocialProvider.APPLE.rawValue:
+                                    SignInWithAppleButton(.continue) { request in
+                                        request.requestedScopes = [.fullName, .email]
+                                    } onCompletion: { result in
+                                        switch result {
+                                        case .success(let authResults):
+                                            if
+                                                let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential,
+                                                let authorizationCode = appleIDCredential.authorizationCode
+                                            {
+                                                let code = String(decoding: authorizationCode, as: UTF8.self)
+                                                loginViewModel.action(.withdrawApple(code: code))
+                                            }
+                                        case .failure(let error):
+                                            print("Auth Fail: \(error.localizedDescription)")
+                                        }
+                                    }
+                                    .frame(height: 44)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 20)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .disabled(withdrawText != "확인했습니다")
+                                default:
+                                    Button {
+                                        if socialProvider == SocialProvider.GOOGLE.rawValue {
+                                            loginViewModel.action(.withdrawGoogle)
+                                            showingWithdrawAlert = false
+                                        } else {
+                                            loginViewModel.action(.withdrawGoogle)
+                                            showingWithdrawAlert = false
+                                        }
+                                    } label: {
+                                        ZStack {
+                                            Color(.red)
+                                            Text("탈퇴하기")
+                                        }
+                                    }
+                                    .tint(.white)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .frame(height: 44)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 20)
+                                    .disabled(withdrawText != "확인했습니다")
+                                }
+                            }
+                            
+                        }
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .padding(.horizontal, 60)
+                    .padding(.vertical, 200)
+                }
+            }
+            
         }
         .onAppear {
             vm.loadUserName()
@@ -196,9 +272,6 @@ struct MenuView: View {
                 })
     }
 }
-
-
-
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {

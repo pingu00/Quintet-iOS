@@ -13,7 +13,8 @@ import KakaoSDKUser
 final class LoginViewModel: ObservableObject{
 
     @Published private(set) var hasKeychain: Bool
-    private let oauthManager = LoginManager.shared
+    
+    private let loginManager = AuthManager.shared
     func updateHasKeychain(state: Bool) {
         hasKeychain = state
     }
@@ -27,7 +28,7 @@ final class LoginViewModel: ObservableObject{
     
     enum Input {
         case logout
-        case withdrawApple
+        case withdrawApple(code: String)
         case withdrawKakao
         case withdrawGoogle
     }
@@ -36,8 +37,8 @@ final class LoginViewModel: ObservableObject{
         switch input {
         case .logout:
             logout()
-        case .withdrawApple:
-            withdrawApple()
+        case .withdrawApple(let code):
+            withdrawApple(code: code)
         case .withdrawKakao:
             withdrawKakao()
         case .withdrawGoogle:
@@ -46,7 +47,7 @@ final class LoginViewModel: ObservableObject{
     }
     
     private func logout() {
-        oauthManager.logout { [weak self] result in
+        loginManager.logout { [weak self] result in
             switch result {
             case .success(_):
                 KeyChainManager.removeAllKeychain()
@@ -104,7 +105,8 @@ extension LoginViewModel {
                     let decoder = JSONDecoder()
                     let tokenResponse = try decoder.decode(OAuthResponse.self, from: response.data)
 
-                    if tokenResponse.isSuccess{
+                    if tokenResponse.isSuccess {
+                        
                         let jwtToken = tokenResponse.result
                     }else {
                         print(tokenResponse)
@@ -119,10 +121,10 @@ extension LoginViewModel {
         }
     }
     
-    private func withdrawApple() {
-        oauthManager.withdraw(.APPLE) { [weak self] result in
+    private func withdrawApple(code: String) {
+        loginManager.withdraw(.APPLE, code: code) { [weak self] result in
             switch result {
-            case .success(_):
+            case .success(let response):
                 KeyChainManager.removeAllKeychain()
                 self?.updateHasKeychain(state: false)
             case .failure(let error):
@@ -218,9 +220,9 @@ extension LoginViewModel {
     }
     
     private func withdrawGoogle() {
-        oauthManager.withdraw(.GOOGLE) { [weak self] result in
+        loginManager.withdraw(.GOOGLE) { [weak self] result in
             switch result {
-            case .success(_):
+            case .success(let response):
                 GIDSignIn.sharedInstance.disconnect { error in
                     if let error = error {
                         // TODO: - 에러 처리
@@ -286,9 +288,11 @@ extension LoginViewModel {
     }
     
     private func withdrawKakao() {
-        oauthManager.withdraw(.GOOGLE) { [weak self] result in
+        loginManager.withdraw(.GOOGLE) { [weak self] result in
             switch result {
-            case .success(_):
+            case .success(let response):
+                print("%%%%%%%%%%%%")
+                print(String(decoding: response.data, as: UTF8.self))
                 UserApi.shared.unlink { [weak self] error in
                     if let error = error {
                         // TODO: - 에러 처리
