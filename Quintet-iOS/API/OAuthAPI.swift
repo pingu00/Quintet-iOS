@@ -18,7 +18,7 @@ enum OAuthAPI{
     case postKakaoIdToken(token: String)
     case updateAccessToken
     case logout
-    case withdraw(social: SocialProvider)
+    case withdraw(social: SocialProvider, code: String?)
 }
 
 extension OAuthAPI: TargetType{
@@ -53,9 +53,9 @@ extension OAuthAPI: TargetType{
         case .updateAccessToken:
             return "/auth/refresh"
         case .logout:
-            return "/v1/user/logout"
+            return "/user/logout"
         case .withdraw:
-            return "/v1/user/delete"
+            return "/user/delete"
         }
     }
     
@@ -79,7 +79,7 @@ extension OAuthAPI: TargetType{
             let email
         ):
             var parameters: [String: Any] = [:]
-            if 
+            if
                 let token = token,
                 let tokenString = String(data: token, encoding: .utf8)
             {
@@ -99,19 +99,21 @@ extension OAuthAPI: TargetType{
             return .requestParameters(parameters: parameter, encoding: JSONEncoding.default)
         case .logout:
             return .requestPlain
-        case .withdraw(let social):
-            if social == .APPLE {
-                let parameter: [String: Any] = [
+        case .withdraw(let social, let code):
+            var parameter: [String: Any]
+            if let code = code {
+                parameter = [
                     "provider": "apple",
-                    "code": ""
+                    "code": code
                 ]
-                return .requestParameters(parameters: parameter, encoding: JSONEncoding.default)
             } else {
-                let parameter: [String: Any] = [
+                parameter = [
                     "provider": "nonApple"
                 ]
-                return .requestParameters(parameters: parameter, encoding: JSONEncoding.default)
             }
+            
+            print(parameter)
+            return .requestParameters(parameters: parameter, encoding: JSONEncoding.default)
         }
     }
     
