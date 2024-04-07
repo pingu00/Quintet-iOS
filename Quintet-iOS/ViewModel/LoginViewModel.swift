@@ -13,7 +13,7 @@ import KakaoSDKUser
 final class LoginViewModel: ObservableObject{
 
     @Published private(set) var hasKeychain: Bool
-    
+    let CoreDataVM = CoreDataViewModel()
     private let loginManager = AuthManager.shared
     func updateHasKeychain(state: Bool) {
         hasKeychain = state
@@ -100,6 +100,7 @@ extension LoginViewModel {
                         KeyChainManager.save(forKey: .accessToken, value: accessToken)
                         KeyChainManager.save(forKey: .socialProvider, value: SocialProvider.APPLE.rawValue)
                         self.updateHasKeychain(state: true)
+                        self.CoreDataVM.convertToMember()
                     }
 
                     let decoder = JSONDecoder()

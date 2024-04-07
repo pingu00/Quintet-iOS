@@ -95,7 +95,20 @@ struct RecordResult : Codable {
     var money_deg: Int?
     var money_doc: String?
 }
-
+struct DataPost : Codable {
+    var id: Int
+    var date: String
+    var work_deg: Int
+    var work_doc: String
+    var health_deg: Int
+    var health_doc: String
+    var family_deg: Int
+    var family_doc: String
+    var relationship_deg: Int
+    var relationship_doc: String
+    var money_deg: Int
+    var money_doc: String
+}
 
 
 
