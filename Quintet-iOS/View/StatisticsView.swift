@@ -10,8 +10,7 @@ import SwiftUI
 struct StatisticsView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @State private var isLogin = KeyChainManager.read(forkey: .isNonMember) == "true"
-//    @State private var isLogin = true
+    @State private var isLogin = KeyChainManager.hasKeychain(forkey: .accessToken)
     
     @StateObject private var dateViewModel = DateViewModel()
     @StateObject private var statisticsCellViewModel = StatisticsCellViewModel()
