@@ -10,6 +10,8 @@ import AuthenticationServices
 
 struct LoginView: View {
     @State private var isLoading = true
+    @State private var isTermsAgree = false
+    @State private var isTermsPresent = false
     @EnvironmentObject private var loginViewModel: LoginViewModel
     
     var body: some View {
@@ -23,6 +25,25 @@ struct LoginView: View {
                     
                     //MARK: 회원 로그인 버튼 모음
                     VStack{
+                        Button(action: {
+                            if isTermsAgree {
+                                isTermsAgree.toggle()
+                            }
+                            else {
+                                isTermsPresent = true
+                            }
+                        }, label: {
+                            Image(systemName: isTermsAgree ? "checkmark.circle.fill" : "circle")
+                            Text("이용약관 동의하기")
+                        })
+                        .sheet(isPresented: $isTermsPresent, content: {
+                            OnboardingTermsView(onAgree: {
+                                isTermsPresent = false
+                                isTermsAgree = true
+                            })
+                        })
+                        .foregroundStyle(.black)
+                        
                         Button {
                             print("카카오 로그인 버튼 눌림")
                             loginViewModel.kakaoSignIn()
@@ -42,6 +63,7 @@ struct LoginView: View {
                         .frame(height: 44)
                         .background(Color(.kakao))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .disabled(!isTermsAgree)
                         
                         SignInWithAppleButton(.continue) { request in
                             request.requestedScopes = [.fullName, .email]
@@ -57,6 +79,7 @@ struct LoginView: View {
                         }
                         .frame(height: 44)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .disabled(!isTermsAgree)
                         
                         Button {
                             print("google loginBtn Tapped")
@@ -77,6 +100,7 @@ struct LoginView: View {
                         .frame(height: 44)
                         .background(Color(.white))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .disabled(!isTermsAgree)
                     }
                     .padding(.horizontal, 24)
                     .padding(.bottom, 48)
