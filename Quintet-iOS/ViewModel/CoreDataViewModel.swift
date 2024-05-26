@@ -161,29 +161,55 @@ class CoreDataViewModel: ObservableObject {
             savedQuintetData.relationshipNote = relationshipNote
             savedQuintetData.assetNote = assetNote
             
-            saveContext()
-            
         } else {
             addNewData()
         }
+        
+        saveContext() // 업데이트 또는 새로운 데이터 추가 후에 저장
     }
+
     //오늘 날짜의 새로운 퀸텟 데이터를 추가하는 함수
     private func addNewData() {
-        let quintetData = QuintetData(context: container.viewContext)
-        quintetData.date = today
-        quintetData.workPoint = Int64(workPoint)
-        quintetData.healthPoint = Int64(healthPoint)
-        quintetData.familyPoint = Int64(familyPoint)
-        quintetData.relationshipPoint = Int64(relationshipPoint)
-        quintetData.assetPoint = Int64(assetPoint)
-        quintetData.workNote = workNote
-        quintetData.healthNote = healthNote
-        quintetData.familyNote = familyNote
-        quintetData.relationshipNote = relationshipNote
-        quintetData.assetNote = assetNote
+        let request: NSFetchRequest<QuintetData> = QuintetData.fetchRequest()
+        request.predicate = createPredicate(from: today, to: today)
         
-        saveContext()
+        do {
+            let results = try container.viewContext.fetch(request)
+            if let existingData = results.first {
+                // 이미 같은 날짜에 데이터가 있는 경우 해당 데이터 업데이트
+                existingData.workPoint = Int64(workPoint)
+                existingData.healthPoint = Int64(healthPoint)
+                existingData.familyPoint = Int64(familyPoint)
+                existingData.relationshipPoint = Int64(relationshipPoint)
+                existingData.assetPoint = Int64(assetPoint)
+                existingData.workNote = workNote
+                existingData.healthNote = healthNote
+                existingData.familyNote = familyNote
+                existingData.relationshipNote = relationshipNote
+                existingData.assetNote = assetNote
+            } else {
+                // 같은 날짜에 데이터가 없는 경우 새로운 데이터 추가
+                let quintetData = QuintetData(context: container.viewContext)
+                quintetData.date = today
+                quintetData.workPoint = Int64(workPoint)
+                quintetData.healthPoint = Int64(healthPoint)
+                quintetData.familyPoint = Int64(familyPoint)
+                quintetData.relationshipPoint = Int64(relationshipPoint)
+                quintetData.assetPoint = Int64(assetPoint)
+                quintetData.workNote = workNote
+                quintetData.healthNote = healthNote
+                quintetData.familyNote = familyNote
+                quintetData.relationshipNote = relationshipNote
+                quintetData.assetNote = assetNote
+            }
+            
+        } catch {
+            print("Error fetching data: \(error)")
+        }
+        
+        saveContext() // 추가 또는 업데이트 후에 저장
     }
+
     //context 를 영구저장소에 저장한다. context란 영구저장소에 저장되기 전의 중간자 역할.
     private func saveContext() {
         if container.viewContext.hasChanges {
@@ -297,21 +323,20 @@ class CoreDataViewModel: ObservableObject {
         let calendar = Calendar.current
         var calendarMetaDataArray: [CalendarMetaData] = []
 
-        guard let startDate = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 2)),
+        guard let startDate = calendar.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: 1)),
               let endDate = calendar.date(byAdding: .month, value: 1, to: startDate),
               let lastDayOfMonth = calendar.date(byAdding: .day, value: -1, to: endDate) else {
             completion([])
             return
         }
 
-        let today = calendar.startOfDay(for: startDate)
-
+        let today = calendar.startOfDay(for: Date())
         var currentDate = startDate
 
         while currentDate <= lastDayOfMonth {
 
             let quintetDataArray = getQuintetData(from: currentDate, to: calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate)
-
+            print(quintetDataArray)
             var recordsForDate: [Record] = []
 
             for data in quintetDataArray {
@@ -337,8 +362,15 @@ class CoreDataViewModel: ObservableObject {
             let daysFromToday = calendar.dateComponents([.day], from: currentDate, to: today).day ?? 0
             let metaData = CalendarMetaData(records: recordsForDate, date: quintetDataArray.first?.date ?? currentDate, offset: daysFromToday)
 
-            if !recordsForDate.isEmpty {
-                calendarMetaDataArray.append(metaData)
+            // Check if the date already exists in the array
+            if let index = calendarMetaDataArray.firstIndex(where: { calendar.isDate($0.date, inSameDayAs: currentDate) }) {
+                // Update existing entry
+                calendarMetaDataArray[index].records = recordsForDate
+            } else {
+                // Add new entry
+                if !recordsForDate.isEmpty {
+                    calendarMetaDataArray.append(metaData)
+                }
             }
 
             currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate
@@ -346,6 +378,8 @@ class CoreDataViewModel: ObservableObject {
 
         completion(calendarMetaDataArray)
     }
+
+
 
 
 
