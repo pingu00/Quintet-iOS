@@ -62,6 +62,7 @@
 		AAAAC9B12B5564EE0026C8D9 /* OnboardingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9B02B5564EE0026C8D9 /* OnboardingTabView.swift */; };
 		AAB5A23B2B0714EE002C6C2F /* StatisticsStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */; };
 		AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */ = {isa = PBXBuildFile; fileRef = AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */; };
+		CF1DE3D02BFAF566008BADE7 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF1DE3CF2BFAF566008BADE7 /* secret.plist */; };
 		CFE359102B69F34E00410BAE /* RecordLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE3590F2B69F34E00410BAE /* RecordLoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -112,6 +113,7 @@
 		AAAAC9B02B5564EE0026C8D9 /* OnboardingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTabView.swift; sourceTree = "<group>"; };
 		AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsStruct.swift; sourceTree = "<group>"; };
 		AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = QuintetAdvice.json; sourceTree = "<group>"; };
+		CF1DE3CF2BFAF566008BADE7 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../Downloads/secret.plist; sourceTree = "<group>"; };
 		CFE3590F2B69F34E00410BAE /* RecordLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordLoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -203,6 +205,7 @@
 				31FDB2042A84F7080091A899 /* Model */,
 				281E2FB42A8F743200DEAAD8 /* API */,
 				31F5BF942B4D902900449D4A /* Response */,
+				CF1DE3CF2BFAF566008BADE7 /* secret.plist */,
 				2837E2312B61366800BEB53D /* BackButtonModifier.swift */,
 				AA9D8C622BF4EE4F0009C7C2 /* secret.plist */,
 				28C364502A5FD58F00847A88 /* Assets.xcassets */,
