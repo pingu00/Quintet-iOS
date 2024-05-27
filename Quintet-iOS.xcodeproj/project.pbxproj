@@ -31,6 +31,7 @@
 		28E4F6BB2B879170007F7C84 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E4F6BA2B879170007F7C84 /* ProfileEditView.swift */; };
 		28E4F6BD2B87919B007F7C84 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E4F6BC2B87919B007F7C84 /* MailView.swift */; };
 		28EBB7B22A7BF3750065AF45 /* QuintetPointPer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */; };
+		28F394A32C047A7C0069ACA7 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = 28F394A22C047A7C0069ACA7 /* secret.plist */; };
 		311198D72A74F8C900D92E91 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311198D62A74F8C900D92E91 /* DateManager.swift */; };
 		31240B242B4046590020727B /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31240B232B4046590020727B /* KeyChainManager.swift */; };
 		31240B262B4046870020727B /* KeyChainValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31240B252B4046870020727B /* KeyChainValue.swift */; };
@@ -86,6 +87,7 @@
 		28E4F6BA2B879170007F7C84 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		28E4F6BC2B87919B007F7C84 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		28EBB7B12A7BF3750065AF45 /* QuintetPointPer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuintetPointPer.swift; sourceTree = "<group>"; };
+		28F394A22C047A7C0069ACA7 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../secret.plist; sourceTree = "<group>"; };
 		311198D62A74F8C900D92E91 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		31240B232B4046590020727B /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		31240B252B4046870020727B /* KeyChainValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainValue.swift; sourceTree = "<group>"; };
@@ -110,7 +112,6 @@
 		AAAAC9B02B5564EE0026C8D9 /* OnboardingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTabView.swift; sourceTree = "<group>"; };
 		AAB5A23A2B0714EE002C6C2F /* StatisticsStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsStruct.swift; sourceTree = "<group>"; };
 		AAB5A23C2B0718CF002C6C2F /* QuintetAdvice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = QuintetAdvice.json; sourceTree = "<group>"; };
-		CF1DE3CF2BFAF566008BADE7 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../Downloads/secret.plist; sourceTree = "<group>"; };
 		CFE3590F2B69F34E00410BAE /* RecordLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordLoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -202,8 +203,8 @@
 				31FDB2042A84F7080091A899 /* Model */,
 				281E2FB42A8F743200DEAAD8 /* API */,
 				31F5BF942B4D902900449D4A /* Response */,
-				CF1DE3CF2BFAF566008BADE7 /* secret.plist */,
 				2837E2312B61366800BEB53D /* BackButtonModifier.swift */,
+				28F394A22C047A7C0069ACA7 /* secret.plist */,
 				28C364502A5FD58F00847A88 /* Assets.xcassets */,
 				28C364522A5FD58F00847A88 /* Preview Content */,
 			);
@@ -361,6 +362,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28F394A32C047A7C0069ACA7 /* secret.plist in Resources */,
 				28C364542A5FD58F00847A88 /* Preview Assets.xcassets in Resources */,
 				AAB5A23D2B0718CF002C6C2F /* QuintetAdvice.json in Resources */,
 				28C364512A5FD58F00847A88 /* Assets.xcassets in Resources */,
