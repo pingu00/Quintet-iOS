@@ -27,7 +27,7 @@ class NetworkManager {
             }
         }
     }
-    func postNonMemberData(data: [RecordResult]) {
+    func postNonMemberData(data: [DataPost]) {
         provider.request(.postAllData(data: data)) {result in
             switch result {
             case let .success(response):
@@ -41,8 +41,8 @@ class NetworkManager {
             }
         }
     }
-    func fetchWeekCheckData(userID: Int) {
-        provider.request(.getWeekCheck(user_id: userID)) { result in
+    func fetchWeekCheckData() {
+        provider.request(.getWeekCheck) { result in
             switch result {
             case .success(let response):
                 do {

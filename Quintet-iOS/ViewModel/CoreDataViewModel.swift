@@ -240,27 +240,28 @@ class CoreDataViewModel: ObservableObject {
     func convertToMember() {
         print("----------회원 전환 start---------")
         if let allQuintetData = fetchAllQuintetData()  {
-            var recordResultArray : [RecordResult] = []
+            var dataArray : [DataPost] = []
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             
             for (index, quintetData) in allQuintetData.enumerated() {
                 let dateString = dateFormatter.string(from: quintetData.date ?? Date())
-                let recordResult = RecordResult(
+                let recordResult = DataPost(
                     id: index + 1,
                     date: dateString,
                     work_deg: Int(quintetData.workPoint),
-                    work_doc: quintetData.workNote,
+                    work_doc: quintetData.workNote ?? "",
                     health_deg: Int(quintetData.healthPoint),
-                    health_doc: quintetData.workNote,
+                    health_doc: quintetData.workNote ?? "",
                     family_deg: Int(quintetData.familyPoint),
-                    family_doc: quintetData.familyNote,
+                    family_doc: quintetData.familyNote ?? "",
                     relationship_deg: Int(quintetData.relationshipPoint),
-                    relationship_doc: quintetData.relationshipNote,
+                    relationship_doc: quintetData.relationshipNote ?? "",
                     money_deg: Int(quintetData.assetPoint),
-                    money_doc: quintetData.assetNote
+                    money_doc: quintetData.assetNote ?? ""
                 )
                 print("----------확인 되고 있는 코어데이터 내부 데이터--------------")
+                print("id: \(index + 1)")
                 print("Date: \(dateString)")
                 print("Work Point: \(quintetData.workPoint)")
                 print("Health Point: \(quintetData.healthPoint)")
@@ -273,9 +274,11 @@ class CoreDataViewModel: ObservableObject {
                 print("Relationship Note: \(quintetData.relationshipNote ?? "")")
                 print("Asset Note: \(quintetData.assetNote ?? "")")
                 print("------------------------")
-                recordResultArray.append(recordResult)
+                dataArray.append(recordResult)
             }
-            NetworkManager.shared.postNonMemberData(data: recordResultArray)
+            print(KeyChainManager.read(forkey: .accessToken))
+            print(dataArray)
+            NetworkManager.shared.postNonMemberData(data: dataArray)
         } else {
             print("회원으로 전환할 데이터가 없습니다.")
         }
