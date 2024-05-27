@@ -283,7 +283,7 @@ class CoreDataViewModel: ObservableObject {
 
     // 비회원 시 사용했던 "CoreDataModel" 엔티티 내부의 데이터 삭제
     func resetCoreDataModel() {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CoreDataModel") //
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "QuintetData") //
 
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 

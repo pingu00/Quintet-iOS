@@ -70,6 +70,7 @@ struct MenuView: View {
                                     message: Text("정말 로그아웃 하시겠습니까?"),
                                     primaryButton: .destructive(Text("네")) {
                                         loginViewModel.action(.logout)
+                                        vm.resetCoreDataModel()
                                     },
                                     secondaryButton: .cancel(Text("아니오"))
                                 )
